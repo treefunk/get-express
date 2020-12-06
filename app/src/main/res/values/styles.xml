@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="GetExpress.Button.Flat" parent="ShapeAppearance.MaterialComponents.LargeComponent">
+<!--        <item name="cornerFamily">rounded</item>-->
+<!--        <item name="cornerSize">30dp</item>-->
+        <item name="android:minWidth">250dp</item>
+        <item name="cornerRadius">0dp</item>
+    </style>
+
+
+<!-- Text -->
+
+    <style name="GetExpressLabel">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:fontFamily">@font/lato_black</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:letterSpacing">0.06</item>
+    </style>
+
+    <style name="GetExpressLabel.NavProfileName">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:fontFamily">@font/lato_black</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:letterSpacing">0.06</item>
+    </style>
+
+    <style name="GetExpressLabel.EditProfileName">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:fontFamily">@font/lato_black</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:letterSpacing">-0.01</item>
+    </style>
+
+    <style name="GetExpressLabel.NavItems">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:fontFamily">@font/lato_regular</item>
+        <item name="android:textSize">12.5sp</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+    
+    <style name="GetExpressLabel.NavItems.NavLogout">
+        <item name="android:fontFamily">@font/lato_black</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+
+    <style name="GetExpressTextDescription.LinkYellow">
+        <item name="android:textColor">@color/color_yellow_300</item>
+        <item name="android:textSize">11sp</item>
+<!--        <item name="android:textStyle">bold</item>-->
+        <item name="android:fontFamily">@font/lato_regular</item>
+    </style>
+
+
+    <style name="GetExpressLabel.MediumBlack">
+        <item name="android:textColor">@color/main_text_color</item>
+        <item name="android:textSize">14sp</item>
+<!--        <item name="android:textStyle">bold</item>-->
+        <item name="android:fontFamily">@font/lato_bold</item>
+        <item name="android:letterSpacing">0</item>
+
+    </style>
+
+
+
+    <style name="GetExpressLabel.LabelSelectedCustomerRequestMedium">
+        <item name="android:textColor">@color/main_text_color</item>
+        <item name="android:textSize">11sp</item>
+        <!--        <item name="android:textStyle">bold</item>-->
+        <item name="android:fontFamily">@font/lato_black</item>
+        <item name="android:letterSpacing">0</item>
+
+    </style>
+
+    <style name="GetExpressLabel.MediumBlack.LabelSelectedCustomerRequestSmall">
+        <item name="android:textColor">@color/main_text_color</item>
+        <item name="android:textSize">10sp</item>
+        <!--        <item name="android:textStyle">bold</item>-->
+        <item name="android:fontFamily">@font/lato_black</item>
+        <item name="android:letterSpacing">0</item>
+
+    </style>
+
+    <style name="GetExpressLabel.MediumBlack.DescriptionSelectedCustomerRequestSmall">
+        <item name="android:textColor">@color/main_text_color</item>
+        <item name="android:textSize">8sp</item>
+        <!--        <item name="android:textStyle">bold</item>-->
+        <item name="android:fontFamily">@font/lato_regular</item>
+        <item name="android:letterSpacing">0</item>
+
+    </style>
+
+    <style name="GetExpressLabel.LabelSelectedCustomerRequestLarge">
+        <item name="android:textColor">@color/main_text_color</item>
+        <item name="android:textSize">13sp</item>
+        <!--        <item name="android:textStyle">bold</item>-->
+        <item name="android:fontFamily">@font/lato_black</item>
+        <item name="android:letterSpacing">0</item>
+
+    </style>
+
+    <style name="GetExpressLabel.EditProfile">
+        <item name="android:textColor">@color/main_text_color</item>
+        <item name="android:textSize">11.5sp</item>
+        <item name="android:fontFamily">@font/lato_bold</item>
+        <item name="android:letterSpacing">0.02</item>
+
+    </style>
+
+
+    <style name="GetExpressLoginHeader" parent="GetExpressLabel">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:letterSpacing">0.04</item>
+    </style>
+
+    <style name="GetExpressTextDescription">
+        <item name="android:textColor">@color/main_text_color</item>
+<!--        <item name="android:text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sed accumsan velit.</item>-->
+        <item name="android:textSize">15sp</item>
+        <item name="android:lineHeight">23dp</item>
+        <item name="android:fontFamily">@font/myriad_pro_regular</item>
+    </style>
+
+
+
+    <style name="GetExpressTextDescription.LoginFeatured">
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@font/myriad_pro_light</item>
+    </style>
+
+    <style name="GetExpressTextDescription.Thin">
+        <item name="android:fontFamily">@font/myriad_pro_light</item>
+    </style>
+
+    <style name="GetExpressEditTextLogin">
+        <item name="android:maxLines">1</item>
+        <item name="android:background">@drawable/shape_grey_border</item>
+        <item name="android:fontFamily">@font/lato_regular</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textColorHint">@color/main_text_color</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:paddingLeft">12dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:paddingRight">2dp</item>
+        <item name="android:letterSpacing">0.04</item>
+        <item name="android:imeOptions">actionNext</item>
+    </style>
+
+    <style name="GetExpressEditTextLogin.EditProfile">
+        <item name="android:textSize">11.5sp</item>
+        <item name="android:background">@drawable/shape_grey_border_white_bg</item>
+    </style>
+
+
+
+
+<!--   Buttons   -->
+    <style name="GetExpressImageButton">
+        <item name="android:layout_width">285dp</item>
+        <item name="android:layout_height">37.5dp</item>
+        <item name="android:scaleType">centerInside</item>
+        <item name="android:background">@null</item>
+    </style>
+
+    <style name="GetExpressButtonFlat">
+        <item name="android:layout_height">40dp</item>
+        <item name="android:textColor">@color/main_text_color</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:letterSpacing">0.02</item>
+        <item name="android:backgroundTint">@color/purple_200</item>
+        <item name="android:fontFamily">@font/lato_black</item>
+        <item name="elevation">0dp</item>
+        <item name="android:elevation">0dp</item>
+        <item name="android:minWidth">250dp</item>
+        <item name="cornerRadius">0dp</item>
+    </style>
+
+    <style name="GetExpressButtonStatus">
+        <item name="android:layout_height">20dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">11.5sp</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:letterSpacing">0.02</item>
+        <item name="android:backgroundTint">@color/status_button_grey</item>
+        <item name="android:fontFamily">@font/lato_black</item>
+        <item name="elevation">0dp</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:layout_margin">0dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+    </style>
+
+
+
+    <!--  HISTORY SCREEN  -->
+
+    <style name="GetExpressHistoryTabLabel">
+        <item name="android:fontFamily">@font/lato_bold</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+    </style>
+
+</resources>

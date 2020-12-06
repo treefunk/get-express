@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_login_graph"
+    app:startDestination="@id/signInCustomerFragment">
+
+    <fragment
+        android:id="@+id/signInCustomerFragment"
+        android:name="com.myoptimind.getexpress.features.login.SignInCustomerFragment"
+        android:label="SignInCustomerFragment"
+        tools:layout="@layout/fragment_sign_in_customer"
+        >
+        <action
+            android:id="@+id/action_signInCustomerFragment_to_signUpCustomerFragment"
+            app:destination="@id/signUpCustomerFragment" />
+        <action
+            android:id="@+id/action_signInCustomerFragment_to_forgotPasswordFragment"
+            app:destination="@id/forgotPasswordFragment" />
+        <action
+            android:id="@+id/action_signInCustomerFragment_to_signInRiderFragment"
+            app:destination="@id/signInRiderFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUpCustomerFragment"
+        android:name="com.myoptimind.getexpress.features.login.SignUpCustomerFragment"
+        android:label="SignUpCustomerFragment"
+        tools:layout="@layout/fragment_sign_up_customer"
+        >
+        <action
+            android:id="@+id/action_signUpCustomerFragment_to_signUpRiderFragment"
+            app:destination="@id/signUpRiderFragment" />
+        <action
+            android:id="@+id/action_signUpCustomerFragment_to_signInCustomerFragment"
+            app:destination="@id/signInCustomerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUpRiderFragment"
+        android:name="com.myoptimind.getexpress.features.login.SignUpRiderFragment"
+        android:label="SignUpRiderFragment"
+        tools:layout="@layout/fragment_sign_up_rider"
+        >
+        <action
+            android:id="@+id/action_signUpRiderFragment_to_signUpCustomerFragment"
+            app:destination="@id/signUpCustomerFragment" />
+        <action
+            android:id="@+id/action_signUpRiderFragment_to_signInCustomerFragment"
+            app:destination="@id/signInCustomerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/forgotPasswordFragment"
+        android:name="com.myoptimind.getexpress.features.login.ForgotPasswordFragment"
+        android:label="ForgotPasswordFragment"
+        tools:layout="@layout/fragment_forgot_password"
+        >
+        <action
+            android:id="@+id/action_forgotPasswordFragment_to_signInCustomerFragment"
+            app:destination="@id/signInCustomerFragment" />
+        <action
+            android:id="@+id/action_forgotPasswordFragment_to_signUpCustomerFragment"
+            app:destination="@id/signUpCustomerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/signInRiderFragment"
+        android:name="com.myoptimind.getexpress.features.login.SignInRiderFragment"
+        android:label="SignInRiderFragment" >
+        <action
+            android:id="@+id/action_signInRiderFragment_to_signInCustomerFragment"
+            app:destination="@id/signInCustomerFragment" />
+        <action
+            android:id="@+id/action_signInRiderFragment_to_signUpCustomerFragment"
+            app:destination="@id/signUpCustomerFragment" />
+        <action
+            android:id="@+id/action_signInRiderFragment_to_forgotPasswordFragment"
+            app:destination="@id/forgotPasswordFragment" />
+    </fragment>
+</navigation>

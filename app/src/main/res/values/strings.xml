@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">get-express</string>
+    <string name="label_sign_in_link"><u>SIGN IN</u></string>
+    <string name="label_forgot_password"><b><u>Forgot Password</u></b></string>
+    <string name="label_sign_up_link"><u>SIGN UP</u></string>
+    <string name="label_edit_profile_underlined"><u>EDIT PROFILE</u></string>
+    <string name="label_history_underlined"><u>HISTORY</u></string>
+    <string name="take_photo_label">Take Photo</string>
+    <string name="choose_from_library_label">Choose from Library</string>
+    <string name="view_current_photo_label">View Current Photo</string>
+    <string name="add_address_underlined"><u>Add Address</u></string>
+    <string name="add_vehicle_underlined"><u>Add Vehicle</u></string>
+
+</resources>

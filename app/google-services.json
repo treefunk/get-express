@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1059743027614",
+    "firebase_url": "https://getexpress-3e7e0.firebaseio.com",
+    "project_id": "getexpress-3e7e0",
+    "storage_bucket": "getexpress-3e7e0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1059743027614:android:ea2591c31916a51e8b068f",
+        "android_client_info": {
+          "package_name": "com.myoptimind.getexpress"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1059743027614-pcbpf0jq4eogov47oa8rsfgu3m7n4r5m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.myoptimind.getexpress",
+            "certificate_hash": "e1f0365b59f445c4a4c69ba2b486b7ce49d56bb1"
+          }
+        },
+        {
+          "client_id": "1059743027614-31k2mk5lpqniga12fcomgtiip7o4kn1f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCvB71gXKdJpybZPQpdKbdtwoMgXgjpSFM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1059743027614-31k2mk5lpqniga12fcomgtiip7o4kn1f.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1059743027614-f7nef1o7lnlpc96u3r22njjbmbvttqhu.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.optimind.getexpress"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

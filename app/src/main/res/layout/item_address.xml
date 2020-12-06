@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_rounded_corners"
+    android:layout_marginTop="8dp"
+    android:orientation="horizontal"
+    android:weightSum="5"
+    android:backgroundTint="@android:color/white"
+    >
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="4.8"
+        android:orientation="vertical"
+        android:paddingLeft="10dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        >
+        <TextView
+            android:id="@+id/tv_address_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="HOME"
+            android:textStyle="bold"
+            android:textSize="11sp"
+            android:fontFamily="@font/lato_black"
+            android:textColor="@color/main_text_color"
+
+            />
+        <TextView
+            android:id="@+id/tv_address_subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+
+            android:text="2nd Floor CTP Building #5 Gil Fernando Ave.,Marikina City"
+            android:fontFamily="@font/lato_regular"
+            android:textColor="@color/main_text_color"
+            android:textSize="10sp"
+            android:gravity="top"
+
+            />
+    </LinearLayout>
+    <ImageButton
+        android:id="@+id/iv_edit_profile_picture"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_weight="0.2"
+        android:src="@drawable/edit_icon_black"
+        android:background="?selectableItemBackgroundBorderless"
+        android:scaleType="fitCenter"
+        android:paddingRight="10dp"
+        android:layout_gravity="center"
+
+
+        />
+</LinearLayout>
