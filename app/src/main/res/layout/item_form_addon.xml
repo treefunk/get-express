@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    >
+
+    <TextView
+        android:id="@+id/label_addon_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        style="@style/GetExpressLabelNotesToRider"
+        android:textColor="@color/main_text_color"
+        android:text="Select Extras"
+        />
+
+    <AutoCompleteTextView
+        android:id="@+id/et_addon_field"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="2dp"
+        android:paddingRight="30dp"
+
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+
+        android:text="Select Category"
+        android:textSize="10sp"
+        android:background="@android:color/white"
+        android:hint="Select Category"
+        style="@style/GetExpressEditTextLogin"
+        />
+
+</LinearLayout>

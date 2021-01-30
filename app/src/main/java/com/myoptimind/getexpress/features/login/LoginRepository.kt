@@ -5,12 +5,13 @@ import android.content.Context
 import android.provider.Settings
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.installations.FirebaseInstallations
-import com.myoptimind.getexpress.features.CUSTOMER.home.api.HomeService
+import com.myoptimind.getexpress.features.customer.home.api.HomeService
 import com.myoptimind.getexpress.features.login.api.LoginService
 import com.myoptimind.getexpress.features.login.data.UserType
 import com.myoptimind.getexpress.features.shared.api.Result
 import com.myoptimind.getexpress.features.shared.applyDefaultEffects
 import kotlinx.coroutines.flow.flow
+import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import timber.log.Timber
 import javax.inject.Inject
@@ -25,10 +26,12 @@ class LoginRepository @Inject constructor(
 
     }
 
+/*
     private fun getFirebaseId(): String {
         val idTask = FirebaseInstallations.getInstance().id
         return Tasks.await(idTask)
     }
+*/
 
     @SuppressLint("HardwareIds")
     private fun getDeviceId() = Settings.Secure.getString(context.getContentResolver(),
@@ -52,15 +55,15 @@ class LoginRepository @Inject constructor(
 
     fun signInCustomer(
             email: String,
-            password: String
+            password: String,
+            firebaseToken: String
     ) = flow {
         val deviceId = getDeviceId()
-        val firebaseId = getFirebaseId()
 
         val response = loginService.signInCustomer(
-                email, password, deviceId, firebaseId
+                email, password, deviceId, firebaseToken
         )
-        Timber.v("Customer Sign in Details: \nEmail - $email\nDevice Id - $deviceId\nFirebase Id - $firebaseId\n")
+        Timber.v("Customer Sign in Details: \nEmail - $email\nDevice Id - $deviceId\nFirebase Id - $firebaseToken\n")
         emit(Result.Success(response))
     }.applyDefaultEffects(false, true)
 
@@ -78,7 +81,7 @@ class LoginRepository @Inject constructor(
             password: RequestBody?,
             socialToken: RequestBody?,
             isEmailVerified: RequestBody?,
-            identificationDocument: RequestBody,
+            identificationDocument: MultipartBody.Part,
             vehicleId: RequestBody,
             vehicleModel: RequestBody,
             plateNumber: RequestBody
@@ -102,15 +105,16 @@ class LoginRepository @Inject constructor(
 
     fun signInRider(
             email: String,
-            password: String
+            password: String,
+            firebaseToken: String
     ) = flow {
         val deviceId = getDeviceId()
-        val firebaseId = getFirebaseId()
+//        val firebaseId = getFirebaseId()
 
         val response = loginService.signInRider(
-                email, password, deviceId, firebaseId
+                email, password, deviceId, firebaseToken
         )
-        Timber.v("Rider Sign in Details: \nEmail - $email\nDevice Id - $deviceId\nFirebase Id - $firebaseId\n")
+        Timber.v("Rider Sign in Details: \nEmail - $email\nDevice Id - $deviceId\nFirebase Id - $firebaseToken\n")
         emit(Result.Success(response))
     }.applyDefaultEffects(false, nullOnComplete = true)
 

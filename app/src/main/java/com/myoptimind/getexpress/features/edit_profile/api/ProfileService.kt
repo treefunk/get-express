@@ -1,9 +1,12 @@
 package com.myoptimind.getexpress.features.edit_profile.api
 
+import com.google.gson.annotations.SerializedName
+import com.myoptimind.getexpress.features.login.data.Address
 import com.myoptimind.getexpress.features.login.data.Customer
 import com.myoptimind.getexpress.features.login.data.Rider
 import com.myoptimind.getexpress.features.login.data.User
 import com.myoptimind.getexpress.features.shared.api.MetaResponse
+import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.*
 
@@ -43,6 +46,32 @@ interface ProfileService {
             val meta: MetaResponse
     )
 
+    @POST("profile/new-address/{customer_id}")
+    @FormUrlEncoded
+    suspend fun addAddress(
+            @Path("customer_id") customerId: String,
+            @Field("label") label: String,
+            @Field("full_address") fullAddress: String,
+            @Field("latitude") latitude: String,
+            @Field("longitude") longitude: String
+    ): AddressResponse
+
+    @POST("profile/address/{address_id}")
+    @FormUrlEncoded
+    suspend fun updateAddress(
+            @Path("address_id") customerId: String,
+            @Field("label") label: String,
+            @Field("full_address") fullAddress: String,
+            @Field("latitude") latitude: String,
+            @Field("longitude") longitude: String
+    ): AddressResponse
+
+    data class AddressResponse(
+            val data: Address,
+            val meta: MetaResponse
+    )
+
+
     @POST("riders/{rider_id}/vehicles/{vehicle_id}/active")
     suspend fun changeActiveVehicle(
             @Path("rider_id") riderId: String,
@@ -57,21 +86,34 @@ interface ProfileService {
     @Multipart
    @POST("profile/{user_type}/{user_id}")
    suspend fun updateProfile(
-           @Path("user_type") userType: String,
-           @Path("user_id") userId: String,
-           @Part("full_name") fullname: RequestBody? = null,
-           @Part("email") email: RequestBody? = null,
-           @Part("mobile_num") mobileNum: RequestBody? = null,
-           @Part("birthdate") birthdate: RequestBody? = null,
-           @Part("location") location: RequestBody? = null,
-           @Part("password") password: RequestBody? = null,
-           @Part("profile_picture") profilePicture: RequestBody? = null,
+        @Path("user_type") userType: String,
+        @Path("user_id") userId: String,
+        @Part("full_name") fullname: RequestBody? = null,
+        @Part("email") email: RequestBody? = null,
+        @Part("mobile_num") mobileNum: RequestBody? = null,
+        @Part("birthdate") birthdate: RequestBody? = null,
+        @Part("location") location: RequestBody? = null,
+        @Part("password") password: RequestBody? = null,
+        @Part profilePicture: MultipartBody.Part? = null,
    ): UserResponse
 
    data class UserResponse(
            val data: User,
            val meta: MetaResponse
    )
+
+    @GET("options/stores_radius")
+    suspend fun getStoresRadius(): StoreRadiusResponse
+
+    data class StoreRadiusResponse(
+            val data: StoreRadius,
+            val meta: MetaResponse
+    )
+
+    data class StoreRadius(
+            @SerializedName("stores_radius")
+            val storeRadius: String
+    )
 
 
 }

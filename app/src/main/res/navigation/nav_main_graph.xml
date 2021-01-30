@@ -5,23 +5,32 @@
     android:id="@+id/nav_main_graph"
     app:startDestination="@id/homeFragment">
 
+
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.myoptimind.getexpress.features.CUSTOMER.home.HomeFragment"
+        android:name="com.myoptimind.getexpress.features.customer.home.CustomerDashboardFragment"
         android:label="HomeFragment"
-        tools:layout="@layout/fragment_home"
-        />
-    <fragment
-        android:id="@+id/editProfileFragment"
-        android:name="com.myoptimind.getexpress.features.edit_profile.EditProfileFragment"
-        android:label="EditProfileFragment"
-        tools:layout="@layout/fragment_edit_profile"
-        />
-    <action
-        android:id="@+id/action_global_editProfileFragment"
-        app:destination="@id/editProfileFragment"
-        app:launchSingleTop="true"
-        />
+        tools:layout="@layout/fragment_customer_dashboard"
+        >
+        <action
+            android:id="@+id/action_homeFragment_to_riderDashboardFragment"
+            app:destination="@id/riderDashboardFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true"
+            />
+        <action
+            android:id="@+id/action_homeFragment_to_storesFragment"
+            app:destination="@id/storesFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_customerRiderSearchFragment"
+            app:destination="@id/customerRiderSearchFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_deliveryFormFragment"
+            app:destination="@id/deliveryFormFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_pabiliFormFragment"
+            app:destination="@id/pabiliFormFragment" />
+    </fragment>
     <fragment
         android:id="@+id/riderDashboardFragment"
         android:name="com.myoptimind.getexpress.features.rider.rider_dashboard.RiderDashboardFragment"
@@ -67,19 +76,172 @@
             app:popUpToInclusive="true"
             />
     </fragment>
+    <action
+        android:id="@+id/action_global_selectedCustomerRequestFragment"
+        app:destination="@id/selectedCustomerRequestFragment"
+        app:launchSingleTop="true"
+        />
     <fragment
-        android:id="@+id/riderHistoryFragment"
-        android:name="com.myoptimind.getexpress.features.rider.rider_history.RiderHistoryFragment"
-        android:label="RiderHistoryFragment"
-        tools:layout="@layout/fragment_rider_history"
+        android:id="@+id/storesFragment"
+        android:name="com.myoptimind.getexpress.features.customer.food_grocery.StoresFragment"
+        android:label="StoresFragment"
+        tools:layout="@layout/fragment_stores"
         >
+        <argument
+            android:name="serviceId"
+            app:argType="string"
+            android:defaultValue=""
+            />
+        <argument
+            android:name="cartId"
+            app:argType="string"
+            android:defaultValue=""
+            />
+
+        <argument
+            android:name="receiverLocation"
+            app:argType="com.google.android.libraries.places.api.model.Place"
+            app:nullable="true"
+            />
         <action
-            android:id="@+id/action_riderHistoryFragment_to_selectedCustomerRequestFragment"
-            app:destination="@id/selectedCustomerRequestFragment" />
+            android:id="@+id/action_storesFragment_to_selectedStoreFragment"
+            app:destination="@id/selectedStoreFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/selectedStoreFragment"
+        android:name="com.myoptimind.getexpress.features.customer.food_grocery.selected_store.SelectedStoreFragment"
+        android:label="SelectedStoreFragment"
+        tools:layout="@layout/fragment_selected_store"
+        >
+        <argument
+            android:name="serviceId"
+            app:argType="string"
+            android:defaultValue=""
+            />
+        <argument
+            android:name="cartId"
+            app:argType="string"
+            android:defaultValue=""
+            />
+        <argument
+            android:name="storeId"
+            app:argType="string"
+            android:defaultValue=""
+            />
+        <action
+            android:id="@+id/action_selectedStoreFragment_to_customerCartFragment"
+            app:destination="@id/customerCartFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/customerCartFragment"
+        android:name="com.myoptimind.getexpress.features.customer.cart.CustomerCartFragment"
+        android:label="CustomerCartFragment"
+        tools:layout="@layout/fragment_customer_cart"
+        >
+        <argument
+            android:name="senderLocation"
+            app:argType="com.google.android.libraries.places.api.model.Place"
+            app:nullable="true"
+            />
+        <argument
+            android:name="receiverLocation"
+            app:argType="com.google.android.libraries.places.api.model.Place"
+            app:nullable="true"
+            />
+        <argument
+            android:name="notes"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="null"
+            />
+        <action
+            android:id="@+id/action_customerCartFragment_to_selectedStoreFragment"
+            app:destination="@id/selectedStoreFragment" />
+        <action
+            android:id="@+id/action_customerCartFragment_to_customerRiderSearchFragment"
+            app:destination="@id/customerRiderSearchFragment"
+            app:launchSingleTop="true"
+            />
+        <action
+            android:id="@+id/action_customerCartFragment_to_pabiliFormFragment"
+            app:destination="@id/pabiliFormFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/customerRiderSearchFragment"
+        android:name="com.myoptimind.getexpress.features.customer.cart.rider_search.CustomerRiderSearchFragment"
+        android:label="CustomerRiderSearchFragment"
+        tools:layout="@layout/fragment_customer_rider_search"
+        >
+        <argument
+            android:name="cartId"
+            app:argType="string"
+            android:defaultValue=""
+            />
+        <action
+            android:id="@+id/action_customerRiderSearchFragment_to_customerCartFragment"
+            app:destination="@id/customerCartFragment"
+            app:popUpTo="@id/customerCartFragment"
+            app:popUpToInclusive="true"
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/customerProfileFragment"
+        android:name="com.myoptimind.getexpress.features.edit_profile.CustomerProfileFragment"
+        android:label="CustomerProfileFragment"
+        tools:layout="@layout/fragment_customer_profile"
+        >
+        <argument
+            android:name="type"
+            app:argType="string"
+            android:defaultValue=""
+            />
     </fragment>
     <action
-        android:id="@+id/action_global_riderHistoryFragment"
-        app:destination="@id/riderHistoryFragment" />
+        android:id="@+id/action_global_customerProfileFragment"
+        app:destination="@id/customerProfileFragment" />
+    <fragment
+        android:id="@+id/deliveryFormFragment"
+        android:name="com.myoptimind.getexpress.features.customer.delivery.DeliveryFormFragment"
+        android:label="DeliveryFormFragment"
+        tools:layout="@layout/fragment_delivery_form"
+        >
+        <argument
+            android:name="cartId"
+            app:argType="string"
+            android:defaultValue=""
+            />
+        <argument
+            android:name="vehicleTypeId"
+            app:argType="string"
+            android:defaultValue=""
+            />
+        <action
+            android:id="@+id/action_deliveryFormFragment_to_customerCartFragment"
+            app:destination="@id/customerCartFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/pabiliFormFragment"
+        android:name="com.myoptimind.getexpress.features.customer.pabili.PabiliFormFragment"
+        android:label="PabiliFormFragment"
+        tools:layout="@layout/fragment_pabili_form"
+        >
+
+        <argument
+            android:name="cartId"
+            app:argType="string"
+            android:defaultValue=""
+            />
+        <argument
+            android:name="vehicleTypeId"
+            app:argType="string"
+            android:defaultValue=""
+            />
+
+
+        <action
+            android:id="@+id/action_pabiliFormFragment_to_customerCartFragment"
+            app:destination="@id/customerCartFragment" />
+    </fragment>
 
 
 </navigation>

@@ -1,5 +1,7 @@
 package com.myoptimind.getexpress.features.login
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,8 +15,23 @@ import androidx.navigation.fragment.findNavController
 import com.myoptimind.getexpress.R
 import com.myoptimind.getexpress.features.shared.api.Result
 import com.myoptimind.getexpress.features.shared.clearTextViews
+import com.myoptimind.getexpress.features.shared.initDatePicker
+import com.myoptimind.getexpress.features.shared.izBlank
+import com.myoptimind.getexpress.features.shared.validateEmail
+import com.myoptimind.suzuki_app.features.shared.DatePickerDialogFragment
 import kotlinx.android.synthetic.main.fragment_sign_up_customer.*
+import kotlinx.android.synthetic.main.fragment_sign_up_customer.btn_rider
+import kotlinx.android.synthetic.main.fragment_sign_up_customer.btn_sign_up
+import kotlinx.android.synthetic.main.fragment_sign_up_customer.et_birth_date
+import kotlinx.android.synthetic.main.fragment_sign_up_customer.et_email_address
+import kotlinx.android.synthetic.main.fragment_sign_up_customer.et_fullname
+import kotlinx.android.synthetic.main.fragment_sign_up_customer.et_location
+import kotlinx.android.synthetic.main.fragment_sign_up_customer.et_mobile_number
+import kotlinx.android.synthetic.main.fragment_sign_up_customer.et_password
+import kotlinx.android.synthetic.main.fragment_sign_up_customer.tv_sign_in_link
 import timber.log.Timber
+
+private const val REQUEST_CODE_DATE_PICKER = 767
 
 class SignUpCustomerFragment : Fragment() {
 
@@ -78,6 +95,28 @@ class SignUpCustomerFragment : Fragment() {
             findNavController().navigate(R.id.action_signUpCustomerFragment_to_signInCustomerFragment)
         }
         btn_sign_up.setOnClickListener {
+
+            if(et_fullname.izBlank() ||
+                et_email_address.izBlank() ||
+                et_password.izBlank() ||
+                et_birth_date.izBlank() ||
+                et_location.izBlank()
+               ){
+                Toast.makeText(requireContext(),"Please fill in required fields.",Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if(et_mobile_number.text.toString().length != 13){
+                Toast.makeText(requireContext(),"Invalid Mobile Number.",Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if(!et_email_address.text.toString().validateEmail()){
+                Toast.makeText(requireContext(),"Invalid E-mail format.",Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
+
+
             viewModel.signUpCustomer(
                 et_fullname.text.toString(),
                 et_email_address.text.toString(),
@@ -86,6 +125,20 @@ class SignUpCustomerFragment : Fragment() {
                 et_location.text.toString(),
                 et_password.text.toString()
             )
+        }
+
+        et_birth_date.initDatePicker(
+            parentFragmentManager,
+            this@SignUpCustomerFragment,
+            "birth_date",
+            REQUEST_CODE_DATE_PICKER
+        )
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode == REQUEST_CODE_DATE_PICKER && resultCode == Activity.RESULT_OK) {
+            et_birth_date.setText(data?.getStringExtra(DatePickerDialogFragment.EXTRA_DATE))
         }
     }
 }

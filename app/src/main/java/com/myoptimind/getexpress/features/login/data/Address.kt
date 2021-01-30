@@ -1,8 +1,13 @@
 package com.myoptimind.getexpress.features.login.data
 
+import android.os.Parcelable
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.libraries.places.api.model.Place
 import com.google.gson.annotations.SerializedName
 import com.myoptimind.getexpress.features.shared.api.BaseRemoteEntity
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class Address(
     val id: String,
     @SerializedName("customer_id")
@@ -15,4 +20,11 @@ data class Address(
 
     val latitude: String,
     val longitude: String,
-): BaseRemoteEntity()
+): Parcelable, BaseRemoteEntity() {
+    fun toPlace(): Place =
+            Place.builder()
+                    .setAddress(fullAddress)
+                    .setName(label)
+                    .setLatLng(LatLng(latitude.toDouble(),longitude.toDouble()))
+                    .build()
+}

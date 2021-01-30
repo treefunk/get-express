@@ -5,8 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.myoptimind.getexpress.features.rider.selected_customer_request.api.CustomerRequestService
-import com.myoptimind.getexpress.features.rider.selected_customer_request.data.RiderCartStatus
+import com.myoptimind.getexpress.features.customer.cart.data.CartStatus
+import com.myoptimind.getexpress.features.customer.cart.data.GetCartInfoResponse
 import com.myoptimind.getexpress.features.shared.AppSharedPref
 import kotlinx.coroutines.Dispatchers.IO
 import com.myoptimind.getexpress.features.shared.api.Result
@@ -19,11 +19,14 @@ class SelectedCustomerRequestViewModel @ViewModelInject constructor(
         private val customerRequestRepository: CustomerRequestRepository
 ): ViewModel() {
 
-    val cartInfoResult: LiveData<Result<CustomerRequestService.GetCartInfoResponse>> get() = _cartInfoResult
-    private val _cartInfoResult = MutableLiveData<Result<CustomerRequestService.GetCartInfoResponse>>()
+    val cartInfoResult: LiveData<Result<GetCartInfoResponse>> get() = _cartInfoResult
+    private val _cartInfoResult = MutableLiveData<Result<GetCartInfoResponse>>()
 
-    val acceptCustomerRequestResult: LiveData<Result<CustomerRequestService.GetCartInfoResponse>> get() = _acceptCustomerRequestResult
-    private val _acceptCustomerRequestResult = MutableLiveData<Result<CustomerRequestService.GetCartInfoResponse>>()
+    val acceptCustomerRequestResult: LiveData<Result<GetCartInfoResponse>> get() = _acceptCustomerRequestResult
+    private val _acceptCustomerRequestResult = MutableLiveData<Result<GetCartInfoResponse>>()
+
+    val riderLocationResult: LiveData<Result<GetCartInfoResponse>> get() = _riderLocationResult
+    private val _riderLocationResult = MutableLiveData<Result<GetCartInfoResponse>>()
 
     fun initCartInfo(
         cartId: String
@@ -45,7 +48,7 @@ class SelectedCustomerRequestViewModel @ViewModelInject constructor(
 
     fun updateStatusCustomerRequest(
             cartId: String,
-            cartStatus: RiderCartStatus
+            cartStatus: CartStatus
     ){
         viewModelScope.launch(IO){
             customerRequestRepository.changeStatus(cartId,cartStatus.key).collect {
@@ -53,4 +56,30 @@ class SelectedCustomerRequestViewModel @ViewModelInject constructor(
             }
         }
     }
+
+    fun completeBooking(
+            cartId: String,
+            totalPrice: String,
+            paymentStatus: String
+    ){
+        viewModelScope.launch(IO){
+            customerRequestRepository.completeBooking(cartId,totalPrice,paymentStatus).collect {
+                _cartInfoResult.postValue(it)
+            }
+        }
+    }
+
+/*    fun sendRiderLocationUpdates(
+        cartId: String,
+        latitude: Double,
+        longitude: Double
+    ){
+        viewModelScope.launch(IO){
+            customerRequestRepository.sendRiderCurrentLocation(
+                cartId, latitude, longitude
+            ).collect {
+                _riderLocationResult.postValue(it)
+            }
+        }
+    }*/
 }

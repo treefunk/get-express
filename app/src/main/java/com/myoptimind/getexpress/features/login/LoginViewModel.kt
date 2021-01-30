@@ -2,8 +2,10 @@ package com.myoptimind.getexpress.features.login
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
-import com.myoptimind.getexpress.features.CUSTOMER.home.HomeRepository
-import com.myoptimind.getexpress.features.CUSTOMER.home.api.HomeService
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
+import com.myoptimind.getexpress.features.customer.home.HomeRepository
+import com.myoptimind.getexpress.features.customer.home.api.HomeService
 import com.myoptimind.getexpress.features.login.api.LoginService
 import com.myoptimind.getexpress.features.login.data.UserType
 import com.myoptimind.getexpress.features.shared.AppSharedPref
@@ -11,8 +13,11 @@ import com.myoptimind.getexpress.features.shared.api.Result
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import timber.log.Timber
 import java.io.File
 
 class LoginViewModel @ViewModelInject constructor(
@@ -95,17 +100,24 @@ class LoginViewModel @ViewModelInject constructor(
         email: String,
         password: String
     ) {
-        viewModelScope.launch(IO) {
-            loginRepository.signInCustomer(email, password).collect {
-                _signInCustomerResult.postValue(it)
-                if(it is Result.Success && it.data != null){
-                    val customer = it.data.data
-                    appSharedPref.storeLoginCredentials(
-                        customer.id,
-                        "customer",
-                            customer.profilePicture,
-                            customer.fullName
-                    )
+        retrieveFcmToken { firebaseToken ->
+            viewModelScope.launch(IO) {
+
+                loginRepository.signInCustomer(
+                        email,
+                        password,
+                        firebaseToken
+                ).collect {
+                    _signInCustomerResult.postValue(it)
+                    if(it is Result.Success && it.data != null){
+                        val customer = it.data.data
+                        appSharedPref.storeLoginCredentials(
+                                customer.id,
+                                "customer",
+                                customer.profilePicture,
+                                customer.fullName
+                        )
+                    }
                 }
             }
         }
@@ -131,6 +143,11 @@ class LoginViewModel @ViewModelInject constructor(
         vehicleModel: String,
         plateNumber: String
     ) {
+        val identificationDocument = MultipartBody.Part.createFormData(
+                "identification_document",
+                _uploadedLicense.value?.name,
+                _uploadedLicense.value!!.asRequestBody("image/*".toMediaType())
+        )
         viewModelScope.launch(IO) {
             loginRepository.signUpRider(
                 fullname.toRequestBody(),
@@ -141,7 +158,7 @@ class LoginViewModel @ViewModelInject constructor(
                 password.toRequestBody(),
                 socialToken?.toRequestBody(),
                 isEmailVerified?.toRequestBody(),
-                uploadedLicense.value!!.asRequestBody(),
+                identificationDocument,
                 vehicleId.toRequestBody(),
                 vehicleModel.toRequestBody(),
                 plateNumber.toRequestBody()
@@ -156,18 +173,20 @@ class LoginViewModel @ViewModelInject constructor(
             email: String,
             password: String
     ) {
-        viewModelScope.launch(IO) {
-            loginRepository.signInRider(email, password).collect {
-                _signInRiderResult.postValue(it)
-                if(it is Result.Success && it.data != null){
-                    val customer = it.data.data
-                    appSharedPref.storeRiderLoginCredentials(
-                            customer.id,
-                            "rider",
-                            customer.profilePicture,
-                            customer.fullName,
-                            customer.activeVehicle,
-                    )
+        retrieveFcmToken { firebaseToken ->
+            viewModelScope.launch(IO) {
+                loginRepository.signInRider(email, password,firebaseToken).collect {
+                    _signInRiderResult.postValue(it)
+                    if(it is Result.Success && it.data != null){
+                        val customer = it.data.data
+                        appSharedPref.storeRiderLoginCredentials(
+                                customer.id,
+                                "rider",
+                                customer.profilePicture,
+                                customer.fullName,
+                                customer.activeVehicle,
+                        )
+                    }
                 }
             }
         }
@@ -185,6 +204,19 @@ class LoginViewModel @ViewModelInject constructor(
                 _forgotPasswordResult.postValue(it)
             }
         }
+    }
+
+    private fun retrieveFcmToken(onRetrieveToken: (token: String) -> Unit){
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Timber.e("Fetching FCM registration token failed")
+                return@OnCompleteListener
+            }
+
+            // Get new FCM registration token
+            val fcmToken = task.result
+            onRetrieveToken(fcmToken)
+        })
     }
 
 }

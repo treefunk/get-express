@@ -8,6 +8,9 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.widget.Autocomplete
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.myoptimind.getexpress.R
 import com.myoptimind.getexpress.features.shared.BaseDialogFragment
 import com.myoptimind.getexpress.features.shared.api.Result
@@ -21,8 +24,10 @@ import timber.log.Timber
 class DialogAddVehicle: BaseDialogFragment() {
 
     private val viewModel by activityViewModels<EditProfileViewModel>()
+
     
     companion object {
+
         fun newInstance(): DialogAddVehicle{
             val args = Bundle()
             
@@ -105,7 +110,7 @@ class DialogAddVehicle: BaseDialogFragment() {
                         Timber.v(result.metaResponse.message)
                     }
                     is Result.HttpError -> {
-                        Timber.v(result.error.message)
+
                     }
                 }
             }

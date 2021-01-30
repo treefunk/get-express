@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_admin_graph"
+    app:startDestination="@id/customerRequestListFragment">
+
+    <fragment
+        android:id="@+id/customerRequestListFragment"
+        android:name="com.myoptimind.getexpress.features.rider.customer_requests_list.CustomerRequestListFragment"
+        android:label="CustomerRequestListFragment"
+        tools:layout="@layout/fragment_customer_request_list"
+        />
+    <fragment
+        android:id="@+id/editProfileFragment"
+        android:name="com.myoptimind.getexpress.features.edit_profile.EditProfileFragment"
+        android:label="EditProfileFragment"
+        tools:layout="@layout/fragment_edit_profile"
+
+        />
+    <fragment
+        android:id="@+id/riderHistoryFragment"
+        android:name="com.myoptimind.getexpress.features.rider.rider_history.RiderHistoryFragment"
+        android:label="RiderHistoryFragment"
+        tools:layout="@layout/fragment_rider_history"
+        />
+    <action
+        android:id="@+id/action_global_editProfileFragment"
+        app:destination="@id/editProfileFragment"
+        app:launchSingleTop="true"
+        app:popUpTo="@layout/fragment_rider_dashboard"
+        app:popUpToInclusive="true"
+        />
+    <action
+        android:id="@+id/action_global_riderHistoryFragment"
+        app:destination="@id/riderHistoryFragment"
+        app:launchSingleTop="true"
+        app:popUpTo="@layout/fragment_rider_dashboard"
+        app:popUpToInclusive="true"
+        />
+
+
+</navigation>

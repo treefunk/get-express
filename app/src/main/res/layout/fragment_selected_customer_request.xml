@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.core.widget.NestedScrollView android:layout_height="match_parent"
+<androidx.core.widget.NestedScrollView
+    android:id="@+id/parent_scroll_view"
+    android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:fillViewport="true"
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -23,7 +25,31 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        />
 
+    <View
+        android:id="@+id/transparent_map_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintLeft_toLeftOf="@id/map"
+        app:layout_constraintRight_toRightOf="@id/map"
+        app:layout_constraintTop_toTopOf="@id/map"
+        app:layout_constraintBottom_toBottomOf="@id/map"
+
+        />
+
+
+
+    
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/iv_big_customer_image"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+
+        app:layout_constraintTop_toTopOf="@id/label_get"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginRight="14dp"
+        tools:src="@drawable/img_feature_bg"
         />
 
     <androidx.cardview.widget.CardView
@@ -303,6 +329,7 @@
 
         android:textColor="@color/main_text_color"
         style="@style/GetExpressLabel.LabelSelectedCustomerRequestLarge"
+        android:visibility="gone"
 
         />
 
@@ -384,7 +411,8 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/barrier_before_location"
-        android:background="@drawable/img_feature_bg"
+        android:src="@drawable/img_feature_bg"
+        android:scaleType="centerCrop"
         android:layout_marginTop="8dp"
         />
 
@@ -499,7 +527,7 @@
         android:id="@+id/label_total"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintHorizontal_weight="0.2"
+        app:layout_constraintHorizontal_weight="0.4"
 
         app:layout_constraintTop_toBottomOf="@id/label_delivery_fee"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -510,8 +538,8 @@
         android:paddingLeft="12dp"
         android:text="Total"
         android:gravity="center|left"
-        android:background="@color/purple_500"
-        android:textColor="@android:color/white"
+        android:background="@color/yellow_500"
+        android:textColor="@color/blue_200"
         android:textSize="12sp"
         style="@style/GetExpressLabel.LabelSelectedCustomerRequestLarge"
 
@@ -521,7 +549,7 @@
         android:id="@+id/tv_total"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintHorizontal_weight="0.8"
+        app:layout_constraintHorizontal_weight="0.6"
 
         app:layout_constraintTop_toTopOf="@id/label_total"
         app:layout_constraintLeft_toRightOf="@id/label_total"
@@ -534,8 +562,8 @@
         android:gravity="right"
         android:textSize="17sp"
 
-        android:background="@color/purple_500"
-        android:textColor="@android:color/white"
+        android:background="@color/yellow_500"
+        android:textColor="@color/blue_200"
         style="@style/GetExpressLabel.LabelSelectedCustomerRequestLarge"
         />
 
@@ -601,6 +629,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:constraint_referenced_ids="label_sub_total,label_delivery_fee,tv_sub_total,tv_delivery_fee"
+        android:visibility="visible"
+        />
+
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group_history_views"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:constraint_referenced_ids="map,card_customer_request"
         android:visibility="visible"
         />
 

@@ -51,7 +51,7 @@
         android:layout_marginLeft="56dp"
         android:text="Customer"
         android:layout_marginRight="2dp"
-        android:textColor="@color/purple_200"
+        android:textColor="@color/blue_200"
         android:backgroundTint="@color/grey_400"
         />
 
@@ -71,7 +71,8 @@
 
         android:text="Rider"
 
-        android:textColor="@color/white"
+        android:textColor="@color/yellow_200"
+        android:backgroundTint="@color/blue_200"
 
         android:clickable="false"
         />
@@ -206,7 +207,7 @@
         app:layout_constraintRight_toLeftOf="@id/et_email_address"
         app:layout_constraintLeft_toLeftOf="@id/btn_fb_signup"
         android:src="@drawable/ic_email"
-        android:background="@color/purple_200"
+        android:background="@color/yellow_200"
         android:scaleType="fitCenter"
         />
 
@@ -236,7 +237,7 @@
         app:layout_constraintRight_toLeftOf="@id/et_password"
         app:layout_constraintLeft_toLeftOf="@id/btn_fb_signup"
         android:src="@drawable/ic_password"
-        android:background="@color/purple_200"
+        android:background="@color/yellow_200"
         android:scaleType="fitCenter"
         />
 
@@ -290,7 +291,7 @@
         app:layout_constraintRight_toRightOf="@id/btn_fb_signup"
         android:layout_marginTop="16dp"
         android:text="@string/label_forgot_password"
-        android:textColor="@color/purple_200"
+        android:textColor="@color/blue_200"
 
         />
 
@@ -324,7 +325,7 @@
         app:layout_constraintRight_toRightOf="@id/btn_fb_signup"
         android:layout_marginTop="16dp"
         android:text="@string/label_sign_up_link"
-        android:textColor="@color/purple_200"
+        android:textColor="@color/blue_200"
 
         />
 

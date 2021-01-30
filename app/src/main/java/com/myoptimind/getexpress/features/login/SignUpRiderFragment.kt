@@ -1,5 +1,6 @@
 package com.myoptimind.getexpress.features.login
 
+import android.app.Activity
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.graphics.Bitmap
@@ -10,16 +11,32 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.EditText
 import android.widget.Toast
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.myoptimind.getexpress.R
+import com.myoptimind.getexpress.features.shared.*
 import com.myoptimind.getexpress.features.shared.api.Result
-import com.myoptimind.getexpress.features.shared.clearTextViews
+import com.myoptimind.getexpress.features.shared.izNotBlank
+import com.myoptimind.suzuki_app.features.shared.DatePickerDialogFragment
+import kotlinx.android.synthetic.main.fragment_sign_up_customer.*
 import kotlinx.android.synthetic.main.fragment_sign_up_rider.*
+import kotlinx.android.synthetic.main.fragment_sign_up_rider.btn_customer
+import kotlinx.android.synthetic.main.fragment_sign_up_rider.btn_sign_up
+import kotlinx.android.synthetic.main.fragment_sign_up_rider.et_birth_date
+import kotlinx.android.synthetic.main.fragment_sign_up_rider.et_email_address
+import kotlinx.android.synthetic.main.fragment_sign_up_rider.et_fullname
+import kotlinx.android.synthetic.main.fragment_sign_up_rider.et_location
+import kotlinx.android.synthetic.main.fragment_sign_up_rider.et_mobile_number
+import kotlinx.android.synthetic.main.fragment_sign_up_rider.et_password
+import kotlinx.android.synthetic.main.fragment_sign_up_rider.tv_sign_in_link
+import org.joda.time.DateTime
+import org.joda.time.format.DateTimeFormat
 import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
@@ -29,6 +46,8 @@ import java.util.*
 
 private const val REQUEST_IMAGE_CAPTURE = 111
 private const val REQUEST_IMAGE_GET     = 222
+private const val REQUEST_CODE_DATE_PICKER = 767
+
 class SignUpRiderFragment : Fragment(){
 
     private val viewModel by activityViewModels<LoginViewModel>()
@@ -155,6 +174,31 @@ class SignUpRiderFragment : Fragment(){
         }
 
         btn_sign_up.setOnClickListener {
+
+            if(et_fullname.izBlank() ||
+                    et_email_address.izBlank() ||
+                    et_password.izBlank() ||
+                    et_birth_date.izBlank() ||
+                    et_location.izBlank() ||
+                    et_vehicle_type.izBlank() ||
+                    et_vehicle_model.izBlank() ||
+                    et_plate_number.izBlank()){
+                Toast.makeText(requireContext(),"Please fill in required fields.",Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+
+            if(et_mobile_number.text.toString().length != 13){
+                Toast.makeText(requireContext(),"Invalid Mobile Number.",Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if(!et_email_address.text.toString().validateEmail()){
+                Toast.makeText(requireContext(),"Invalid E-mail format.",Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
+
+
             viewModel.signUpRider(
                 et_fullname.text.toString(),
                 et_email_address.text.toString(),
@@ -169,6 +213,13 @@ class SignUpRiderFragment : Fragment(){
                 et_plate_number.text.toString()
             )
         }
+
+        et_birth_date.initDatePicker(
+            parentFragmentManager,
+            this@SignUpRiderFragment,
+            "birth_date",
+            REQUEST_CODE_DATE_PICKER
+        )
 
 
     }
@@ -262,6 +313,10 @@ class SignUpRiderFragment : Fragment(){
                 val uploadedPhoto = File(currentPhotoPath)
                 viewModel.setUploadedLicense(uploadedPhoto)
             }
+        } else if(requestCode == REQUEST_CODE_DATE_PICKER && resultCode == Activity.RESULT_OK) {
+            et_birth_date.setText(data?.getStringExtra(DatePickerDialogFragment.EXTRA_DATE))
         }
     }
+
+
 }

@@ -19,9 +19,9 @@ class RiderHistoryViewModel @ViewModelInject constructor(
     val getRiderHistoryResult: LiveData<Result<RiderHistoryService.GetRiderHistoryResponse>> get() = _getRiderHistoryResult
     private val _getRiderHistoryResult = MutableLiveData<Result<RiderHistoryService.GetRiderHistoryResponse>>()
 
-    fun getRiderHistory() {
+    fun getRiderHistory(serviceId: String? = null) {
         viewModelScope.launch(IO){
-            riderHistoryRepository.getRiderHistory().collect {
+            riderHistoryRepository.getRiderHistory(serviceId).collect {
                 _getRiderHistoryResult.postValue(it)
             }
         }

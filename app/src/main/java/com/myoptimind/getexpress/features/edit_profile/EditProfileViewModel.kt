@@ -2,6 +2,7 @@ package com.myoptimind.getexpress.features.edit_profile
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
+import com.google.android.libraries.places.api.model.Place
 import com.myoptimind.getexpress.features.edit_profile.api.ProfileService
 import com.myoptimind.getexpress.features.login.LoginRepository
 import com.myoptimind.getexpress.features.shared.AppSharedPref
@@ -9,10 +10,16 @@ import com.myoptimind.getexpress.features.shared.api.Result
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import timber.log.Timber
 import java.io.File
+
 
 class EditProfileViewModel @ViewModelInject constructor(
     private val profileRepository: ProfileRepository,
@@ -39,6 +46,13 @@ class EditProfileViewModel @ViewModelInject constructor(
     val uploadedPicture: LiveData<File> get() = _uploadedPicture
     private val _uploadedPicture = MutableLiveData<File>()
 
+    val selectedPlace: LiveData<Place> get() = _selectedPlace
+    private val _selectedPlace = MutableLiveData<Place>()
+
+    fun updateSelectedPlace(place: Place){
+        _selectedPlace.value = place
+    }
+
     init {
         _uploadedPicture.value = null
     }
@@ -56,22 +70,33 @@ class EditProfileViewModel @ViewModelInject constructor(
     }
 
     fun updateProfile(
-            fullname: String?,
-            email: String?,
-            mobileNum: String?,
-            birthDate: String?,
-            location: String?,
-            password: String?
+        fullname: String?,
+        email: String?,
+        mobileNum: String?,
+        birthDate: String?,
+        location: String?,
+        password: String?
     ){
         viewModelScope.launch(IO){
+
+            var profilePicture: MultipartBody.Part? = null
+
+            if(_uploadedPicture.value != null){
+                profilePicture = MultipartBody.Part.createFormData(
+                    "profile_picture",
+                    _uploadedPicture.value?.name,
+                    _uploadedPicture.value!!.asRequestBody("image/*".toMediaType())
+                )
+            }
+
             profileRepository.updateProfileInformation(
                 fullname?.toRequestBody(),
-                    email?.toRequestBody(),
-                    mobileNum?.toRequestBody(),
-                    birthDate?.toRequestBody(),
-                    location?.toRequestBody(),
-                    password?.toRequestBody(),
-                    _uploadedPicture.value?.asRequestBody()
+                email?.toRequestBody(),
+                mobileNum?.toRequestBody(),
+                birthDate?.toRequestBody(),
+                location?.toRequestBody(),
+                password?.toRequestBody(),
+                profilePicture
             ).collect {
                 _updateProfileResult.postValue(it)
             }
@@ -87,13 +112,13 @@ class EditProfileViewModel @ViewModelInject constructor(
     }
 
     fun addVehicle(
-            vehicleTypeId: String,
-            vehicleModel: String,
-            plateNumber: String
+        vehicleTypeId: String,
+        vehicleModel: String,
+        plateNumber: String
     ){
         viewModelScope.launch(IO){
             profileRepository.addVehicle(
-                    vehicleTypeId, vehicleModel, plateNumber
+                vehicleTypeId, vehicleModel, plateNumber
             ).collect {
                 Timber.v("updating add vehicle")
                 _addVehicleResult.postValue(it)
@@ -101,12 +126,49 @@ class EditProfileViewModel @ViewModelInject constructor(
         }
     }
 
+    val addAddressResult: LiveData<Result<ProfileService.AddressResponse>> get() = _addAddressResult
+    private val _addAddressResult = MutableLiveData<Result<ProfileService.AddressResponse>>()
+
+    fun addAddress(
+            label: String,
+    ){
+        viewModelScope.launch(IO){
+            val fullAddress = _selectedPlace.value!!.address!!
+            val latitude    = _selectedPlace.value!!.latLng!!.latitude.toString()
+            val longitude   = _selectedPlace.value!!.latLng!!.longitude.toString()
+            profileRepository.addAddress(
+                    label,fullAddress,latitude,longitude,true
+            ).collect {
+                _addAddressResult.postValue(it)
+            }
+        }
+    }
+
+    val updateAddressResult: LiveData<Result<ProfileService.AddressResponse>> get() = _updateAddressResult
+    private val _updateAddressResult = MutableLiveData<Result<ProfileService.AddressResponse>>()
+
+    fun updateAddress(
+            addressId: String,
+            label: String,
+            fullAddress: String,
+            latitude: String,
+            longitude: String
+    ){
+        viewModelScope.launch(IO){
+            profileRepository.updateAddress(
+                    addressId,label,fullAddress,latitude,longitude
+            ).collect {
+                _updateAddressResult.postValue(it)
+            }
+        }
+    }
+
     fun changeActiveVehicle(
-            vehicleId: String
+        vehicleId: String
     ){
         viewModelScope.launch(IO){
             profileRepository.changeActiveVehicle(
-                    vehicleId
+                vehicleId
             ).collect {
                 _changeActiveVehicleResult.postValue(it)
             }

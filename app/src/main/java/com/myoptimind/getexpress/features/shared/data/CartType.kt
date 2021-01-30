@@ -1,15 +1,17 @@
 package com.myoptimind.getexpress.features.shared.data
 
-import android.graphics.drawable.Drawable
+import android.os.Parcelable
 import com.myoptimind.getexpress.R
-import com.myoptimind.getexpress.features.rider.selected_customer_request.data.RiderCartStatus
+import com.myoptimind.getexpress.features.customer.cart.data.CartStatus
+import kotlinx.android.parcel.Parcelize
 
-enum class CartType(val id: String,val title: String,val label: String,val drawableId: Int) {
-    CAR("1","car","Get Car", R.drawable.ic_get_car),
-    GROCERY("2","grocery","Get Grocery",R.drawable.ic_get_grocery),
-    PABILI("3","pabili","Get Pabili",R.drawable.ic_get_pabili),
-    DELIVERY("4","delivery","Get Delivery",R.drawable.ic_get_delivery),
-    FOOD("5","food","Get Food",R.drawable.ic_get_food)
+@Parcelize
+enum class CartType(val id: String,val title: String,val label: String,val drawableId: Int): Parcelable {
+    CAR("1","car","Get Car", R.drawable.ic_get_car_ns),
+    GROCERY("2","grocery","Get Grocery",R.drawable.ic_get_grocery_ns),
+    PABILI("3","pabili","Get Pabili",R.drawable.ic_get_pabili_ns),
+    DELIVERY("4","delivery","Get Delivery",R.drawable.ic_get_delivery_ns),
+    FOOD("5","food","Get Food",R.drawable.ic_get_food_ns)
 }
 
 fun String.idToCartType(): CartType {
@@ -23,14 +25,16 @@ fun String.idToCartType(): CartType {
     }
 }
 
-fun String.toRiderCartStatus(): RiderCartStatus {
+fun String.toCartStatus(): CartStatus {
     return when(this){
-        "pending" -> RiderCartStatus.PENDING
-        "accepted" -> RiderCartStatus.ACCEPTED
-        "got_items" -> RiderCartStatus.GOT_ITEMS
-        "otw" -> RiderCartStatus.OTW
-        "arrived_at_destination" -> RiderCartStatus.ARRIVED
-        "completed" -> RiderCartStatus.DELIVERED
+        "pending" -> CartStatus.PENDING
+        "accepted" -> CartStatus.ACCEPTED
+        "got_items" -> CartStatus.GOT_ITEMS
+        "otw" -> CartStatus.OTW
+        "arrived_at_destination" -> CartStatus.ARRIVED
+        "completed" -> CartStatus.DELIVERED
+        "cancelled" -> CartStatus.CANCELLED
+        "init" -> CartStatus.INIT
         else -> throw Exception("Invalid Cart Status!")
     }
 }

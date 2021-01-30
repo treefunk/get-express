@@ -1,7 +1,8 @@
 package com.myoptimind.getexpress.di
 
-import com.myoptimind.getexpress.features.CUSTOMER.home.HomeRepository
-import com.myoptimind.getexpress.features.CUSTOMER.home.api.HomeService
+import com.myoptimind.getexpress.features.customer.home.HomeRepository
+import com.myoptimind.getexpress.features.customer.home.api.HomeService
+import com.myoptimind.getexpress.features.shared.AppSharedPref
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,8 +22,8 @@ class HomeModule {
 
     @ActivityRetainedScoped
     @Provides
-    fun provideHomeRepository(homeService: HomeService): HomeRepository {
-        return HomeRepository(homeService)
+    fun provideHomeRepository(homeService: HomeService, appSharedPref: AppSharedPref): HomeRepository {
+        return HomeRepository(homeService,appSharedPref)
     }
 
 }

@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:animateLayoutChanges="true"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    >
+<androidx.core.widget.NestedScrollView
+    android:id="@+id/sv_main"
+    android:layout_height="0dp"
+    android:layout_width="match_parent"
+    android:fillViewport="true"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintRight_toRightOf="parent"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintBottom_toBottomOf="parent"
+    >
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/background_color"
+    >
+
+
+    <ImageView
+        android:id="@+id/iv_store_banner"
+        android:layout_width= "0dp"
+        android:layout_height="90dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:src="@tools:sample/backgrounds/scenic"
+        android:scaleType="centerCrop"
+        />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/iv_store_image"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        app:layout_constraintTop_toBottomOf="@id/iv_store_banner"
+        app:layout_constraintBottom_toBottomOf="@id/iv_store_banner"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="12dp"
+        app:civ_border_color="@android:color/white"
+        app:civ_border_width="4.5dp"
+        android:src="@android:color/white"
+        />
+
+
+    <TextView
+        android:id="@+id/tv_store_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toRightOf="@id/iv_store_image"
+        app:layout_constraintRight_toLeftOf="@id/ib_store_info"
+        app:layout_constraintTop_toBottomOf="@id/iv_store_banner"
+        app:layout_constraintBottom_toTopOf="@id/tv_store_caption"
+        style="@style/GetExpressLabelStoreName"
+        tools:text="Grocery Store Name"
+        android:layout_marginTop="6dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_store_caption"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tv_store_name"
+        app:layout_constraintLeft_toRightOf="@id/iv_store_image"
+        app:layout_constraintRight_toLeftOf="@id/ib_store_info"
+        app:layout_constraintBottom_toTopOf="@id/tv_store_description"
+        style="@style/GetExpressLabelStoreCaption"
+        tools:text="Mart, Grocery"
+        android:layout_marginTop="2dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_store_description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tv_store_caption"
+        app:layout_constraintLeft_toRightOf="@id/iv_store_image"
+        app:layout_constraintRight_toLeftOf="@id/ib_store_info"
+        app:layout_constraintBottom_toTopOf="@id/line_below_store_image"
+        style="@style/GetExpressLabelStoreCaption"
+        tools:text="30 mins  |  5.4km"
+        android:layout_marginTop="2dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        />
+
+    <ImageButton
+        android:id="@+id/ib_store_info"
+        android:layout_width="22.5dp"
+        android:layout_height="22.5dp"
+        android:src="@drawable/ic_info_icon"
+        android:background="?android:selectableItemBackgroundBorderless"
+        android:scaleType="fitCenter"
+        app:layout_constraintTop_toBottomOf="@id/iv_store_banner"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="6dp"
+        android:layout_marginRight="10dp"
+        />
+
+    <ImageButton
+        android:id="@+id/ib_store_search"
+        android:layout_width="22.5dp"
+        android:layout_height="22.5dp"
+        android:src="@drawable/ic_search_icon_gray"
+        android:background="?android:selectableItemBackgroundBorderless"
+        android:scaleType="fitCenter"
+        app:layout_constraintTop_toBottomOf="@id/ib_store_info"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginRight="10dp"
+        />
+
+    <ImageView
+        android:id="@+id/line_below_store_image"
+        android:layout_width="0dp"
+        android:layout_height="5dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_store_description"
+        android:src="@drawable/img_feature_bg"
+        android:scaleType="centerCrop"
+        android:layout_marginTop="8dp"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_categories"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/line_below_store_image"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:orientation="vertical"
+        tools:listitem="@layout/item_store_category"
+        android:layout_marginTop="8dp"
+        android:paddingBottom="100dp"
+        android:clipToPadding="false"
+
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>
+
+    <View
+        android:id="@+id/box_basket"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="@id/barrier_top_basket"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@color/blue_200"
+        />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier_top_basket"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="tv_basket_label,tv_basket_total"
+        app:barrierDirection="top"
+        />
+
+    <TextView
+        android:id="@+id/tv_basket_label"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintTop_toTopOf="@id/box_basket"
+        app:layout_constraintLeft_toLeftOf="@id/box_basket"
+        app:layout_constraintRight_toLeftOf="@id/tv_basket_total"
+        app:layout_constraintBottom_toBottomOf="@id/box_basket"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        tools:text="View Basket (3 items)"
+        android:gravity="center|left"
+        android:background="@color/blue_200"
+        android:textColor="@color/yellow_200"
+        android:textSize="12sp"
+        android:layout_marginLeft="14dp"
+        style="@style/GetExpressLabel.LabelSelectedCustomerRequestLarge"
+
+        />
+
+    <TextView
+        android:id="@+id/tv_basket_total"
+        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+
+
+        app:layout_constraintTop_toTopOf="@id/box_basket"
+        app:layout_constraintRight_toRightOf="@id/box_basket"
+        app:layout_constraintBottom_toBottomOf="@id/box_basket"
+        app:layout_constraintLeft_toRightOf="@id/tv_basket_label"
+        android:layout_marginRight="14dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        tools:text="60.00"
+        android:gravity="right"
+        android:textSize="17sp"
+
+        android:background="@color/blue_200"
+        android:textColor="@color/yellow_200"
+        style="@style/GetExpressLabel.LabelSelectedCustomerRequestLarge"
+        />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group_basket"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="tv_basket_total,tv_basket_label,box_basket"
+        android:visibility="visible"
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>

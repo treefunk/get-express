@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:fillViewport="true"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="100dp"
+        android:background="@color/background_color_darker">
+        <ImageView
+            android:id="@+id/iv_location_bg"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/yellow_500"
+            android:scaleType="centerCrop"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/iv_receiver_icon"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            />
+
+        <View
+            android:id="@+id/box_sender"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toTopOf="@id/tv_sender_name"
+            app:layout_constraintLeft_toLeftOf="@id/iv_sender_icon"
+            app:layout_constraintRight_toRightOf="@id/tv_sender_name"
+            app:layout_constraintBottom_toBottomOf="@id/iv_sender_icon"
+            android:background="@android:color/white"
+            />
+
+
+        <ImageView
+            android:id="@+id/iv_sender_icon"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/ic_from_location"
+
+            app:layout_constraintTop_toTopOf="@id/iv_location_bg"
+            app:layout_constraintLeft_toLeftOf="@id/iv_location_bg"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="8dp"
+
+            />
+
+        <TextView
+            android:id="@+id/tv_sender_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/iv_sender_icon"
+            app:layout_constraintLeft_toRightOf="@id/iv_sender_icon"
+            app:layout_constraintRight_toRightOf="@id/iv_location_bg"
+            app:layout_constraintBottom_toTopOf="@id/tv_sender_address"
+            android:layout_marginRight="12dp"
+            android:layout_marginLeft="4dp"
+            tools:text="Jhondee Anib"
+
+            android:paddingTop="4dp"
+            android:fontFamily="@font/lato_regular"
+            android:textSize="11sp"
+            style="@style/GetExpressTextDescription"
+            />
+
+        <TextView
+            android:id="@+id/tv_sender_address"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@id/tv_sender_name"
+            app:layout_constraintLeft_toRightOf="@id/iv_sender_icon"
+            app:layout_constraintRight_toRightOf="@id/tv_sender_name"
+            app:layout_constraintBottom_toBottomOf="@id/box_sender"
+            android:ellipsize="end"
+            android:maxLines="1"
+            tools:text="2nd Flr CTP Building, Gild Fernando Ave., Marikina City"
+            style="@style/GetExpressTextDescription"
+            android:fontFamily="@font/lato_regular"
+            android:textSize="9sp"
+            android:paddingBottom="4dp"
+            android:layout_marginRight="12dp"
+            android:layout_marginLeft="4dp"
+            />
+
+        <!--    -->
+
+        <View
+            android:id="@+id/box_receiver"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toTopOf="@id/iv_receiver_icon"
+            app:layout_constraintLeft_toLeftOf="@id/iv_receiver_icon"
+            app:layout_constraintRight_toRightOf="@id/tv_receiver_address"
+            app:layout_constraintBottom_toBottomOf="@id/iv_receiver_icon"
+            android:background="@android:color/white"
+            />
+
+
+        <ImageView
+            android:id="@+id/iv_receiver_icon"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/ic_to_location"
+
+            app:layout_constraintTop_toBottomOf="@id/iv_sender_icon"
+            app:layout_constraintLeft_toLeftOf="@id/iv_location_bg"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="8dp"
+            />
+
+        <TextView
+            android:id="@+id/tv_receiver_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/iv_receiver_icon"
+            app:layout_constraintLeft_toRightOf="@id/iv_receiver_icon"
+            app:layout_constraintRight_toRightOf="@id/iv_location_bg"
+            app:layout_constraintBottom_toTopOf="@id/tv_receiver_address"
+            android:layout_marginLeft="4dp"
+            tools:text="Jhondee Anib"
+
+            android:paddingTop="4dp"
+            android:fontFamily="@font/lato_regular"
+            android:textSize="11sp"
+            style="@style/GetExpressTextDescription"
+            />
+
+        <TextView
+            android:id="@+id/tv_receiver_address"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@id/tv_receiver_name"
+            app:layout_constraintLeft_toRightOf="@id/iv_receiver_icon"
+            app:layout_constraintRight_toRightOf="@id/tv_receiver_name"
+            app:layout_constraintBottom_toBottomOf="@id/box_receiver"
+            android:ellipsize="end"
+            android:maxLines="1"
+            tools:text="2nd Flr CTP Building, Gild Fernando Ave., Marikina City"
+            style="@style/GetExpressTextDescription"
+            android:fontFamily="@font/lato_regular"
+            android:textSize="9sp"
+            android:paddingBottom="4dp"
+            android:layout_marginRight="12dp"
+            android:layout_marginLeft="4dp"
+            />
+
+        <View
+            android:id="@+id/extra_bottom"
+            android:layout_width="0dp"
+            android:layout_height="8dp"
+            app:layout_constraintTop_toBottomOf="@id/iv_receiver_icon"
+            app:layout_constraintLeft_toLeftOf="@id/iv_location_bg"
+            app:layout_constraintRight_toRightOf="@id/iv_location_bg"
+            android:background="@color/yellow_500"
+            />
+
+        <TextView
+            android:id="@+id/label_est_total_amount"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            app:layout_constraintTop_toBottomOf="@id/iv_location_bg"
+            app:layout_constraintLeft_toLeftOf="parent"
+
+
+            android:text="Estimate Total Amount"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="18dp"
+
+            android:textColor="@color/main_text_color"
+            style="@style/GetExpressLabel.LabelSelectedCustomerRequestLarge"
+            android:textSize="15sp"
+
+
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+
+            app:layout_constraintRight_toRightOf="@id/iv_location_bg"
+            app:layout_constraintBottom_toBottomOf="@id/label_est_total_amount"
+            android:layout_marginRight="12dp"
+
+            android:text="@string/label_max_limit"
+            style="@style/GetExpressLabel.MediumBlack.DescriptionSelectedCustomerRequestSmall"
+            />
+
+        <ImageView
+            android:id="@+id/iv_delivery_category"
+            android:layout_width="30dp"
+            android:layout_height="0dp"
+
+            app:layout_constraintTop_toTopOf="@id/et_est_total_amount"
+            app:layout_constraintBottom_toBottomOf="@id/et_est_total_amount"
+            app:layout_constraintRight_toLeftOf="@id/et_est_total_amount"
+            app:layout_constraintLeft_toLeftOf="@id/label_est_total_amount"
+            android:src="@drawable/ic_packagetype"
+            android:background="@color/yellow_200"
+            android:scaleType="fitCenter"
+            />
+
+        <AutoCompleteTextView
+            android:id="@+id/et_est_total_amount"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            app:layout_constraintTop_toBottomOf="@id/label_est_total_amount"
+            app:layout_constraintLeft_toRightOf="@id/iv_delivery_category"
+            app:layout_constraintRight_toRightOf="@id/iv_location_bg"
+            android:layout_marginTop="8dp"
+            android:paddingRight="30dp"
+
+            android:layout_marginRight="12dp"
+
+            tools:text=""
+            android:inputType="number"
+
+            android:textSize="12sp"
+            android:background="@android:color/white"
+            android:hint="e.g. 2,000.00"
+            style="@style/GetExpressEditTextLogin"
+            />
+
+
+
+
+        <TextView
+            android:id="@+id/label_list_of_items"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            app:layout_constraintTop_toBottomOf="@id/et_est_total_amount"
+            app:layout_constraintLeft_toLeftOf="parent"
+
+            android:text="List of Items"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="18dp"
+            android:textSize="15sp"
+            android:textColor="@color/main_text_color"
+            style="@style/GetExpressLabel.LabelSelectedCustomerRequestLarge"
+            />
+
+        <TextView
+            android:id="@+id/label_item_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="5.5"
+
+            app:layout_constraintTop_toBottomOf="@id/label_list_of_items"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/label_quantity"
+            android:text="Item Name"
+            android:layout_marginLeft="12dp"
+
+
+            android:textColor="@color/main_text_color"
+            style="@style/GetExpressLabel.MediumBlack.LabelSelectedCustomerRequestSmall"
+            android:textStyle="normal"
+            android:textSize="12sp"
+            android:fontFamily="@font/lato_regular"
+            />
+
+        <TextView
+            android:id="@+id/label_quantity"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="1.8"
+
+            app:layout_constraintTop_toBottomOf="@id/label_list_of_items"
+            app:layout_constraintLeft_toRightOf="@id/label_item_name"
+            app:layout_constraintRight_toRightOf="parent"
+
+            android:text="Qty"
+
+
+            android:textColor="@color/main_text_color"
+            style="@style/GetExpressLabel.MediumBlack.LabelSelectedCustomerRequestSmall"
+            android:textStyle="normal"
+            android:textSize="12sp"
+            android:fontFamily="@font/lato_regular"
+            />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_pabili"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="@id/label_item_name"
+            app:layout_constraintRight_toRightOf="@id/label_quantity"
+            app:layout_constraintTop_toBottomOf="@id/label_item_name"
+            tools:itemCount="7"
+            tools:listitem="@layout/item_pabili_form"
+            android:layout_marginRight="12dp"
+            android:layout_marginTop="6dp"
+
+            />
+
+        <Button
+            android:id="@+id/btn_add_more_items"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            app:layout_constraintTop_toBottomOf="@id/rv_pabili"
+            app:layout_constraintRight_toRightOf="@id/iv_location_bg"
+            android:layout_marginRight="12dp"
+            android:text="ADD MORE ITEMS"
+            android:background="@color/yellow_500"
+            android:textColor="@color/blue_200"
+            android:paddingLeft="8dp"
+            android:textSize="13sp"
+            android:fontFamily="@font/lato_black"
+            android:paddingRight="8dp"
+            android:layout_marginTop="8dp"
+
+            />
+        <TextView
+            android:id="@+id/label_pabili_instructions"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            app:layout_constraintTop_toBottomOf="@id/btn_add_more_items"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+
+            android:text="Pabili Instructions"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginRight="12dp"
+
+            android:textSize="15sp"
+            android:textColor="@color/main_text_color"
+            style="@style/GetExpressLabel.LabelSelectedCustomerRequestLarge"
+
+            />
+
+        <EditText
+            android:id="@+id/et_delivery_instructions"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            app:layout_constraintHeight_min="40dp"
+
+
+            app:layout_constraintTop_toBottomOf="@id/label_pabili_instructions"
+            app:layout_constraintLeft_toLeftOf="@id/label_pabili_instructions"
+            app:layout_constraintRight_toRightOf="@id/label_pabili_instructions"
+            android:layout_marginBottom="12dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/background_color"
+            style="@style/GetExpressEditTextNotesToRider"
+            tools:text="@tools:sample/lorem/random"
+            android:imeOptions="actionDone"
+            />
+
+        <ImageButton
+            android:id="@+id/btn_get_pabili"
+            style="@style/GetExpressImageButton"
+
+
+            android:layout_marginTop="12dp"
+            app:layout_constraintTop_toBottomOf="@id/et_delivery_instructions"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:src="@drawable/btn_get_pabili"
+            android:scaleType="centerInside"
+            android:background="@null"
+            android:layout_marginBottom="14dp"
+            />
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

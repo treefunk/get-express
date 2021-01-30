@@ -8,14 +8,16 @@ import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class RiderHistoryRepository @Inject constructor(
-    val riderHistoryService: RiderHistoryService,
+    private val riderHistoryService: RiderHistoryService,
     val appSharedPref: AppSharedPref
 ){
-
-    fun getRiderHistory() = flow {
-        val response = riderHistoryService.getRiderHistory(appSharedPref.getUserId())
+    fun getRiderHistory(serviceId: String?) = flow {
+        val userId = appSharedPref.getUserId()
+        val response = if(serviceId.isNullOrBlank()){
+            riderHistoryService.getRiderHistory(userId)
+        }else{
+            riderHistoryService.getRiderHistoryByService(appSharedPref.getUserId(),serviceId)
+        }
         emit(Result.Success(response))
     }.applyDefaultEffects()
-
-
 }

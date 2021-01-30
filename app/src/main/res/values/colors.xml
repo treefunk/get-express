@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FF7e12ad</color>
-    <color name="purple_500">#FF9704d8</color>
-    <color name="purple_700">#FF6a0099</color>
+<!--    <color name="purple_200">#FF7e12ad</color>-->
+<!--    <color name="purple_500">#FF9704d8</color>-->
+<!--    <color name="purple_700">#FF6a0099</color>-->
+<!--    <color name="purple_800">#50076F</color>-->
+    <color name="yellow_200">#F8EF63</color>
+    <color name="yellow_500">#F9F075</color>
+<!--    <color name="yellow_500">#f4e878</color>-->
+<!--    <color name="blue_150">#1F4698</color>-->
+    <color name="blue_200">#1E469A</color>
+    <color name="blue_500">#255CCE</color>
+    <color name="blue_700">#2A67E7</color>
     <color name="purple_800">#50076F</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
@@ -12,6 +20,7 @@
 
     <color name="grey_200">#6e6e6e</color>
     <color name="grey_200_alpha20">#336E6E6E</color>
+    <color name="grey_200_alpha70">#B36E6E6E</color>
     <color name="grey_300">#b0b0b0</color>
     <color name="grey_400">#eeeeee</color>
     <color name="status_button_grey">#4E4E4E</color>
@@ -27,5 +36,8 @@
     <color name="green_200">#41b75c</color>
     <color name="color_red_200">#c9302c</color>
 
-    <color name="color_yellow_300">#ffde53</color>
+    <color name="yellow_700">#ffde53</color>
+    <color name="yellow_120">#FFBA3B</color>
+    <color name="yellow_300_alpha_50">#80FFDE53</color>
+
 </resources>

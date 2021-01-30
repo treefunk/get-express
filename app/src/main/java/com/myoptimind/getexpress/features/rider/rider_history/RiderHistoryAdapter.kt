@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.myoptimind.getexpress.R
 import com.myoptimind.getexpress.features.rider.rider_history.data.RiderHistory
+import com.myoptimind.getexpress.features.shared.data.idToCartType
 import kotlinx.android.synthetic.main.item_customer_request.view.iv_icon
 import kotlinx.android.synthetic.main.item_customer_request.view.tv_customer_name
 import kotlinx.android.synthetic.main.item_history.view.*
@@ -32,11 +33,17 @@ class RiderHistoryAdapter constructor(
         val listener: RiderHistoryListener?
     ): RecyclerView.ViewHolder(itemView) {
         fun bind(riderHistory: RiderHistory, position: Int){
+
+
             itemView.setOnClickListener {
                 listener?.onSelectItem(riderHistory)
             }
+            itemView.box_reject.setOnClickListener {
+                listener?.onSelectItem(riderHistory)
+            }
+
             Glide.with(itemView.context)
-                    .load(riderHistory.icon)
+                    .load(itemView.context.getDrawable(riderHistory.serviceId.idToCartType().drawableId))
                     .into(itemView.iv_icon)
 
             itemView.tv_customer_name.text = riderHistory.location.label

@@ -4,6 +4,7 @@ import com.myoptimind.getexpress.features.login.data.Customer
 import com.myoptimind.getexpress.features.login.data.Rider
 import com.myoptimind.getexpress.features.login.data.VehicleListItem
 import com.myoptimind.getexpress.features.shared.api.MetaResponse
+import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.*
 
@@ -61,7 +62,7 @@ interface LoginService {
         @Part("password") password: RequestBody? = null,
         @Part("social_token") socialToken: RequestBody? = null,
         @Part("is_email_verified") isEmailVerified: RequestBody? = null,
-        @Part("identification_document") identificationDocument: RequestBody,
+        @Part identificationDocument: MultipartBody.Part,
         @Part("vehicle_id") vehicleId: RequestBody,
         @Part("vehicle_model") vehicleModel: RequestBody,
         @Part("plate_number") plateNumber: RequestBody

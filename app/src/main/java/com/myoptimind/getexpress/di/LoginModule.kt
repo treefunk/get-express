@@ -1,7 +1,7 @@
 package com.myoptimind.getexpress.di
 
 import android.content.Context
-import com.myoptimind.getexpress.features.CUSTOMER.home.api.HomeService
+import com.myoptimind.getexpress.features.customer.home.api.HomeService
 import com.myoptimind.getexpress.features.login.LoginRepository
 import com.myoptimind.getexpress.features.login.api.LoginService
 import dagger.Module

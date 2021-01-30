@@ -21,9 +21,8 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/guideline_hor_30"
-        android:src="@drawable/img_feature_bg"
-        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toTopOf="@id/guideline_hor_42"
+        android:background="@color/yellow_200"
         />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -47,11 +46,11 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:background="@android:color/transparent"
-        app:layout_constraintBottom_toTopOf="@id/guideline_hor_30"
+        app:layout_constraintBottom_toTopOf="@id/guideline_hor_42"
         />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_hor_30"
+        android:id="@+id/guideline_hor_42"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -64,7 +63,7 @@
         android:layout_height="0dp"
         android:name="androidx.navigation.fragment.NavHostFragment"
 
-        app:layout_constraintTop_toBottomOf="@id/guideline_hor_30"
+        app:layout_constraintTop_toBottomOf="@id/guideline_hor_42"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"

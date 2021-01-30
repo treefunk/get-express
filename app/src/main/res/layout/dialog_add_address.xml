@@ -121,6 +121,8 @@
         app:layout_constraintBottom_toTopOf="@id/btn_save_address"
         android:background="@drawable/shape_grey_border"
 
+        android:focusable="false"
+        android:focusableInTouchMode="false"
         android:paddingLeft="2dp"
         android:paddingTop="6dp"
         android:paddingBottom="6dp"
@@ -131,7 +133,7 @@
         android:id="@+id/btn_save_address"
         android:layout_width="0dp"
         android:layout_height="60dp"
-        android:background="@color/purple_200"
+        android:background="@color/blue_200"
         app:layout_constraintTop_toBottomOf="@id/et_enter_address"
         app:layout_constraintLeft_toLeftOf="@id/label_add_address"
         app:layout_constraintRight_toRightOf="@id/label_add_address"
@@ -139,6 +141,7 @@
 
         android:layout_marginTop="16dp"
         style="@style/GetExpressLabel"
+        android:textColor="@color/yellow_200"
         android:text="SAVE ADDRESS"
         />
 

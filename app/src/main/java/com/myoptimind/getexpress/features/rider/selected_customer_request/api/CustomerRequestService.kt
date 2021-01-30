@@ -1,7 +1,8 @@
 package com.myoptimind.getexpress.features.rider.selected_customer_request.api
 
-import com.myoptimind.getexpress.features.rider.selected_customer_request.data.Cart
-//import com.myoptimind.getexpress.features.rider.selected_customer_request.data.CartForItems
+import com.myoptimind.getexpress.features.customer.cart.data.Cart
+import com.myoptimind.getexpress.features.customer.cart.data.GetCartInfoResponse
+//import com.myoptimind.getexpress.features.customer.cart.data.CartForItems
 import com.myoptimind.getexpress.features.shared.api.MetaResponse
 import retrofit2.http.*
 
@@ -11,11 +12,6 @@ interface CustomerRequestService {
     suspend fun getCartInfo(
         @Path("cart_id") cartId: String
     ): GetCartInfoResponse
-
-    data class GetCartInfoResponse(
-        val data: Cart,
-        val meta: MetaResponse
-    )
 
     @POST("cart/{cart_id}/accept/riders/{rider_id}")
     suspend fun acceptCustomerRequest(
@@ -29,4 +25,25 @@ interface CustomerRequestService {
             @Path("cart_id") cartId: String,
             @Field("status") status:String
     ): GetCartInfoResponse
+
+
+
+    @POST("cart/{cart_id}/rider-location")
+    @FormUrlEncoded
+    suspend fun sendRiderLocation(
+        @Path("cart_id") cartId: String,
+        @Field("rider_current_location_latitude") latitude: Double,
+        @Field("rider_current_location_longitude") longitude: Double
+    ): GetCartInfoResponse
+
+    @POST("cart/{cart_id}/complete")
+    @FormUrlEncoded
+    suspend fun completeBooking(
+            @Path("cart_id") cartId: String,
+            @Field("total_price") totalPrice: String,
+            @Field("payment_status") paymentStatus: String
+    ): GetCartInfoResponse
+
+
+
 }

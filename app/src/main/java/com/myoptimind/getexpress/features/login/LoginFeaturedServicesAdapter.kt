@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.myoptimind.getexpress.R
-import com.myoptimind.getexpress.features.CUSTOMER.home.data.Service
+import com.myoptimind.getexpress.features.customer.home.data.Service
 
 class LoginFeaturedServicesAdapter(
     var loginFeaturedServices: List<Service>

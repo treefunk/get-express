@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="12dp"
+    android:layout_marginBottom="4dp"
+    android:orientation="vertical">
+    <ImageView
+        android:id="@+id/iv_vehicle_image"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        tools:src="@drawable/ic_get_car"
+        android:contentDescription="vehicle option"
+        android:layout_marginBottom="4dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_vehicle_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/GetExpressLabel.MediumBlack"
+        android:text="Car"
+        android:textColor="@color/blue_200"
+        android:gravity="center_horizontal"
+        />
+
+</LinearLayout>

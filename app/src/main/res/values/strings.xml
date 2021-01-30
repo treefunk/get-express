@@ -10,5 +10,9 @@
     <string name="view_current_photo_label">View Current Photo</string>
     <string name="add_address_underlined"><u>Add Address</u></string>
     <string name="add_vehicle_underlined"><u>Add Vehicle</u></string>
-
+    <string name="edit_location_link"><u>EDIT LOCATION</u></string>
+    <string name="change_address_link"><u>Change Address</u></string>
+    <string name="add_items_link"><u>Add Items</u></string>
+    <string name="label_weight_description"><i>This Rider can carry up to 15kg (Small-medium items)</i></string>
+    <string name="label_max_limit"><i>max. limit 2,000.00</i></string>
 </resources>

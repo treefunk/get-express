@@ -31,4 +31,28 @@ class CustomerRequestRepository @Inject constructor(
         val response = customerRequestService.changeCustomerRequestStatus(cartId,status)
         emit(Result.Success(response))
     }.applyDefaultEffects(false,true)
+
+    fun completeBooking(
+            cartId: String,
+            totalPrice: String,
+            paymentStatus: String
+    ) = flow {
+        val response = customerRequestService.completeBooking(cartId,totalPrice,paymentStatus)
+        emit(Result.Success(response))
+    }.applyDefaultEffects(false,true)
+
+    fun sendRiderCurrentLocation(
+        cartId: String,
+        latitude: Double,
+        longitude: Double
+    ) = flow {
+        val response = customerRequestService.sendRiderLocation(
+            cartId,
+            latitude,
+            longitude
+        )
+        emit(Result.Success(response))
+    }.applyDefaultEffects(false,true)
+
+
 }

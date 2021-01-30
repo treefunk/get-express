@@ -19,7 +19,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/appbar"
-        tools:openDrawer="end">
+        tools:openDrawer="start">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -37,8 +37,7 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
 
-                tools:layout="@layout/fragment_home"
-
+                tools:layout="@layout/fragment_customer_dashboard"
 
                 app:defaultNavHost="true"
                 app:navGraph="@navigation/nav_main_graph"
@@ -76,7 +75,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:elevation="0dp"
-                android:background="@color/purple_700"
+                android:background="@color/blue_500"
                 >
                 <View
                     android:layout_width="0dp"
@@ -87,7 +86,7 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintBottom_toTopOf="@id/nav_guideline"
 
-                    android:background="@color/purple_800"
+                    android:background="@color/blue_200"
                     />
 
 
@@ -149,9 +148,10 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="8dp"
 
-                    style="@style/GetExpressTextDescription.LinkYellow"
+                    style="@style/GetExpressTextDescription.LinkBlue"
                     android:text="@string/label_edit_profile_underlined"
                     android:layout_marginBottom="4dp"
+                    android:textColor="@color/yellow_200"
                     />
                 <View
                     android:id="@+id/line_between_prof_hist"
@@ -159,21 +159,22 @@
                     android:layout_height="0dp"
                     android:background="@android:color/white"
                     app:layout_constraintLeft_toRightOf="@id/tv_edit_profile"
-                    app:layout_constraintRight_toLeftOf="@id/tv_history"
+                    app:layout_constraintRight_toLeftOf="@id/tv_history_side"
                     app:layout_constraintTop_toTopOf="@id/tv_edit_profile"
                     app:layout_constraintBottom_toBottomOf="@id/tv_edit_profile"
                     />
                 <TextView
-                    android:id="@+id/tv_history"
+                    android:id="@+id/tv_history_side"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintLeft_toRightOf="@id/line_between_prof_hist"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintBaseline_toBaselineOf="@id/tv_edit_profile"
-                    style="@style/GetExpressTextDescription.LinkYellow"
+                    style="@style/GetExpressTextDescription.LinkBlue"
                     android:text="@string/label_history_underlined"
                     android:layout_marginBottom="8dp"
                     android:layout_marginLeft="8dp"
+                    android:textColor="@color/yellow_200"
                     />
 
                 <androidx.constraintlayout.widget.Guideline
@@ -225,7 +226,7 @@
                     app:layout_constraintTop_toBottomOf="@id/tv_about_get_express"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    android:background="@color/purple_500"
+                    android:background="@color/yellow_500"
                     />
 
                 <ImageView
@@ -270,7 +271,7 @@
                     app:layout_constraintTop_toBottomOf="@id/tv_faqs"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    android:background="@color/purple_500"
+                    android:background="@color/yellow_500"
                     />
 
 
@@ -316,7 +317,7 @@
                     app:layout_constraintTop_toBottomOf="@id/tv_customer_service"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    android:background="@color/purple_500"
+                    android:background="@color/yellow_500"
                     />
 
 
@@ -363,19 +364,20 @@
                     app:layout_constraintTop_toBottomOf="@id/tv_terms_and_conditions"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    android:background="@color/purple_500"
+                    android:background="@color/yellow_500"
                     />
 
 
 
 
                 <View
+                    android:id="@+id/box_logout"
                     android:layout_width="0dp"
                     android:layout_height="45dp"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    android:background="@color/purple_500"
+                    android:background="@color/blue_700"
                     />
 
                 <ImageView

@@ -13,5 +13,18 @@ data class RiderVehicle(
     @SerializedName("plate_number")
     var plateNumber: String = "",
     @SerializedName("is_active")
-    var isActive: String = ""
+    var isActive: String = "",
+)
+
+data class RiderInCart(
+        @SerializedName("vehicle_model")
+        var vehicleModel: String = "",
+        @SerializedName("plate_number")
+        var plateNumber: String = "",
+        @SerializedName("full_name")
+        var fullName: String = "",
+        @SerializedName("mobile_num")
+        var mobileNum: String = "",
+        @SerializedName("profile_picture")
+        var profilePicture: String = ""
 )
