@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@android:color/transparent"
+    tools:background="@android:color/holo_blue_bright"
+    >
+
+
+    <ImageButton
+        android:id="@+id/ib_close"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:layout_constraintRight_toRightOf="@id/bg_box"
+        app:layout_constraintBottom_toTopOf="@id/bg_box"
+        app:layout_constraintHorizontal_bias="1"
+
+        android:background="@null"
+        android:src="@drawable/ic_lightbox_close"
+        android:scaleType="fitCenter"
+        android:layout_marginTop="2dp"
+        />
+
+
+
+    <View
+        android:id="@+id/bg_box"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintLeft_toLeftOf="@id/map"
+        app:layout_constraintRight_toRightOf="@id/map"
+        app:layout_constraintTop_toTopOf="@id/map"
+        app:layout_constraintBottom_toBottomOf="@id/tv_about"
+        android:background="@android:color/white"
+        />
+
+
+
+
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_max="250dp"
+        app:layout_constraintVertical_weight="1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/label_address"
+        app:layout_constraintVertical_chainStyle="packed"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        />
+
+    <View
+        android:id="@+id/transparent_map_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+
+        app:layout_constraintLeft_toLeftOf="@id/map"
+        app:layout_constraintRight_toRightOf="@id/map"
+        app:layout_constraintTop_toTopOf="@id/map"
+        app:layout_constraintBottom_toBottomOf="@id/map"
+
+        />
+
+    <TextView
+        android:id="@+id/label_address"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        style="@style/GetExpressLabel.MediumBlack.LabelSelectedCustomerRequestSmall"
+        app:layout_constraintLeft_toLeftOf="@id/map"
+        app:layout_constraintRight_toRightOf="@id/map"
+        app:layout_constraintTop_toBottomOf="@id/map"
+        app:layout_constraintBottom_toTopOf="@id/tv_address"
+
+        android:textColor="@color/main_text_color"
+        android:text="Address"
+        android:gravity="left"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="8dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_address"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+
+
+        app:layout_constraintTop_toBottomOf="@id/label_address"
+        app:layout_constraintLeft_toLeftOf="@id/label_address"
+        app:layout_constraintRight_toRightOf="@id/label_address"
+        app:layout_constraintBottom_toTopOf="@id/label_contact_no"
+
+        style="@style/GetExpressProductDescription"
+        tools:text="@tools:sample/lorem"
+        />
+
+    <TextView
+        android:id="@+id/label_contact_no"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        style="@style/GetExpressLabel.MediumBlack.LabelSelectedCustomerRequestSmall"
+        app:layout_constraintLeft_toLeftOf="@id/map"
+        app:layout_constraintRight_toRightOf="@id/map"
+        app:layout_constraintTop_toBottomOf="@id/tv_address"
+        app:layout_constraintBottom_toTopOf="@id/tv_contact_no"
+
+        android:textColor="@color/main_text_color"
+        android:text="Contact Numbers"
+        android:gravity="left"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="12dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_contact_no"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+
+
+        app:layout_constraintTop_toBottomOf="@id/label_contact_no"
+        app:layout_constraintLeft_toLeftOf="@id/label_contact_no"
+        app:layout_constraintRight_toRightOf="@id/label_contact_no"
+        app:layout_constraintBottom_toTopOf="@id/label_opening_hours"
+
+
+        style="@style/GetExpressProductDescription"
+        tools:text="@tools:sample/lorem"
+        />
+
+    <TextView
+        android:id="@+id/label_opening_hours"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        style="@style/GetExpressLabel.MediumBlack.LabelSelectedCustomerRequestSmall"
+        app:layout_constraintLeft_toLeftOf="@id/map"
+        app:layout_constraintRight_toRightOf="@id/map"
+        app:layout_constraintTop_toBottomOf="@id/tv_contact_no"
+        app:layout_constraintBottom_toTopOf="@id/tv_opening_days"
+
+        android:textColor="@color/main_text_color"
+        android:text="Opening Hours"
+        android:gravity="left"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="12dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_opening_days"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+
+
+        app:layout_constraintTop_toBottomOf="@id/label_opening_hours"
+        app:layout_constraintLeft_toLeftOf="@id/label_opening_hours"
+        app:layout_constraintRight_toLeftOf="@id/tv_opening_hours"
+        app:layout_constraintBottom_toTopOf="@id/label_about"
+
+        style="@style/GetExpressProductDescription"
+        tools:text="@tools:sample/lorem"
+        />
+
+    <TextView
+        android:id="@+id/tv_opening_hours"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:gravity="right"
+
+
+        app:layout_constraintBaseline_toBaselineOf="@id/tv_opening_days"
+        app:layout_constraintLeft_toRightOf="@id/tv_opening_days"
+        app:layout_constraintRight_toRightOf="@id/label_address"
+
+        style="@style/GetExpressProductDescription"
+        tools:text="@tools:sample/lorem"
+        />
+
+    <TextView
+        android:id="@+id/label_about"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        style="@style/GetExpressLabel.MediumBlack.LabelSelectedCustomerRequestSmall"
+        app:layout_constraintLeft_toLeftOf="@id/map"
+        app:layout_constraintRight_toRightOf="@id/map"
+        app:layout_constraintTop_toBottomOf="@id/tv_opening_days"
+        app:layout_constraintBottom_toTopOf="@id/tv_about"
+
+        android:textColor="@color/main_text_color"
+        android:text="About"
+        android:gravity="left"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="12dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_about"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+
+
+        app:layout_constraintTop_toBottomOf="@id/label_about"
+        app:layout_constraintLeft_toLeftOf="@id/label_about"
+        app:layout_constraintRight_toRightOf="@id/label_about"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:paddingBottom="32dp"
+
+        style="@style/GetExpressProductDescription"
+        tools:text="@tools:sample/lorem"
+        />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

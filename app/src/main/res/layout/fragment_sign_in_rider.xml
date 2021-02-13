@@ -43,6 +43,8 @@
     <Button
         android:id="@+id/btn_customer"
         android:layout_width="0dp"
+        android:layout_height="45dp"
+
         style="@style/GetExpressButtonFlat"
         app:layout_constraintTop_toBottomOf="@id/label_i_am"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -160,7 +162,7 @@
         android:textStyle="bold"
         android:text="OR"
         android:textColor="@color/grey_200"
-        android:textSize="12sp"
+        android:textSize="13sp"
         />
 
     <View
@@ -274,10 +276,9 @@
 
         android:layout_marginTop="16dp"
 
-        android:src="@drawable/signin_button"
+        android:src="@drawable/btn_welcome_signin"
         android:scaleType="centerInside"
         android:background="@null"
-        android:layout_marginBottom="14dp"
         />
 
     <TextView
@@ -285,10 +286,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/GetExpressTextDescription"
+        app:layout_constraintVertical_chainStyle="spread_inside"
 
         app:layout_constraintTop_toBottomOf="@id/btn_sign_in"
         app:layout_constraintLeft_toLeftOf="@id/btn_fb_signup"
         app:layout_constraintRight_toRightOf="@id/btn_fb_signup"
+        app:layout_constraintBottom_toTopOf="@id/label_dont_have_account"
+
         android:layout_marginTop="16dp"
         android:text="@string/label_forgot_password"
         android:textColor="@color/blue_200"
@@ -301,12 +305,12 @@
         android:layout_height="wrap_content"
         style="@style/GetExpressTextDescription"
 
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_forgot_password_link"
         app:layout_constraintLeft_toLeftOf="@id/btn_fb_signup"
         app:layout_constraintRight_toLeftOf="@id/tv_sign_up_link"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintVertical_bias="1"
+        app:layout_constraintVertical_bias="0"
         android:layout_marginRight="4dp"
         android:layout_marginTop="16dp"
         android:textStyle="bold"

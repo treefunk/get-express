@@ -78,7 +78,6 @@
         app:layout_constraintBottom_toTopOf="@id/tv_edit_profile"
         tools:text="Nissan Sentra | ADA 1234"
         android:textColor="@color/blue_200"
-        android:textStyle="italic"
         android:textSize="9sp"
         android:fontFamily="@font/lato_bold"
         android:layout_marginTop="4dp"
@@ -98,7 +97,7 @@
         android:paddingBottom="12dp"
 
         style="@style/GetExpressTextDescription.LinkBlue"
-        android:text="@string/label_edit_profile_underlined"
+        android:text="EDIT PROFILE"
         android:layout_marginBottom="4dp"
         android:textColor="@color/blue_200"
 
@@ -123,7 +122,7 @@
         app:layout_constraintRight_toLeftOf="@id/line_after_history"
         app:layout_constraintBaseline_toBaselineOf="@id/tv_edit_profile"
         style="@style/GetExpressTextDescription.LinkBlue"
-        android:text="@string/label_history_underlined"
+        android:text="HISTORY"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
         android:textColor="@color/blue_200"
@@ -160,5 +159,91 @@
         android:textColor="@color/blue_200"
 
         />
+
+
+    <View
+        android:id="@+id/box_expires"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+
+        android:background="@drawable/shape_rounded_corners_left_only"
+        android:backgroundTint="@color/blue_500"
+        app:layout_constraintLeft_toLeftOf="@id/extra_before_topup"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/iv_top_up"
+        app:layout_constraintBottom_toBottomOf="@id/iv_top_up"
+        />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group_expires"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="extra_before_topup,box_expires,iv_top_up,label_expires_in,tv_expire_time"
+        android:visibility="gone"
+        />
+
+    <View
+        android:id="@+id/extra_before_topup"
+        android:layout_width="8dp"
+        android:layout_height="0dp"
+
+        app:layout_constraintTop_toTopOf="@id/iv_top_up"
+        app:layout_constraintBottom_toBottomOf="@id/iv_top_up"
+        app:layout_constraintLeft_toRightOf="@id/iv_profile_picture"
+        app:layout_constraintRight_toRightOf="@id/iv_top_up"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintHorizontal_bias="1"
+        />
+    <ImageView
+        android:id="@+id/iv_top_up"
+        android:src="@drawable/ic_top_up"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:layout_constraintLeft_toRightOf="@id/extra_before_topup"
+        app:layout_constraintRight_toLeftOf="@id/label_expires_in"
+        app:layout_constraintTop_toTopOf="@id/iv_profile_picture"
+        app:layout_constraintBottom_toBottomOf="@id/iv_background"
+        app:layout_constraintVertical_bias="0"
+        android:paddingLeft="2dp"
+        />
+
+
+    <TextView
+        android:id="@+id/label_expires_in"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/iv_top_up"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/iv_top_up"
+        app:layout_constraintBottom_toTopOf="@id/tv_expire_time"
+        app:layout_constraintVertical_chainStyle="packed"
+        android:includeFontPadding="false"
+        android:text="EXPIRES IN"
+        android:fontFamily="@font/lato_regular"
+        style="@style/GetExpressTextDescription"
+        android:textColor="@android:color/white"
+        android:textSize="9sp"
+        android:layout_marginRight="12dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_expire_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/label_expires_in"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/iv_top_up"
+        app:layout_constraintBottom_toBottomOf="@id/iv_top_up"
+        android:includeFontPadding="false"
+        tools:text="01:36:20"
+        android:letterSpacing="0.04"
+        style="@style/GetExpressLabel.MediumBlack.LabelSelectedCustomerRequestSmall"
+        android:textColor="@android:color/white"
+        android:textSize="10sp"
+        android:layout_marginRight="12dp"
+
+        />
+
+
 
 </merge>

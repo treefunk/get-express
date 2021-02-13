@@ -30,7 +30,6 @@
         tools:layout="@layout/fragment_edit_profile"
 
         app:defaultNavHost="true"
-        app:navGraph="@navigation/nav_customer_profile_graph"
         />
 
 

@@ -3,75 +3,157 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_login_graph"
-    app:startDestination="@id/signInCustomerFragment">
+    app:startDestination="@id/welcomeFragment">
 
     <fragment
         android:id="@+id/signInCustomerFragment"
-        android:name="com.myoptimind.getexpress.features.login.SignInCustomerFragment"
+        android:name="com.myoptimind.get_express.features.login.SignInCustomerFragment"
         android:label="SignInCustomerFragment"
         tools:layout="@layout/fragment_sign_in_customer"
         >
         <action
             android:id="@+id/action_signInCustomerFragment_to_signUpCustomerFragment"
-            app:destination="@id/signUpCustomerFragment" />
+            app:destination="@id/signUpCustomerFragment"
+            app:popUpTo="@id/signInCustomerFragment"
+            app:launchSingleTop="true"
+            app:popUpToInclusive="true"
+            />
         <action
             android:id="@+id/action_signInCustomerFragment_to_forgotPasswordFragment"
-            app:destination="@id/forgotPasswordFragment" />
+            app:destination="@id/forgotPasswordFragment"
+            app:popUpTo="@id/signInCustomerFragment"
+            app:launchSingleTop="true"
+            />
         <action
             android:id="@+id/action_signInCustomerFragment_to_signInRiderFragment"
-            app:destination="@id/signInRiderFragment" />
+            app:destination="@id/signInRiderFragment"
+            app:popUpTo="@id/signInCustomerFragment"
+            app:launchSingleTop="true"
+            app:popUpToInclusive="true"
+            />
     </fragment>
     <fragment
         android:id="@+id/signUpCustomerFragment"
-        android:name="com.myoptimind.getexpress.features.login.SignUpCustomerFragment"
+        android:name="com.myoptimind.get_express.features.login.SignUpCustomerFragment"
         android:label="SignUpCustomerFragment"
         tools:layout="@layout/fragment_sign_up_customer"
         >
+        <argument
+            android:name="isSocialLogin"
+            app:argType="boolean"
+            android:defaultValue="false"
+            />
         <action
             android:id="@+id/action_signUpCustomerFragment_to_signUpRiderFragment"
-            app:destination="@id/signUpRiderFragment" />
+            app:destination="@id/signUpRiderFragment"
+            app:popUpTo="@id/signInCustomerFragment"
+            app:popUpToInclusive="true"
+            app:launchSingleTop="true"
+            />
         <action
             android:id="@+id/action_signUpCustomerFragment_to_signInCustomerFragment"
-            app:destination="@id/signInCustomerFragment" />
+            app:destination="@id/signInCustomerFragment"
+            app:popUpTo="@id/signInCustomerFragment"
+            app:popUpToInclusive="true"
+            app:launchSingleTop="true"
+            />
     </fragment>
     <fragment
         android:id="@+id/signUpRiderFragment"
-        android:name="com.myoptimind.getexpress.features.login.SignUpRiderFragment"
+        android:name="com.myoptimind.get_express.features.login.SignUpRiderFragment"
         android:label="SignUpRiderFragment"
         tools:layout="@layout/fragment_sign_up_rider"
         >
+        <argument
+            android:name="isSocialLogin"
+            app:argType="boolean"
+            android:defaultValue="false"
+            />
         <action
             android:id="@+id/action_signUpRiderFragment_to_signUpCustomerFragment"
-            app:destination="@id/signUpCustomerFragment" />
+            app:destination="@id/signUpCustomerFragment"
+            app:popUpTo="@id/signUpRiderFragment"
+            app:popUpToInclusive="true"
+            app:launchSingleTop="true"
+            />
         <action
             android:id="@+id/action_signUpRiderFragment_to_signInCustomerFragment"
-            app:destination="@id/signInCustomerFragment" />
+            app:destination="@id/signInCustomerFragment"
+            app:popUpTo="@id/signUpRiderFragment"
+            app:popUpToInclusive="true"
+            app:launchSingleTop="true"
+            />
     </fragment>
     <fragment
         android:id="@+id/forgotPasswordFragment"
-        android:name="com.myoptimind.getexpress.features.login.ForgotPasswordFragment"
+        android:name="com.myoptimind.get_express.features.login.ForgotPasswordFragment"
         android:label="ForgotPasswordFragment"
         tools:layout="@layout/fragment_forgot_password"
         >
+        <argument
+            android:name="userType"
+            app:argType="com.myoptimind.get_express.features.login.data.UserType"
+            />
         <action
             android:id="@+id/action_forgotPasswordFragment_to_signInCustomerFragment"
-            app:destination="@id/signInCustomerFragment" />
+            app:destination="@id/signInCustomerFragment"
+            app:popUpTo="@id/forgotPasswordFragment"
+            app:popUpToInclusive="true"
+            app:launchSingleTop="true"
+            />
         <action
             android:id="@+id/action_forgotPasswordFragment_to_signUpCustomerFragment"
-            app:destination="@id/signUpCustomerFragment" />
+            app:destination="@id/signUpCustomerFragment"
+            app:popUpTo="@id/forgotPasswordFragment"
+            app:popUpToInclusive="true"
+            app:launchSingleTop="true"
+            />
     </fragment>
     <fragment
         android:id="@+id/signInRiderFragment"
-        android:name="com.myoptimind.getexpress.features.login.SignInRiderFragment"
-        android:label="SignInRiderFragment" >
+        android:name="com.myoptimind.get_express.features.login.SignInRiderFragment"
+        android:label="SignInRiderFragment"
+        tools:layout="@layout/fragment_sign_in_rider"
+        >
         <action
             android:id="@+id/action_signInRiderFragment_to_signInCustomerFragment"
-            app:destination="@id/signInCustomerFragment" />
+            app:destination="@id/signInCustomerFragment"
+            app:popUpTo="@id/signInRiderFragment"
+            app:popUpToInclusive="true"
+            app:launchSingleTop="true"
+            />
         <action
             android:id="@+id/action_signInRiderFragment_to_signUpCustomerFragment"
-            app:destination="@id/signUpCustomerFragment" />
+            app:destination="@id/signUpCustomerFragment"
+            app:popUpTo="@id/signInRiderFragment"
+            app:popUpToInclusive="true"
+            app:launchSingleTop="true"
+            />
         <action
             android:id="@+id/action_signInRiderFragment_to_forgotPasswordFragment"
-            app:destination="@id/forgotPasswordFragment" />
+            app:destination="@id/forgotPasswordFragment"
+            app:popUpTo="@id/signInRiderFragment"
+            app:launchSingleTop="true"
+            />
+        <action
+            android:id="@+id/action_signInRiderFragment_to_signUpRiderFragment"
+            app:destination="@id/signUpRiderFragment"
+            app:popUpTo="@id/signInRiderFragment"
+            app:popUpToInclusive="true"
+            app:launchSingleTop="true"
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/welcomeFragment"
+        android:name="com.myoptimind.get_express.features.login.WelcomeFragment"
+        android:label="WelcomeFragment"
+        tools:layout="@layout/fragment_welcome"
+        >
+        <action
+            android:id="@+id/action_welcomeFragment_to_signInCustomerFragment"
+            app:destination="@id/signInCustomerFragment" />
+        <action
+            android:id="@+id/action_welcomeFragment_to_signUpCustomerFragment"
+            app:destination="@id/signUpCustomerFragment" />
     </fragment>
 </navigation>

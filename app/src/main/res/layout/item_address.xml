@@ -44,7 +44,7 @@
             />
     </LinearLayout>
     <ImageButton
-        android:id="@+id/iv_edit_profile_picture"
+        android:id="@+id/ib_edit_address"
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:layout_weight="0.2"

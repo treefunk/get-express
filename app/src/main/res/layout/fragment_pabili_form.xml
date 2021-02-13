@@ -40,6 +40,9 @@
             />
 
 
+
+
+
         <ImageView
             android:id="@+id/iv_sender_icon"
             android:layout_width="35dp"
@@ -90,6 +93,23 @@
             android:layout_marginLeft="4dp"
             />
 
+        <TextView
+            android:id="@+id/label_sender_place_holder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:textSize="11sp"
+            style="@style/GetExpressTextDescription"
+            app:layout_constraintTop_toTopOf="@id/box_sender"
+            app:layout_constraintLeft_toRightOf="@id/iv_sender_icon"
+            app:layout_constraintBottom_toBottomOf="@id/box_sender"
+            android:textColor="@color/main_text_color"
+            android:text="Select Pick Up Location"
+            android:layout_marginLeft="4dp"
+            />
+
+
+
         <!--    -->
 
         <View
@@ -102,6 +122,8 @@
             app:layout_constraintBottom_toBottomOf="@id/iv_receiver_icon"
             android:background="@android:color/white"
             />
+
+
 
 
         <ImageView
@@ -149,6 +171,21 @@
             android:textSize="9sp"
             android:paddingBottom="4dp"
             android:layout_marginRight="12dp"
+            android:layout_marginLeft="4dp"
+            />
+
+        <TextView
+            android:id="@+id/label_receiver_place_holder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:textSize="11sp"
+            style="@style/GetExpressTextDescription"
+            app:layout_constraintTop_toTopOf="@id/box_receiver"
+            app:layout_constraintLeft_toRightOf="@id/iv_receiver_icon"
+            app:layout_constraintBottom_toBottomOf="@id/box_receiver"
+            android:textColor="@color/main_text_color"
+            android:text="Select Delivery Location"
             android:layout_marginLeft="4dp"
             />
 
@@ -346,8 +383,10 @@
         <EditText
             android:id="@+id/et_delivery_instructions"
             android:layout_width="0dp"
-            android:layout_height="100dp"
-            app:layout_constraintHeight_min="40dp"
+            android:layout_height="wrap_content"
+            android:maxLines="5"
+            android:lines="5"
+            android:inputType="textMultiLine"
 
 
             app:layout_constraintTop_toBottomOf="@id/label_pabili_instructions"

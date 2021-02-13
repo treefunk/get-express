@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.myoptimind.getexpress.features.customer.home.CustomerDashboardFragment"
+        android:name="com.myoptimind.get_express.features.customer.home.CustomerDashboardFragment"
         android:label="HomeFragment"
         tools:layout="@layout/fragment_customer_dashboard"
         >
@@ -30,10 +30,16 @@
         <action
             android:id="@+id/action_homeFragment_to_pabiliFormFragment"
             app:destination="@id/pabiliFormFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_whatsNewFragment"
+            app:destination="@id/whatsNewFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_selectedWhatsNewFragment"
+            app:destination="@id/selectedWhatsNewFragment" />
     </fragment>
     <fragment
         android:id="@+id/riderDashboardFragment"
-        android:name="com.myoptimind.getexpress.features.rider.rider_dashboard.RiderDashboardFragment"
+        android:name="com.myoptimind.get_express.features.rider.rider_dashboard.RiderDashboardFragment"
         android:label="RiderDashboardFragment"
         tools:layout="@layout/fragment_rider_dashboard"
         >
@@ -41,13 +47,16 @@
             android:id="@+id/action_riderDashboardFragment_to_selectedCustomerRequestFragment"
             app:destination="@id/selectedCustomerRequestFragment"
             />
+        <action
+            android:id="@+id/action_riderDashboardFragment_to_topUpWebViewFragment"
+            app:destination="@id/topUpWebViewFragment" />
     </fragment>
     <action
         android:id="@+id/action_global_riderDashboardFragment"
         app:destination="@id/riderDashboardFragment" />
     <fragment
         android:id="@+id/selectedCustomerRequestFragment"
-        android:name="com.myoptimind.getexpress.features.rider.selected_customer_request.SelectedCustomerRequestFragment"
+        android:name="com.myoptimind.get_express.features.rider.selected_customer_request.SelectedCustomerRequestFragment"
         android:label="SelectedCustomerRequestFragment"
         tools:layout="@layout/fragment_selected_customer_request"
 
@@ -83,7 +92,7 @@
         />
     <fragment
         android:id="@+id/storesFragment"
-        android:name="com.myoptimind.getexpress.features.customer.food_grocery.StoresFragment"
+        android:name="com.myoptimind.get_express.features.customer.food_grocery.StoresFragment"
         android:label="StoresFragment"
         tools:layout="@layout/fragment_stores"
         >
@@ -98,18 +107,13 @@
             android:defaultValue=""
             />
 
-        <argument
-            android:name="receiverLocation"
-            app:argType="com.google.android.libraries.places.api.model.Place"
-            app:nullable="true"
-            />
         <action
             android:id="@+id/action_storesFragment_to_selectedStoreFragment"
             app:destination="@id/selectedStoreFragment" />
     </fragment>
     <fragment
         android:id="@+id/selectedStoreFragment"
-        android:name="com.myoptimind.getexpress.features.customer.food_grocery.selected_store.SelectedStoreFragment"
+        android:name="com.myoptimind.get_express.features.customer.food_grocery.selected_store.SelectedStoreFragment"
         android:label="SelectedStoreFragment"
         tools:layout="@layout/fragment_selected_store"
         >
@@ -134,20 +138,11 @@
     </fragment>
     <fragment
         android:id="@+id/customerCartFragment"
-        android:name="com.myoptimind.getexpress.features.customer.cart.CustomerCartFragment"
+        android:name="com.myoptimind.get_express.features.customer.cart.CustomerCartFragment"
         android:label="CustomerCartFragment"
         tools:layout="@layout/fragment_customer_cart"
         >
-        <argument
-            android:name="senderLocation"
-            app:argType="com.google.android.libraries.places.api.model.Place"
-            app:nullable="true"
-            />
-        <argument
-            android:name="receiverLocation"
-            app:argType="com.google.android.libraries.places.api.model.Place"
-            app:nullable="true"
-            />
+
         <argument
             android:name="notes"
             app:argType="string"
@@ -164,11 +159,12 @@
             />
         <action
             android:id="@+id/action_customerCartFragment_to_pabiliFormFragment"
-            app:destination="@id/pabiliFormFragment" />
+            app:destination="@id/pabiliFormFragment" >
+        </action>
     </fragment>
     <fragment
         android:id="@+id/customerRiderSearchFragment"
-        android:name="com.myoptimind.getexpress.features.customer.cart.rider_search.CustomerRiderSearchFragment"
+        android:name="com.myoptimind.get_express.features.customer.cart.rider_search.CustomerRiderSearchFragment"
         android:label="CustomerRiderSearchFragment"
         tools:layout="@layout/fragment_customer_rider_search"
         >
@@ -183,25 +179,31 @@
             app:popUpTo="@id/customerCartFragment"
             app:popUpToInclusive="true"
             />
+        <action
+            android:id="@+id/action_customerRiderSearchFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
     <fragment
         android:id="@+id/customerProfileFragment"
-        android:name="com.myoptimind.getexpress.features.edit_profile.CustomerProfileFragment"
+        android:name="com.myoptimind.get_express.features.edit_profile.CustomerProfileFragment"
         android:label="CustomerProfileFragment"
         tools:layout="@layout/fragment_customer_profile"
         >
         <argument
-            android:name="type"
-            app:argType="string"
-            android:defaultValue=""
+            android:name="isHistory"
+            app:argType="boolean"
+            android:defaultValue="false"
             />
+        <action
+            android:id="@+id/action_customerProfileFragment_to_selectedCustomerRequestFragment"
+            app:destination="@id/selectedCustomerRequestFragment" />
     </fragment>
     <action
         android:id="@+id/action_global_customerProfileFragment"
         app:destination="@id/customerProfileFragment" />
     <fragment
         android:id="@+id/deliveryFormFragment"
-        android:name="com.myoptimind.getexpress.features.customer.delivery.DeliveryFormFragment"
+        android:name="com.myoptimind.get_express.features.customer.delivery.DeliveryFormFragment"
         android:label="DeliveryFormFragment"
         tools:layout="@layout/fragment_delivery_form"
         >
@@ -221,7 +223,7 @@
     </fragment>
     <fragment
         android:id="@+id/pabiliFormFragment"
-        android:name="com.myoptimind.getexpress.features.customer.pabili.PabiliFormFragment"
+        android:name="com.myoptimind.get_express.features.customer.pabili.PabiliFormFragment"
         android:label="PabiliFormFragment"
         tools:layout="@layout/fragment_pabili_form"
         >
@@ -242,6 +244,45 @@
             android:id="@+id/action_pabiliFormFragment_to_customerCartFragment"
             app:destination="@id/customerCartFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/topUpWebViewFragment"
+        android:name="com.myoptimind.get_express.features.rider.topup.TopUpWebViewFragment"
+        android:label="TopUpWebViewFragment"
+        tools:layout="@layout/fragment_web_view"
+        >
+        <argument
+            android:name="url"
+            app:argType="string"
+            android:defaultValue=""
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/whatsNewFragment"
+        android:name="com.myoptimind.get_express.features.customer.whats_new.WhatsNewFragment"
+        android:label="WhatsNewFragment"
+        tools:layout="@layout/fragment_whats_new"
+        >
+        <action
+            android:id="@+id/action_whatsNewFragment_to_selectedWhatsNewFragment"
+            app:destination="@id/selectedWhatsNewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/selectedWhatsNewFragment"
+        android:name="com.myoptimind.get_express.features.customer.whats_new.SelectedWhatsNewFragment"
+        android:label="SelectedWhatsNewFragment"
+        tools:layout="@layout/fragment_selected_whats_new"
+        >
+
+        <argument
+            android:name="whatsNew"
+            app:argType="com.myoptimind.get_express.features.customer.whats_new.data.WhatsNew"
+            app:nullable="false"
+            />
+
+    </fragment>
+    <action
+        android:id="@+id/action_global_whatsNewFragment"
+        app:destination="@id/whatsNewFragment" />
 
 
 </navigation>

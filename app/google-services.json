@@ -8,6 +8,42 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:1059743027614:android:1792448af4957aab8b068f",
+        "android_client_info": {
+          "package_name": "com.myoptimind.get_express"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1059743027614-31k2mk5lpqniga12fcomgtiip7o4kn1f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCvB71gXKdJpybZPQpdKbdtwoMgXgjpSFM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1059743027614-31k2mk5lpqniga12fcomgtiip7o4kn1f.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1059743027614-f7nef1o7lnlpc96u3r22njjbmbvttqhu.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.optimind.getexpress"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:1059743027614:android:ea2591c31916a51e8b068f",
         "android_client_info": {
           "package_name": "com.myoptimind.getexpress"

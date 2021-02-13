@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:drawable="@color/yellow_200" />
+
+    <item android:drawable="@drawable/get_express_logo_only" android:width="150dp" android:height="150dp" android:gravity="center" android:bottom="30dp" />
+</layer-list>

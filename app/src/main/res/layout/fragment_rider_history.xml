@@ -110,6 +110,7 @@
         android:clipToPadding="false"
         android:paddingBottom="150dp"
         android:overScrollMode="never"
+        android:layout_marginTop="8dp"
         />
 
 

@@ -82,7 +82,7 @@
         android:paddingBottom="12dp"
 
         style="@style/GetExpressTextDescription.LinkBlue"
-        android:text="@string/label_edit_profile_underlined"
+        android:text="EDIT PROFILE"
         android:layout_marginBottom="4dp"
         android:textColor="@color/blue_200"
 
@@ -107,7 +107,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBaseline_toBaselineOf="@id/tv_edit_profile"
         style="@style/GetExpressTextDescription.LinkBlue"
-        android:text="@string/label_history_underlined"
+        android:text="HISTORY"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
         android:textColor="@color/blue_200"

@@ -78,8 +78,8 @@
         app:layout_constraintLeft_toLeftOf="parent"
 
         android:layout_marginLeft="12dp"
-        android:layout_marginTop="8dp"
-        android:text="Delivery to"
+        android:layout_marginTop="12dp"
+        android:text="Deliver to"
 
         android:textColor="@color/main_text_color"
         style="@style/GetExpressLabel.LabelSelectedCustomerRequestLarge"
@@ -97,6 +97,7 @@
         android:layout_marginTop="4dp"
 
 
+        android:layout_marginRight="12dp"
         android:textSize="10sp"
         android:layout_marginLeft="12dp"
         android:text="No address selected yet"
@@ -203,7 +204,7 @@
         android:text="Sub-total"
 
         android:textColor="@color/main_text_color"
-        style="@style/GetExpressLabel.LabelSelectedCustomerRequestMedium"
+        style="@style/GetExpressLabel.MediumBlack.LabelSelectedCustomerRequestSmall"
 
         />
 
@@ -241,7 +242,7 @@
         android:text="Delivery Fee"
 
         android:textColor="@color/main_text_color"
-        style="@style/GetExpressLabel.LabelSelectedCustomerRequestMedium"
+        style="@style/GetExpressLabel.MediumBlack.LabelSelectedCustomerRequestSmall"
 
         />
 
@@ -332,8 +333,10 @@
     <EditText
         android:id="@+id/et_notes_to_driver"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintHeight_min="40dp"
+        android:layout_height="wrap_content"
+        android:maxLines="5"
+        android:lines="5"
+        android:inputType="textMultiLine"
 
         app:layout_constraintTop_toBottomOf="@id/label_additional_notes_to_rider"
         app:layout_constraintLeft_toLeftOf="@id/label_additional_notes_to_rider"
@@ -364,7 +367,26 @@
         style="@style/GetExpressLabel.LabelSelectedCustomerRequestMedium"
         />
 
-    <androidx.constraintlayout.helper.widget.Flow
+
+    <TextView
+        android:id="@+id/tv_payment"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintHorizontal_weight="0.6"
+
+        app:layout_constraintBaseline_toBaselineOf="@id/label_payment_method"
+        app:layout_constraintLeft_toRightOf="@id/label_delivery_fee"
+        app:layout_constraintRight_toRightOf="parent"
+
+        android:layout_marginRight="14dp"
+        android:text="Cash On Delivery"
+        android:gravity="right"
+
+        android:textColor="@color/main_text_color"
+        style="@style/GetExpressLabel.LabelSelectedCustomerRequestMedium"
+        />
+
+   <!-- <androidx.constraintlayout.helper.widget.Flow
         android:id="@+id/flow_payment"
         android:layout_width="0dp"
         android:layout_height="40dp"
@@ -382,18 +404,16 @@
         android:id="@+id/payment_1"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        tools:src="@tools:sample/backgrounds/scenic"
         android:scaleType="centerCrop"
-        android:background="@drawable/shape_grey_border"
+        android:background="@drawable/img_feature_bg"
         />
 
     <ImageView
         android:id="@+id/payment_2"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        tools:src="@tools:sample/backgrounds/scenic"
         android:scaleType="centerCrop"
-        android:background="@drawable/shape_grey_border"
+        android:background="@drawable/img_feature_bg"
         />
 
 
@@ -401,18 +421,17 @@
         android:id="@+id/payment_3"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        tools:src="@tools:sample/backgrounds/scenic"
         android:scaleType="centerCrop"
-        android:background="@drawable/shape_grey_border"
-        />
+        android:background="@drawable/img_feature_bg"
+        />-->
 
     <ImageButton
         android:id="@+id/btn_get"
         style="@style/GetExpressImageButton"
 
 
-        android:layout_marginTop="12dp"
-        app:layout_constraintTop_toBottomOf="@id/flow_payment"
+        android:layout_marginTop="24dp"
+        app:layout_constraintTop_toBottomOf="@id/tv_payment"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:src="@drawable/btn_get_grocery"

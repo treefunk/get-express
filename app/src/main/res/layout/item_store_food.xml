@@ -4,9 +4,9 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
 xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="wrap_content"
-android:layout_marginTop="3dp"
-
-android:layout_marginBottom="3dp"
+    android:layout_marginLeft="12dp"
+    android:layout_marginRight="12dp"
+    android:layout_marginBottom="8dp"
 android:background="@drawable/shape_rounded_corners"
 android:backgroundTint="@android:color/white">
 
@@ -44,19 +44,21 @@ android:backgroundTint="@android:color/white">
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_marginRight="8dp"
-    android:fontFamily="@font/lato_regular"
+    android:fontFamily="@font/myriad_pro_regular"
     android:includeFontPadding="false"
-    tools:text="@tools:sample/full_names"
-    android:textColor="@color/grey_200"
-    android:textSize="10sp"
-    app:layout_constraintBottom_toTopOf="@id/tv_quantity"
+    tools:text="6-pcs Chicken Joy Solo"
+    android:textColor="@color/main_text_color"
+    android:textSize="10.5sp"
+    android:paddingTop="4dp"
+    style="@style/GetExpressLabel.MediumBlack.DescriptionSelectedCustomerRequestSmall"
+    app:layout_constraintBottom_toTopOf="@id/tv_product_price"
     app:layout_constraintLeft_toRightOf="@id/iv_product_image"
     app:layout_constraintRight_toLeftOf="@id/ib_add_to_cart"
     app:layout_constraintTop_toTopOf="@id/iv_product_image"
     app:layout_constraintVertical_bias="0"
     app:layout_constraintVertical_chainStyle="spread_inside" />
 
-<TextView
+<!--<TextView
     android:id="@+id/tv_quantity"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
@@ -71,7 +73,7 @@ android:backgroundTint="@android:color/white">
     app:layout_constraintHorizontal_weight="0.7"
     app:layout_constraintLeft_toLeftOf="@id/tv_product_name"
     app:layout_constraintRight_toLeftOf="@id/ib_add_to_cart"
-    app:layout_constraintTop_toBottomOf="@id/tv_product_name" />
+    app:layout_constraintTop_toBottomOf="@id/tv_product_name" />-->
 
 <TextView
     android:id="@+id/tv_product_price"
@@ -85,16 +87,18 @@ android:backgroundTint="@android:color/white">
     android:textSize="10sp"
     android:textStyle="bold"
     android:layout_marginRight="8dp"
+    android:paddingBottom="4dp"
     app:layout_constraintBottom_toBottomOf="@id/iv_product_image"
     app:layout_constraintLeft_toLeftOf="@id/tv_product_name"
     app:layout_constraintRight_toRightOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/tv_quantity"
+    app:layout_constraintTop_toBottomOf="@id/tv_product_name"
+    app:layout_constraintVertical_bias="1"
     tools:text="100.00" />
 
 <ImageButton
     android:id="@+id/ib_add_to_cart"
-    android:layout_width="30dp"
-    android:layout_height="30dp"
+    android:layout_width="25dp"
+    android:layout_height="25dp"
     android:layout_marginRight="8dp"
     android:src="@drawable/ic_add_to_cart"
     android:background="@null"
@@ -103,12 +107,11 @@ android:backgroundTint="@android:color/white">
     android:layout_marginBottom="4dp"
 
     style="@style/GetExpressLabel.LabelSelectedCustomerRequestMedium"
-    app:layout_constraintBottom_toTopOf="@id/tv_product_price"
-    app:layout_constraintHorizontal_bias="1"
-    app:layout_constraintHorizontal_weight="0.3"
-    app:layout_constraintLeft_toRightOf="@id/tv_quantity"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintLeft_toRightOf="@id/tv_product_name"
     app:layout_constraintRight_toRightOf="parent"
-    app:layout_constraintTop_toTopOf="@id/tv_quantity"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintVertical_bias="0.4"
     tools:text="240.00" />
 
 

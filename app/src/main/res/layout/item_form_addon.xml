@@ -14,24 +14,49 @@
         style="@style/GetExpressLabelNotesToRider"
         android:textColor="@color/main_text_color"
         android:text="Select Extras"
+        android:layout_marginBottom="4dp"
         />
 
-    <AutoCompleteTextView
-        android:id="@+id/et_addon_field"
+    <RelativeLayout
+        android:id="@+id/rl_addon_field"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        >
 
-        android:layout_marginTop="2dp"
-        android:paddingRight="30dp"
+        <AutoCompleteTextView
+            android:id="@+id/et_addon_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:paddingRight="30dp"
 
-        android:focusable="false"
-        android:focusableInTouchMode="false"
 
-        android:text="Select Category"
-        android:textSize="10sp"
-        android:background="@android:color/white"
-        android:hint="Select Category"
-        style="@style/GetExpressEditTextLogin"
-        />
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+
+            android:text="Select Category"
+            android:textSize="10sp"
+            android:background="@android:color/white"
+            android:hint="Select Category"
+            style="@style/GetExpressEditTextLogin"
+
+            />
+
+        <ImageView
+            android:id="@+id/iv_delivery_category_end"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_dropdown"
+            android:scaleType="fitCenter"
+            android:layout_marginRight="5dp"
+
+            />
+
+
+    </RelativeLayout>
 
 </LinearLayout>

@@ -16,5 +16,157 @@
         tools:listitem="@layout/item_customer_request"
         />
 
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group_top_up_notice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="label_please_top_up,dashboard_top_up_now"
+        android:visibility="gone"
+        />
+
+    <TextView
+        android:id="@+id/label_please_top_up"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="To enable rider features,\nplease top up your account."
+        android:gravity="center"
+        style="@style/GetExpressLabel.MediumBlack"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/dashboard_top_up_now"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintVertical_bias="0.35"
+        android:layout_marginBottom="36dp"
+        android:lineHeight="30dp"
+        />
+
+    <ImageButton
+        android:id="@+id/dashboard_top_up_now"
+        style="@style/GetExpressImageButton"
+        android:src="@drawable/btn_topup_now"
+        app:layout_constraintTop_toBottomOf="@id/label_please_top_up"
+        app:layout_constraintBottom_toTopOf="@id/box_wallet"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        />
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_ver_50"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.50"
+        />
+    <View
+        android:id="@+id/box_wallet"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="@id/label_my_wallet"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@color/blue_200"
+        />
+
+    <ImageView
+        android:id="@+id/iv_wallet"
+        android:layout_width="37.5dp"
+        android:layout_height="37.5dp"
+
+        android:src="@drawable/ic_wallet"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginLeft="12dp"
+        android:layout_marginBottom="2dp"
+        />
+
+    <TextView
+        android:id="@+id/label_my_wallet"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/iv_wallet"
+        app:layout_constraintLeft_toRightOf="@id/iv_wallet"
+        app:layout_constraintRight_toRightOf="@id/guideline_ver_50"
+        app:layout_constraintBottom_toTopOf="@id/tv_my_wallet"
+        style="@style/GetExpressTextDescription"
+        android:textColor="@android:color/white"
+        android:text="My Wallet"
+        android:textSize="10sp"
+        android:paddingTop="8dp"
+        android:gravity="center"
+        android:layout_marginBottom="4dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_my_wallet"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toRightOf="@id/iv_wallet"
+        app:layout_constraintRight_toRightOf="@id/guideline_ver_50"
+        app:layout_constraintBottom_toBottomOf="@id/iv_wallet"
+        tools:text=""
+        android:includeFontPadding="false"
+        style="@style/GetExpressLabel.MyWalletBottomBalance"
+        android:gravity="center"
+        android:paddingBottom="2dp"
+        />
+
+
+    <ImageView
+        android:id="@+id/iv_cash_on_hand"
+        android:layout_width="37.5dp"
+        android:layout_height="37.5dp"
+
+        android:src="@drawable/ic_cash_on_hand"
+        app:layout_constraintLeft_toLeftOf="@id/guideline_ver_50"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginLeft="12dp"
+        android:layout_marginBottom="2dp"
+
+        />
+
+    <View
+        android:layout_width="1.5dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="@id/box_wallet"
+        app:layout_constraintBottom_toBottomOf="@id/box_wallet"
+        app:layout_constraintLeft_toLeftOf="@id/guideline_ver_50"
+        app:layout_constraintRight_toRightOf="@id/guideline_ver_50"
+        android:background="@android:color/white"
+        />
+
+    <TextView
+        android:id="@+id/label_my_cash_on_hand"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/iv_cash_on_hand"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/iv_cash_on_hand"
+        app:layout_constraintBottom_toTopOf="@id/tv_my_cash_on_hand"
+        style="@style/GetExpressTextDescription"
+        android:layout_marginBottom="4dp"
+        android:textColor="@android:color/white"
+        android:text="Cash On Hand"
+        android:textSize="10sp"
+        android:paddingTop="8dp"
+        android:gravity="center"
+        />
+
+    <TextView
+        android:id="@+id/tv_my_cash_on_hand"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toRightOf="@id/iv_cash_on_hand"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/iv_cash_on_hand"
+        tools:text=""
+        android:paddingBottom="2dp"
+        android:includeFontPadding="false"
+        style="@style/GetExpressLabel.MyWalletBottomBalance"
+        android:gravity="center"
+        />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

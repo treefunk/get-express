@@ -485,7 +485,7 @@
 
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="10dp"
         style="@style/GetExpressLabel.EditProfile"
         android:gravity="left"
         android:fontFamily="@font/lato_black"
@@ -514,7 +514,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_my_vehicles"
         android:layout_width="0dp"
-        android:layout_height="100dp"
+        android:layout_height="80dp"
 
 
         app:layout_constraintLeft_toLeftOf="@id/label_my_vehicle"
@@ -524,6 +524,7 @@
         tools:listitem="@layout/item_my_vehicle"
         android:paddingBottom="10dp"
         android:clipToPadding="false"
+        android:layout_marginTop="8dp"
         />
 
     <ImageButton

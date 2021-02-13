@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/box_topup"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="6dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:background="@drawable/shape_rounded_corners_16dp"
+    android:backgroundTint="@color/background_color_darker"
+    android:paddingLeft="6dp"
+    android:paddingRight="6dp"
+    android:paddingTop="6dp"
+    android:paddingBottom="6dp">
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/cb_selected"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:background="@drawable/selector_check_on_off"
+        android:button="@null"
+        android:checked="false"
+        android:enabled="false"
+        android:clickable="false"
+        android:focusableInTouchMode="false"
+        android:focusable="false"
+        />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="6dp"
+        android:gravity="center"
+        android:layout_marginRight="8dp"
+
+        >
+        <TextView
+            android:id="@+id/tv_wallet_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/GetExpressLabel"
+            android:textColor="@color/blue_200"
+            tools:text="@tools:sample/lorem"
+            android:textSize="17sp"
+            android:includeFontPadding="false"
+            android:lines="1"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:layout_marginBottom="2dp"
+            />
+
+        <TextView
+            android:id="@+id/tv_wallet_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/GetExpressTextDescription.LoginFeatured"
+            android:textColor="@android:color/black"
+            tools:text="@tools:sample/lorem"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:lines="2"
+            android:fontFamily="@font/lato_regular"
+            android:textStyle="normal"
+            android:textSize="9sp"
+            android:lineHeight="14dp"
+            android:includeFontPadding="false"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/shape_rounded_corners_16dp"
+        android:backgroundTint="@color/blue_200"
+        android:layout_gravity="center"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
+        >
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:weightSum="5"
+            >
+            <TextView
+                android:id="@+id/label_currency"
+                android:layout_width="wrap_content"
+                android:layout_weight="1.5"
+                android:layout_height="wrap_content"
+                style="@style/GetExpressLabel"
+                android:textColor="@color/yellow_200"
+                android:gravity="center"
+
+                android:textSize="20sp"
+                android:text="&#8369;"
+                android:fontFamily="@font/lato_regular"
+                />
+
+            <TextView
+                android:id="@+id/tv_wallet_price"
+                android:layout_width="wrap_content"
+                android:minWidth="35dp"
+                android:layout_weight="3.5"
+                android:layout_height="wrap_content"
+                style="@style/GetExpressLabel"
+                android:textColor="@color/yellow_200"
+                android:gravity="right"
+                tools:text="@tools:sample/us_zipcodes"
+                android:lines="1"
+                android:maxLines="1"
+                android:textSize="20sp"
+                android:paddingTop="2dp"
+                />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_wallet_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            style="@style/GetExpressTextDescription.LoginFeatured"
+            android:textColor="@android:color/white"
+            tools:text="24 hrs"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:fontFamily="@font/lato_black"
+            android:layout_gravity="center"
+            android:textStyle="normal"
+            android:textSize="12.5sp"
+            android:lineHeight="14dp"
+            android:layout_marginBottom="2dp"
+            />
+    </LinearLayout>
+
+
+</LinearLayout>

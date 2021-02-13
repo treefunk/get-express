@@ -1,13 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
+    android:layout_width="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginTop="12dp"
     android:layout_marginLeft="6dp"
     android:layout_marginRight="6dp"
-    android:background="@android:color/white"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="0dp"
+    app:cardMaxElevation="0dp"
+    android:backgroundTint="@android:color/white">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+
     >
 
     <ImageView
@@ -16,6 +24,7 @@
         android:layout_height="110dp"
         tools:src="@tools:sample/backgrounds/scenic"
         android:scaleType="centerCrop"
+        android:background="@drawable/shape_rounded_corners_top_only"
         />
 
     <TextView
@@ -25,6 +34,7 @@
         style="@style/GetExpressStoreListLabel"
         tools:text="Grocery Store"
 
+        android:textStyle="bold"
         android:textColor="@color/main_text_color"
         android:layout_marginTop="4dp"
         android:layout_marginLeft="8dp"
@@ -49,3 +59,5 @@
 
 
 </LinearLayout>
+
+</androidx.cardview.widget.CardView>

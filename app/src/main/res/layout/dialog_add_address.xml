@@ -54,7 +54,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:paddingTop="10dp"
-        android:paddingBottom="6dp"
+        android:paddingBottom="8dp"
         />
 
     <TextView
@@ -72,6 +72,7 @@
         android:gravity="left"
         android:layout_marginLeft="24dp"
         android:layout_marginRight="24dp"
+        android:layout_marginBottom="4dp"
         />
 
     <EditText
@@ -80,15 +81,13 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
 
-
+        tools:text="test"
         app:layout_constraintTop_toBottomOf="@id/label_address_label"
         app:layout_constraintLeft_toLeftOf="@id/label_address_label"
         app:layout_constraintRight_toRightOf="@id/label_address_label"
         app:layout_constraintBottom_toTopOf="@id/label_enter_address"
-        android:paddingLeft="2dp"
-        android:paddingTop="6dp"
-        android:paddingBottom="6dp"
-        android:paddingRight="2dp"
+        style="@style/GetExpressEditTextDialog"
+
         android:background="@drawable/shape_grey_border"
         />
 
@@ -106,6 +105,7 @@
         android:textColor="@color/main_text_color"
         android:text="Enter Address"
         android:gravity="left"
+        android:layout_marginBottom="4dp"
 
         />
 
@@ -120,13 +120,11 @@
         app:layout_constraintRight_toRightOf="@id/label_enter_address"
         app:layout_constraintBottom_toTopOf="@id/btn_save_address"
         android:background="@drawable/shape_grey_border"
+        style="@style/GetExpressEditTextDialog"
 
         android:focusable="false"
         android:focusableInTouchMode="false"
-        android:paddingLeft="2dp"
-        android:paddingTop="6dp"
-        android:paddingBottom="6dp"
-        android:paddingRight="2dp"
+
         />
 
     <Button

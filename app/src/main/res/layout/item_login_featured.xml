@@ -19,8 +19,7 @@
         android:layout_gravity="center"
         tools:src="@drawable/ic_get_grocery"
         android:scaleType="fitCenter"
-        android:paddingTop="14dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="2dp"
         android:paddingBottom="14dp"
         />
 
@@ -43,8 +42,9 @@
         android:textColor="@android:color/black"
         tools:text="@tools:sample/lorem/random"
         android:ellipsize="end"
-        android:maxLines="2"
-        android:gravity="center"
+        android:minLines="3"
+        android:maxLines="3"
+        android:gravity="center|top"
         android:layout_marginTop="4dp"
         />
 

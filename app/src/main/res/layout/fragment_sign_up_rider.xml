@@ -41,6 +41,8 @@
     <Button
         android:id="@+id/btn_customer"
         android:layout_width="0dp"
+        android:layout_height="45dp"
+
         style="@style/GetExpressButtonFlat"
         app:layout_constraintTop_toBottomOf="@id/label_i_am"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -151,7 +153,7 @@
         android:textStyle="bold"
         android:text="OR"
         android:textColor="@color/grey_200"
-        android:textSize="9sp"
+        android:textSize="13sp"
         />
 
     <View
@@ -215,6 +217,9 @@
         style="@style/GetExpressEditTextLogin"
         tools:text="Jhondee Diaz"
         android:hint="Full name"
+        android:singleLine="true"
+        android:lines="1"
+        android:maxLines="1"
 
 
         />
@@ -247,6 +252,9 @@
         tools:text="jhondz@gmail.com"
         android:hint="Email Address"
         style="@style/GetExpressEditTextLogin"
+        android:singleLine="true"
+        android:lines="1"
+        android:maxLines="1"
         />
 
     <ImageView
@@ -278,6 +286,9 @@
         android:hint="Password"
         android:inputType="textPassword"
         style="@style/GetExpressEditTextLogin"
+        android:singleLine="true"
+        android:lines="1"
+        android:maxLines="1"
         />
 
 
@@ -312,6 +323,10 @@
         mask:allowed_chars="1234567890"
         mask:mask="09##-###-####"
         app:keep_hint="false"
+        android:inputType="number"
+        android:singleLine="true"
+        android:lines="1"
+        android:maxLines="1"
         />
 
     <ImageView
@@ -370,6 +385,9 @@
         app:layout_constraintRight_toRightOf="@id/btn_rider"
         app:layout_constraintBottom_toTopOf="@id/et_drivers_license"
         android:layout_marginTop="12dp"
+        android:singleLine="true"
+        android:lines="1"
+        android:maxLines="1"
 
         tools:text="Quezon City"
         android:hint="Location"
@@ -483,6 +501,9 @@
         android:src="@drawable/ic_vehicle"
         android:background="@color/yellow_200"
         android:scaleType="fitCenter"
+        android:singleLine="true"
+        android:lines="1"
+        android:maxLines="1"
         />
 
     <EditText
@@ -499,6 +520,9 @@
         tools:text="13GF-31"
         android:hint="Vehicle Model"
         style="@style/GetExpressEditTextLogin"
+        android:singleLine="true"
+        android:lines="1"
+        android:maxLines="1"
         />
 
     <ImageView
@@ -529,6 +553,9 @@
         tools:text=""
         android:hint="Plate Number"
         style="@style/GetExpressEditTextLogin"
+        android:singleLine="true"
+        android:lines="1"
+        android:maxLines="1"
         />
 
     <ImageButton
@@ -545,7 +572,7 @@
 
         android:layout_marginTop="16dp"
 
-        android:src="@drawable/signup_button"
+        android:src="@drawable/btn_welcome_siginup"
         android:scaleType="centerInside"
         android:background="@null"
         android:layout_marginBottom="14dp"

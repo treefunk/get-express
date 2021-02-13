@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.myoptimind.getexpress">
+    package="com.myoptimind.get_express">
 
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
@@ -12,6 +11,13 @@
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
+    <supports-screens
+        android:smallScreens="false"
+        android:normalScreens="true"
+        android:largeScreens="true"
+        android:xlargeScreens="false"
+        />
 
 
 
@@ -33,7 +39,7 @@
 
     <application
         android:allowBackup="true"
-        android:name=".GetExpressApp"
+        android:name="com.myoptimind.get_express.GetExpressApp"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -41,16 +47,18 @@
         android:usesCleartextTraffic="true"
         android:theme="@style/Theme.Getexpress">
 
-        <activity android:name=".MainActivity"
-            android:windowSoftInputMode="adjustPan|adjustNothing"
+        <activity android:name="com.myoptimind.get_express.MainActivity"
+            android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait"
+            android:theme="@style/Theme.Getexpress"
             >
 
         </activity>
 
-        <activity android:name=".features.login.LoginActivity"
+        <activity android:name="com.myoptimind.get_express.features.login.LoginActivity"
             android:windowSoftInputMode="adjustPan"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/splashScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -72,12 +80,12 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".features.rider.selected_customer_request.RiderTrackingService"
+        <service android:name="com.myoptimind.get_express.features.rider.selected_customer_request.RiderTrackingService"
             android:foregroundServiceType="location"
             />
 
         <provider
-            android:authorities="com.myoptimind.getexpress.fileprovider"
+            android:authorities="com.myoptimind.get_express.fileprovider"
             android:name="androidx.core.content.FileProvider"
             android:exported="false"
             android:grantUriPermissions="true"
@@ -102,19 +110,41 @@
             android:value="${GOOGLE_API_KEY}" />
 
         <service
-            android:name=".features.shared.MyFirebaseMessagingService"
+            android:name="com.myoptimind.get_express.features.shared.MyFirebaseMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
 
-        <receiver android:name="com.myoptimind.getexpress.features.customer.cart.rider_search.CustomerRiderSearchReceiver"  android:exported="true">
+        <receiver android:name="com.myoptimind.get_express.features.customer.cart.rider_search.CustomerRiderSearchReceiver"  android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
                 <action android:name="android.intent.action.INPUT_METHOD_CHANGED" />
             </intent-filter>
         </receiver>
+
+
+<!--        FACEBOOK-->
+        <meta-data android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id"/>
+
+        <activity android:name="com.facebook.FacebookActivity"
+            android:configChanges=
+                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name" />
+        <activity
+            android:name="com.facebook.CustomTabActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="@string/fb_login_protocol_scheme" />
+            </intent-filter>
+        </activity>
+
+
 
 
 

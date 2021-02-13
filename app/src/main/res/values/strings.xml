@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">get-express</string>
+    <string name="app_name">GET Express</string>
     <string name="label_sign_in_link"><u>SIGN IN</u></string>
     <string name="label_forgot_password"><b><u>Forgot Password</u></b></string>
     <string name="label_sign_up_link"><u>SIGN UP</u></string>
@@ -15,4 +15,11 @@
     <string name="add_items_link"><u>Add Items</u></string>
     <string name="label_weight_description"><i>This Rider can carry up to 15kg (Small-medium items)</i></string>
     <string name="label_max_limit"><i>max. limit 2,000.00</i></string>
+
+
+    <!--  Facebook Details  -->
+    <string name="facebook_app_id">746056413009918</string>
+    <string name="fb_login_protocol_scheme">fb746056413009918</string>
+    <string name="label_skip_link"><u><![CDATA[SKIP >>]]></u></string>
+
 </resources>
