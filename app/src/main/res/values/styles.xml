@@ -444,4 +444,27 @@
         <item name="cornerFamily">cut</item>
     </style>
 
+    <style name="getExpressTextChip">
+        <item name="android:textSize">11sp</item>
+        <item name="android:fontFamily">@font/lato_regular</item>
+        <item name="android:textColor">@color/main_text_color</item>
+        <item name="android:letterSpacing">0.02</item>
+</style>
+
+    <style name="getExpressChoiceChip" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="chipBackgroundColor">@color/selector_compliment_rider</item>
+        <item name="chipStrokeColor">@color/main_text_color</item>
+        <item name="chipStrokeWidth">0.4dp</item>
+        <item name="chipCornerRadius">4dp</item>
+        <item name="chipMinHeight">30dp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="chipStartPadding">10dp</item>
+        <item name="chipEndPadding">10dp</item>
+<!--        <item name="android:paddingTop">2dp</item>-->
+        <item name="chipMinTouchTargetSize">0dp</item>
+        <item name="android:textAppearance">@style/getExpressTextChip</item>
+        <item name="android:textColor">@color/selector_compliment_rider_text</item>
+        <item name="checkedIconTint">@color/blue_200</item>
+    </style>
+
 </resources>

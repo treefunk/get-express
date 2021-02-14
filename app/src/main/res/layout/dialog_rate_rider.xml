@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:fillViewport="true"
+    >
+<androidx.constraintlayout.widget.ConstraintLayout
+
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    android:background="@android:color/transparent"
+    tools:background="@android:color/holo_blue_bright"
+    >
+
+
+    <ImageButton
+        android:id="@+id/ib_close"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:layout_constraintRight_toRightOf="@id/bg_box"
+        app:layout_constraintBottom_toTopOf="@id/bg_box"
+        app:layout_constraintHorizontal_bias="1"
+
+        android:background="@null"
+        android:src="@drawable/ic_lightbox_close"
+        android:scaleType="fitCenter"
+        android:layout_marginTop="2dp"
+        />
+
+
+
+    <View
+        android:id="@+id/bg_box"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintLeft_toLeftOf="@id/label_title"
+        app:layout_constraintRight_toRightOf="@id/label_title"
+        app:layout_constraintTop_toTopOf="@id/label_title"
+        app:layout_constraintBottom_toBottomOf="@id/btn_submit_review"
+        android:background="@android:color/white"
+        />
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_hor_90"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.90"
+        />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_hor_12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.12"
+        />
+    <TextView
+        android:id="@+id/label_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        style="@style/GetExpressLabel"
+        android:text="Rate this Rider"
+        android:textSize="24sp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/iv_profile_picture"
+        app:layout_constraintVertical_chainStyle="packed"
+        android:gravity="center"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:textColor="@color/blue_200"
+        />
+
+    <ImageView
+        android:id="@+id/iv_bg_rider_profile"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/label_title"
+        app:layout_constraintBottom_toBottomOf="@id/tv_caption"
+        app:layout_constraintLeft_toLeftOf="@id/label_title"
+        app:layout_constraintRight_toRightOf="@id/label_title"
+        android:background="@color/yellow_500"
+        />
+
+    <ImageButton
+        android:layout_width="95dp"
+        android:layout_height="wrap_content"
+
+        style="@style/GetExpressImageButton"
+
+        app:layout_constraintRight_toRightOf="@id/iv_bg_rider_profile"
+        app:layout_constraintTop_toTopOf="@id/iv_bg_rider_profile"
+        android:src="@drawable/btn_report"
+        android:layout_marginTop="4dp"
+        android:layout_marginRight="8dp"
+        />
+
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/iv_profile_picture"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/tv_profile_full_name"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintTop_toBottomOf="@id/label_title"
+        app:layout_constraintVertical_bias="0"
+        android:layout_marginTop="16dp"
+
+        app:civ_border_width="2.5dp"
+        android:src="@drawable/img_feature_bg"
+        app:civ_border_color="#FFFFFF"
+        />
+
+    <ImageButton
+        android:id="@+id/iv_edit_profile_picture"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_edit"
+        android:background="?selectableItemBackgroundBorderless"
+        app:layout_constraintBottom_toBottomOf="@id/iv_profile_picture"
+        app:layout_constraintRight_toRightOf="@id/iv_profile_picture"
+        app:layout_constraintLeft_toRightOf="@id/iv_profile_picture"
+        android:scaleType="fitCenter"
+        android:layout_marginBottom="4dp"
+        android:translationX="-4dp"
+        android:visibility="gone"
+        />
+
+    <TextView
+        android:id="@+id/tv_profile_full_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/iv_profile_picture"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/tv_caption"
+        style="@style/GetExpressLabel.EditProfileName"
+        tools:text="Welcome, Eliza Perez!"
+        android:textColor="@color/blue_200"
+        android:layout_marginTop="10dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_caption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintTop_toBottomOf="@id/tv_profile_full_name"
+        app:layout_constraintLeft_toLeftOf="@id/tv_profile_full_name"
+        app:layout_constraintRight_toRightOf="@id/tv_profile_full_name"
+        app:layout_constraintBottom_toTopOf="@id/flow_stars"
+        tools:text="Nissan Sentra | ADA 1234"
+        android:textColor="@color/blue_200"
+        android:textSize="9sp"
+        android:fontFamily="@font/lato_bold"
+        android:layout_marginTop="4dp"
+        android:paddingBottom="24dp"
+        />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintLeft_toLeftOf="@id/label_title"
+        app:layout_constraintRight_toRightOf="@id/label_title"
+        app:layout_constraintTop_toBottomOf="@id/iv_bg_rider_profile"
+        app:layout_constraintBottom_toBottomOf="@id/tv_star_caption"
+        android:background="@color/grey_400"
+        />
+
+    <androidx.constraintlayout.helper.widget.Flow
+        android:id="@+id/flow_stars"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/tv_caption"
+        app:layout_constraintLeft_toLeftOf="@id/label_title"
+        app:layout_constraintRight_toRightOf="@id/label_title"
+        app:layout_constraintBottom_toTopOf="@id/tv_star_caption"
+        app:flow_horizontalStyle="packed"
+        app:flow_horizontalGap="14dp"
+        android:layout_marginTop="8dp"
+        app:constraint_referenced_ids="cb_star_1,cb_star_2,cb_star_3,cb_star_4,cb_star_5"
+        />
+
+    <CheckBox
+        android:id="@+id/cb_star_1"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/selector_rate_on_off"
+        tools:checked="true"
+        android:button="@null"
+        />
+
+    <CheckBox
+        android:id="@+id/cb_star_2"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/selector_rate_on_off"
+        android:button="@null"
+        tools:checked="true"
+
+        />
+
+    <CheckBox
+        android:id="@+id/cb_star_3"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/selector_rate_on_off"
+        android:button="@null"
+        tools:checked="true"
+
+        />
+
+    <CheckBox
+        android:id="@+id/cb_star_4"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/selector_rate_on_off"
+        tools:checked="true"
+
+        android:button="@null"
+
+        />
+
+    <CheckBox
+        android:id="@+id/cb_star_5"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/selector_rate_on_off"
+        android:button="@null"
+
+        />
+
+
+
+    <TextView
+        android:id="@+id/tv_star_caption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        style="@style/GetExpressLabel.MediumBlack"
+        android:textColor="@color/blue_200"
+        android:text="GREAT!"
+        app:layout_constraintTop_toBottomOf="@id/flow_stars"
+        app:layout_constraintLeft_toLeftOf="@id/label_title"
+        app:layout_constraintRight_toRightOf="@id/label_title"
+        app:layout_constraintBottom_toTopOf="@id/label_compliment"
+        android:layout_marginTop="8dp"
+        android:paddingBottom="8dp"
+        android:fontFamily="@font/lato_black"
+        />
+
+
+
+    <TextView
+        android:id="@+id/label_compliment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tv_star_caption"
+        app:layout_constraintLeft_toLeftOf="@id/label_title"
+        app:layout_constraintRight_toRightOf="@id/label_title"
+        app:layout_constraintBottom_toTopOf="@id/flow_comment"
+        style="@style/GetExpressLabel.MediumBlack"
+        android:layout_marginTop="12dp"
+        android:text="Enjoyed his/her service? Compliment this rider."
+        />
+
+
+    <androidx.constraintlayout.helper.widget.Flow
+        android:id="@+id/flow_comment"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/label_compliment"
+        app:layout_constraintLeft_toLeftOf="@id/label_compliment"
+        app:layout_constraintRight_toRightOf="@id/label_compliment"
+        app:layout_constraintBottom_toTopOf="@id/et_your_feedback"
+        android:orientation="horizontal"
+        app:flow_maxElementsWrap="2"
+        app:flow_wrapMode="chain"
+        app:flow_horizontalGap="36dp"
+        app:constraint_referenced_ids="chip_1,chip_2,chip_3,chip_4,chip_5,chip_6"
+        app:flow_verticalGap="12dp"
+        android:layout_marginTop="18dp"
+        />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Expert Navigation"
+            android:tag="1"
+            style="@style/getExpressChoiceChip"
+            />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/chip_2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Expert Navigation"
+        android:tag="1"
+        style="@style/getExpressChoiceChip"
+        />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/chip_3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Expert Navigation"
+        android:tag="1"
+        style="@style/getExpressChoiceChip"
+        />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/chip_4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Expert Navigation"
+        android:tag="1"
+        style="@style/getExpressChoiceChip"
+        />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/chip_5"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Expert Navigation"
+        android:tag="1"
+        style="@style/getExpressChoiceChip"
+        />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/chip_6"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Expert Navigation"
+        android:tag="1"
+        style="@style/getExpressChoiceChip"
+        />
+
+
+
+    <EditText
+        android:id="@+id/et_your_feedback"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:maxLines="3"
+        android:lines="3"
+        android:inputType="textMultiLine"
+
+        android:gravity="left|top"
+
+        app:layout_constraintTop_toBottomOf="@id/flow_comment"
+        app:layout_constraintLeft_toLeftOf="@id/label_compliment"
+        app:layout_constraintRight_toRightOf="@id/label_compliment"
+        app:layout_constraintBottom_toTopOf="@id/btn_submit_review"
+        android:textColor="@color/main_text_color"
+        android:background="@drawable/shape_grey_border"
+        android:layout_marginTop="12dp"
+        style="@style/GetExpressEditTextDialog"
+        android:hint="Your feedback"
+        />
+
+    <Button
+        android:id="@+id/btn_submit_review"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
+        android:background="@color/blue_200"
+        app:layout_constraintTop_toBottomOf="@id/et_your_feedback"
+        app:layout_constraintLeft_toLeftOf="@id/label_title"
+        app:layout_constraintRight_toRightOf="@id/label_title"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:gravity="center"
+        style="@style/GetExpressLabel"
+        android:text="SUBMIT REVIEW"
+        android:textColor="@color/yellow_200"
+        android:includeFontPadding="false"
+        android:paddingLeft="12dp"
+        android:layout_marginTop="12dp"
+        />
+
+
+
+
+
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>
