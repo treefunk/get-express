@@ -92,7 +92,7 @@
         />
 
     <ImageButton
-        android:layout_width="95dp"
+        android:layout_width="85dp"
         android:layout_height="wrap_content"
 
         style="@style/GetExpressImageButton"

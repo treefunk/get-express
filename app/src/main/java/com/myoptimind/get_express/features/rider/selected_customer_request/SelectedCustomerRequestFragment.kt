@@ -401,6 +401,8 @@ class SelectedCustomerRequestFragment: TitleOnlyFragment() {
                                 adapter?.itemList = items
                                 adapter?.notifyDataSetChanged()
 
+                                btn_contact_from.visibility = View.VISIBLE
+                                btn_contact_to.visibility = View.VISIBLE
                             }
                         }
 
