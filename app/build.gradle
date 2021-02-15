@@ -16,8 +16,8 @@ android {
         applicationId "com.myoptimind.get_express"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 9
-        versionName "1.8"
+        versionCode 10
+        versionName "1.9"
 
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

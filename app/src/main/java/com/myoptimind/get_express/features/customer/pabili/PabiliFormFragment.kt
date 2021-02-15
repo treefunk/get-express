@@ -3,9 +3,7 @@ package com.myoptimind.get_express.features.customer.pabili
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -37,10 +35,38 @@ import kotlinx.android.synthetic.main.fragment_pabili_form.tv_receiver_name
 import kotlinx.android.synthetic.main.fragment_pabili_form.tv_sender_address
 import kotlinx.android.synthetic.main.fragment_pabili_form.tv_sender_name
 import timber.log.Timber
+import androidx.lifecycle.observe
+import com.myoptimind.get_express.features.shared.getSoftInputMode
 
 @AndroidEntryPoint
 class PabiliFormFragment: TitleOnlyFragment() {
 
+    private var originalMode : Int? = null
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        originalMode = activity?.window?.getSoftInputMode()
+        activity?.window?.setSoftInputMode(
+            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
+        )
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        originalMode?.let { activity?.window?.setSoftInputMode(it) }
+
+    }
     companion object {
         private const val RECEIVER_ADDRESS_REQUEST = 200
         private const val SENDER_ADDRESS_REQUEST = 300

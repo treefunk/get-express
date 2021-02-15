@@ -7,6 +7,7 @@ import android.provider.MediaStore
 import android.text.InputType
 import android.util.Patterns
 import android.view.View
+import android.view.Window
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import androidx.fragment.app.Fragment
@@ -215,4 +216,8 @@ fun Place.toCartLocation(): CartLocation {
 fun EditText.initMultilineEditText() {
     imeOptions = EditorInfo.IME_ACTION_DONE
     setRawInputType(InputType.TYPE_CLASS_TEXT)
+}
+
+fun Window.getSoftInputMode() : Int {
+    return attributes.softInputMode
 }

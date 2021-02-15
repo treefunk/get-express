@@ -20,6 +20,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -39,6 +40,7 @@ import com.myoptimind.get_express.R
 import com.myoptimind.get_express.features.customer.cart.data.*
 import com.myoptimind.get_express.features.login.data.VehicleType
 import com.myoptimind.get_express.features.login.data.idToVehicleType
+import com.myoptimind.get_express.features.rider.topup.TOPUP_PAYMENT_TYPE
 import com.myoptimind.get_express.features.shared.TitleOnlyFragment
 import com.myoptimind.get_express.features.shared.api.Result
 import com.myoptimind.get_express.features.shared.data.CartType
@@ -380,11 +382,19 @@ class SelectedCustomerRequestFragment: TitleOnlyFragment() {
                                 val pabiliBasket = cart.initBasketForPabili()
                                 Timber.d(pabiliBasket.toString())
                                 group_sub_total_and_delivery_fee.visibility = View.GONE
-/*                                label_sub_total.visibility = View.GONE
-                                label_delivery_fee.text = "Pabili Fee"
-                                tv_delivery_fee.text = pabiliBasket.estimateTotalAmount */
-                                label_total.text = "Estimated Total"
-                                tv_total.text = pabiliBasket.estimateTotalAmount.toMoneyFormat()
+/*                                label_sub_total.visibility = View.GONE */
+                                label_sub_total.visibility = View.GONE
+                                tv_sub_total.visibility = View.GONE
+                                label_delivery_fee.text = "Estimated Total"
+                                label_delivery_fee.visibility = View.VISIBLE
+                                tv_delivery_fee.visibility = View.VISIBLE
+                                tv_delivery_fee.text = pabiliBasket.estimateTotalAmount.toMoneyFormat()
+                                label_total.text = "Pabili Fee"
+                                tv_total.text = pabiliBasket.deliveryFee.toMoneyFormat()
+
+
+
+
                                 adapter?.itemList = pabiliBasket.items
                                 adapter?.notifyDataSetChanged()
                             }
@@ -401,8 +411,26 @@ class SelectedCustomerRequestFragment: TitleOnlyFragment() {
                                 adapter?.itemList = items
                                 adapter?.notifyDataSetChanged()
 
-                                btn_contact_from.visibility = View.VISIBLE
-                                btn_contact_to.visibility = View.VISIBLE
+                                if (!args.historyOnly) {
+                                    btn_contact_from.visibility = View.VISIBLE
+                                    btn_contact_to.visibility = View.VISIBLE
+
+                                    btn_contact_from.setOnClickListener {
+                                        openCallAndSmsDialog(
+                                            cart.pickUpLocation.contactNumber,
+                                            "Sender"
+                                        )
+                                    }
+
+
+                                    btn_contact_to.setOnClickListener {
+                                        openCallAndSmsDialog(
+                                            cart.deliveryLocation.contactNumber,
+                                            "Recipient"
+                                        )
+                                    }
+                                }
+
                             }
                         }
 
@@ -451,6 +479,22 @@ class SelectedCustomerRequestFragment: TitleOnlyFragment() {
             }
         }
 
+    }
+
+    private fun openCallAndSmsDialog(phone: String, label: String){
+        val choices = listOf<String>("Call","Text")
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Contact ${label} via:")
+            .setItems(choices.toTypedArray()) { dialog, which ->
+                // Respond to item chosen
+                if(choices[which] == "Call"){
+                    dialPhone(phone)
+                }else if(choices[which] == "Text"){
+                    sendSms(phone)
+                }
+                dialog.dismiss()
+            }
+            .show()
     }
 
     private fun backToDashboard(){
@@ -553,12 +597,7 @@ class SelectedCustomerRequestFragment: TitleOnlyFragment() {
         val phone = cart.customer.customer.mobileNum
 
         box_accept.setOnClickListener {
-            if(phone.isNotBlank()){
-                val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phone))
-                startActivity(intent)
-            }else{
-                Toast.makeText(requireContext(),"Contact Number is not available.",Toast.LENGTH_SHORT).show()
-            }
+            dialPhone(phone)
         }
 
 
@@ -571,11 +610,7 @@ class SelectedCustomerRequestFragment: TitleOnlyFragment() {
         )
 
         box_reject.setOnClickListener {
-            if(phone.isNotBlank()){
-                startActivity(Intent(Intent.ACTION_VIEW, Uri.fromParts("sms", phone, null)))
-            }else{
-                Toast.makeText(requireContext(),"Contact Number is not available.",Toast.LENGTH_SHORT).show()
-            }
+            sendSms(phone)
         }
 
         btn_got_items.initStatusButton(cart, cartStatus, CartStatus.GOT_ITEMS)
@@ -583,6 +618,23 @@ class SelectedCustomerRequestFragment: TitleOnlyFragment() {
         btn_arrived.initStatusButton(cart, cartStatus, CartStatus.ARRIVED)
         btn_delivered.initStatusButton(cart, cartStatus, CartStatus.DELIVERED)
 
+    }
+
+    private fun dialPhone(phone: String){
+        if(phone.isNotBlank()){
+            val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phone))
+            startActivity(intent)
+        }else{
+            Toast.makeText(requireContext(),"Contact Number is not available.",Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun sendSms(phone: String){
+        if(phone.isNotBlank()){
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.fromParts("sms", phone, null)))
+        }else{
+            Toast.makeText(requireContext(),"Contact Number is not available.",Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun changeStatus(cart: Cart, currentStatus: CartStatus, newStatus: CartStatus){

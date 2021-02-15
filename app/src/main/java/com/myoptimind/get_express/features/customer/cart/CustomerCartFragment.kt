@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,7 +24,6 @@ import com.google.android.libraries.places.widget.AutocompleteActivity
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
-import com.myoptimind.get_express.MainActivity
 import com.myoptimind.get_express.R
 import com.myoptimind.get_express.features.customer.cart.data.*
 import com.myoptimind.get_express.features.customer.pabili.PabiliFormAdapter
@@ -33,19 +33,12 @@ import com.myoptimind.get_express.features.shared.data.CartType
 import com.myoptimind.get_express.features.shared.data.idToCartType
 import com.myoptimind.get_express.features.shared.data.toCartStatus
 import com.myoptimind.get_express.features.shared.initMultilineEditText
+import com.myoptimind.get_express.features.shared.toCartLocation
 import com.myoptimind.get_express.features.shared.toMoneyFormat
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_customer_cart.*
-import kotlinx.android.synthetic.main.fragment_customer_cart.group_sub_total_and_delivery_fee
-import kotlinx.android.synthetic.main.fragment_customer_cart.label_summary
-import kotlinx.android.synthetic.main.fragment_customer_cart.label_total
-import kotlinx.android.synthetic.main.fragment_customer_cart.rv_orders
-import kotlinx.android.synthetic.main.fragment_customer_cart.tv_delivery_fee
-import kotlinx.android.synthetic.main.fragment_customer_cart.tv_sub_total
-import kotlinx.android.synthetic.main.fragment_customer_cart.tv_total
-import kotlinx.android.synthetic.main.partial_nav_top.*
-
 import timber.log.Timber
+
 
 @AndroidEntryPoint
 class CustomerCartFragment: TitleOnlyFragment() {
@@ -114,6 +107,42 @@ class CustomerCartFragment: TitleOnlyFragment() {
 
 
 
+        cartViewModel.pabiliResult.observe(viewLifecycleOwner){ result ->
+            when(result){
+                is Result.Progress -> { }
+                is Result.Success -> {
+                    if(result.data != null){
+                        Timber.d("result -> %s", result)
+                        if(result.data.meta.code.equals("ok")){
+                            val cart = result.data.data
+                            cartViewModel.finalizeCart(
+                                cart.id,
+                                cart.notes,
+                                cartViewModel.fromLocation.value!!.toCartLocation(),
+                                cartViewModel.toLocation.value!!.toCartLocation(),
+                                "COD"
+                            )
+/*                            cartViewModel.finalizeCartForDelivery(
+                                cart.id,
+                                cart.notes,
+                                CartLocation.fromPlace(cartViewModel.fromLocation.value!!),
+                                CartLocation.fromPlace(cartViewModel.toLocation.value!!),
+                                "COD"
+                            )*/
+                        }
+                    }
+                }
+                is Result.Error -> {
+                    Timber.d("result -> %s", result.metaResponse.message)
+
+                }
+                is Result.HttpError -> {
+                    Timber.d("result -> %s", result.error.message)
+
+                }
+            }
+        }
+
 
         cartViewModel.cart.observe(viewLifecycleOwner){ result ->
             when(result){
@@ -177,8 +206,8 @@ class CustomerCartFragment: TitleOnlyFragment() {
                                             cartViewModel.cartId!!,
                                             "notes",
                                             pickupLocation = null,
-                                            CartLocation.fromPlace(cartViewModel.toLocation.value!!),
-                                            "COD"
+                                            deliveryLocation = CartLocation.fromPlace(cartViewModel.toLocation.value!!),
+                                            paymentType = "COD"
                                     )
                                 }
                             }
@@ -216,8 +245,8 @@ class CustomerCartFragment: TitleOnlyFragment() {
                                                 cartViewModel.cartId!!,
                                                 "notes",
                                                 pickupLocation = null,
-                                                CartLocation.fromPlace(cartViewModel.toLocation.value!!),
-                                                "COD"
+                                                deliveryLocation = CartLocation.fromPlace(cartViewModel.toLocation.value!!),
+                                                paymentType = "COD"
                                         )
                                     }
                                 }
@@ -317,13 +346,7 @@ class CustomerCartFragment: TitleOnlyFragment() {
                                             pabiliBasket.estimateTotalWithoutDeliveryFee.toDouble()
                                     )
 
-                                    cartViewModel.finalizeCartForDelivery(
-                                            cart.id,
-                                        cart.notes,
-                                        CartLocation.fromPlace(cartViewModel.fromLocation.value!!),
-                                        CartLocation.fromPlace(cartViewModel.toLocation.value!!),
-                                        "COD"
-                                    )
+
 
 
                                 }
