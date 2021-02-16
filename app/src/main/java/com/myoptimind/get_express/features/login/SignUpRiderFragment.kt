@@ -2,6 +2,7 @@ package com.myoptimind.get_express.features.login
 
 import android.app.Activity
 import android.app.Activity.RESULT_OK
+import androidx.lifecycle.observe
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
@@ -278,7 +279,7 @@ class SignUpRiderFragment : BaseLoginFragment(UserType.RIDER), EasyPermissions.P
                 when (result) {
                     is Result.Progress -> {
                         Timber.v("loading ${result.isLoading}")
-                        //TODO: ADD LOADING
+//                        btn_sign_up.isEnabled = false
                     }
                     is Result.Success -> {
                         if(result.data != null){

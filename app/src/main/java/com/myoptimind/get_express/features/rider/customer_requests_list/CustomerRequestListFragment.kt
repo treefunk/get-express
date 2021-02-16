@@ -51,6 +51,7 @@ class CustomerRequestListFragment: LogoOnlyFragment() {
     private val riderDashBoardViewModel by activityViewModels<RiderDashboardViewModel>()
     lateinit var adapter: CustomerRequestAdapter
     lateinit var parentFrag: RiderDashboardFragment
+    private lateinit var itemList: ArrayList<CustomerRequest>
 
     companion object {
         const val REQUEST_TOP_UP = 999
@@ -95,6 +96,10 @@ class CustomerRequestListFragment: LogoOnlyFragment() {
 
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        Timber.v("On Activity Created")
+    }
 
 
     override fun onResume() {
@@ -106,13 +111,15 @@ class CustomerRequestListFragment: LogoOnlyFragment() {
     }
 
     private fun initAdapter() {
-        adapter = CustomerRequestAdapter(ArrayList(), object: CustomerRequestAdapter.CustomerRequestListener{
+        itemList = ArrayList()
+        adapter = CustomerRequestAdapter(itemList, object: CustomerRequestAdapter.CustomerRequestListener{
             override fun onSelectItem(customerRequest: CustomerRequest) {
                 parentFrag.navigateToSelectedCustomerRequest(customerRequest.cartId)
             }
 
-            override fun onPressButton(accepted: Boolean, customerRequest: CustomerRequest) {
-                MaterialAlertDialogBuilder(requireContext())
+            override fun onPressButton(accepted: Boolean, customerRequest: CustomerRequest, index: Int) {
+                if(accepted){
+                    MaterialAlertDialogBuilder(requireContext())
                         .setMessage("Accept this request?")
                         .setNeutralButton("CANCEL") { _, _ ->
                             // Respond to neutral button press
@@ -121,6 +128,22 @@ class CustomerRequestListFragment: LogoOnlyFragment() {
                             parentFrag.navigateToSelectedCustomerRequest(customerRequest.cartId,accepted)
                         }
                         .show()
+                }else{
+                    MaterialAlertDialogBuilder(requireContext())
+                        .setMessage("Decline this request?")
+                        .setNeutralButton("CANCEL") { _, _ ->
+                            // Respond to neutral button press
+                        }
+                        .setNegativeButton("Decline") { _, _ ->
+                            viewModel.declineRequest(customerRequest)
+                            itemList.removeAt(index)
+                            adapter.customerRequests = itemList
+                            adapter.notifyItemRemoved(index)
+                            adapter.notifyItemRangeChanged(index,adapter.itemCount)
+                        }
+                        .show()
+                }
+
             }
         })
         rv_customer_request.apply {
@@ -158,7 +181,9 @@ class CustomerRequestListFragment: LogoOnlyFragment() {
 
 
                                 Timber.v("refreshing list..")
-                                adapter.customerRequests = result.data.data
+                                itemList.clear()
+                                itemList = ArrayList(result.data.data)
+                                adapter.customerRequests = itemList
                                 adapter.notifyDataSetChanged()
                                 job.run {
                                     this?.cancel()

@@ -193,16 +193,16 @@ class CustomerDashboardFragment : LogoOnlyFragment() {
                         when (cartType) {
                             CartType.CAR -> TODO()
                             CartType.GROCERY, CartType.FOOD -> {
-                                CustomerDashboardFragmentDirections.actionHomeFragmentToStoresFragment(
+/*                                CustomerDashboardFragmentDirections.actionHomeFragmentToStoresFragment(
                                     cart.cartTypeId,
                                     cart.id
-                                ).also {
+                                ).also {*/
                                     CustomerDashboardFragmentDirections.actionHomeFragmentToCustomerRiderSearchFragment(
                                         cart.id
                                     ).also {
                                         findNavController().navigate(it)
                                     }
-                                }
+//                                }
                             }
                             CartType.PABILI -> {
                                 CustomerDashboardFragmentDirections.actionHomeFragmentToCustomerRiderSearchFragment(
@@ -212,12 +212,17 @@ class CustomerDashboardFragment : LogoOnlyFragment() {
                                 }
                             }
                             CartType.DELIVERY -> {
-                                CustomerDashboardFragmentDirections.actionHomeFragmentToDeliveryFormFragment(
+                                CustomerDashboardFragmentDirections.actionHomeFragmentToCustomerRiderSearchFragment(
+                                    cart.id
+                                ).also {
+                                    findNavController().navigate(it)
+                                }
+/*                                CustomerDashboardFragmentDirections.actionHomeFragmentToDeliveryFormFragment(
                                     cart.id,
                                     cart.vehicleId
                                 ).also {
                                     findNavController().navigate(it)
-                                }
+                                }*/
                             }
                         }
 

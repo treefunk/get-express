@@ -227,6 +227,7 @@
             app:layout_constraintRight_toRightOf="@id/iv_location_bg"
             app:layout_constraintBottom_toBottomOf="@id/label_est_total_amount"
             android:layout_marginRight="12dp"
+            android:paddingRight="6dp"
 
             android:text="@string/label_max_limit"
             style="@style/GetExpressLabel.MediumBlack.DescriptionSelectedCustomerRequestSmall"

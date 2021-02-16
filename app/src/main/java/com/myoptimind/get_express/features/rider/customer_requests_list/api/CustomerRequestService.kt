@@ -16,7 +16,7 @@ interface CustomerRequestService {
     ): GetCustomerRequestResponse
 
     data class GetCustomerRequestResponse(
-            val data: List<CustomerRequest>,
+            var data: List<CustomerRequest>,
             @SerializedName("active_cart_id")
             val activeCartId: String,
             val meta: MetaResponse

@@ -19,6 +19,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
@@ -40,6 +41,8 @@ import com.myoptimind.get_express.R
 import com.myoptimind.get_express.features.customer.cart.data.*
 import com.myoptimind.get_express.features.login.data.VehicleType
 import com.myoptimind.get_express.features.login.data.idToVehicleType
+import com.myoptimind.get_express.features.rider.customer_requests_list.CustomerRequestViewModel
+import com.myoptimind.get_express.features.rider.customer_requests_list.data.CustomerRequest
 import com.myoptimind.get_express.features.rider.topup.TOPUP_PAYMENT_TYPE
 import com.myoptimind.get_express.features.shared.TitleOnlyFragment
 import com.myoptimind.get_express.features.shared.api.Result
@@ -58,6 +61,7 @@ private const val REQUEST_PERMISSION_COARSE_LOCATION = 898
 class SelectedCustomerRequestFragment: TitleOnlyFragment() {
 
     private val viewModel by activityViewModels<SelectedCustomerRequestViewModel>()
+    private val customerRequestViewModel by viewModels<CustomerRequestViewModel>()
     private var adapter: BasketAdapter? = null
     override fun getTitle() = ""
     private var mapFragment: SupportMapFragment? = null
@@ -337,7 +341,7 @@ class SelectedCustomerRequestFragment: TitleOnlyFragment() {
                         updateCommonUILabels(cart, cartType)
 
                         if (cartStatus == CartStatus.PENDING) {
-                            initPending(cart.id)
+                            initPending(cart)
                         } else if (args.historyOnly.not() && (cartStatus != CartStatus.CANCELLED && cartStatus != CartStatus.INIT)) {
                             enableChangeableStatus(cart, cartStatus)
                             initLocationObserver(cart.id, cart.vehicleId)
@@ -558,7 +562,7 @@ class SelectedCustomerRequestFragment: TitleOnlyFragment() {
 
 
 
-    private fun initPending(cartId: String){
+    private fun initPending(cart: Cart){
         if(group_status_change.visibility == View.VISIBLE){
             group_status_change.visibility = View.GONE
         }
@@ -576,10 +580,24 @@ class SelectedCustomerRequestFragment: TitleOnlyFragment() {
                         // Respond to neutral button press
                     }
                     .setPositiveButton("ACCEPT") { _, _ ->
-                        viewModel.acceptCustomerRequest(cartId)
+                        viewModel.acceptCustomerRequest(cart.id)
                     }
                     .show()
         }
+
+        box_reject.setOnClickListener {
+            MaterialAlertDialogBuilder(requireContext())
+                .setMessage("Decline this request?")
+                .setNeutralButton("CANCEL") { _, _ ->
+                    // Respond to neutral button press
+                }
+                .setNegativeButton("Decline") { _, _ ->
+                    customerRequestViewModel.declineRequestById(cart.id)
+                    backToDashboard()
+                }
+                .show()
+        }
+
     }
 
     private fun enableChangeableStatus(cart: Cart, cartStatus: CartStatus){

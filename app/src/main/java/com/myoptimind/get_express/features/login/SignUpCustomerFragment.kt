@@ -1,6 +1,7 @@
 package com.myoptimind.get_express.features.login
 
 import android.app.Activity
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,6 +12,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.lifecycle.observe
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
@@ -179,6 +181,7 @@ class SignUpCustomerFragment : BaseLoginFragment(UserType.CUSTOMER) {
                 is Result.Progress -> {
                     Timber.v("loading ${result.isLoading}")
                     //TODO: ADD LOADING
+
                 }
                 is Result.Success -> {
                     if(result.data != null){
@@ -267,6 +270,11 @@ class SignUpCustomerFragment : BaseLoginFragment(UserType.CUSTOMER) {
             "birth_date",
             REQUEST_CODE_DATE_PICKER
         )
+/*        et_birth_date.setOnClickListener {
+            DatePickerDialog(requireContext(),DatePickerDialog.OnDateSetListener({ d, year, month, dayOfMonth ->
+
+            }),2001,1,1).show()
+        }*/
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

@@ -16,12 +16,9 @@ android {
         applicationId "com.myoptimind.get_express"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 10
-        versionName "1.9"
-
-
+        versionCode 12
+        versionName "1.11"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
         buildConfigField("String",
                 "GOOGLE_API_KEY",
                 "\"${GOOGLE_API_KEY}\"")
@@ -126,6 +123,16 @@ dependencies {
     implementation 'pub.devrel:easypermissions:3.0.0'
 
 
+
+    //ROOM
+    def room_version = "2.2.6"
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+
+    // optional - Kotlin Extensions and Coroutines support for Room
+    implementation "androidx.room:room-ktx:$room_version"
+
+    implementation 'com.google.maps.android:android-maps-utils:2.2.0'
 
 
 //    implementation 'com.facebook.android:facebook-login:[8.1)'

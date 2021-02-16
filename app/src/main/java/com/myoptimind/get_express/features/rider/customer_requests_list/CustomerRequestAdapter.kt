@@ -28,38 +28,38 @@ class CustomerRequestAdapter constructor(
     override fun getItemCount() = customerRequests.size
 
     class ViewHolder constructor(
-            private val itemView: View,
+            private val view: View,
             val listener: CustomerRequestListener?
-    ): RecyclerView.ViewHolder(itemView) {
+    ): RecyclerView.ViewHolder(view) {
         fun bind(customerRequest: CustomerRequest, position: Int){
 
-            itemView.cl_customer_request.setOnClickListener {
+            view.cl_customer_request.setOnClickListener {
                 listener?.onSelectItem(customerRequest)
             }
 
-            itemView.box_accept.setOnClickListener {
-                listener?.onPressButton(true,customerRequest)
+            view.box_accept.setOnClickListener {
+                listener?.onPressButton(true,customerRequest,position)
             }
 
-            itemView.box_reject.setOnClickListener {
-                listener?.onPressButton(false,customerRequest)
+            view.box_reject.setOnClickListener {
+                listener?.onPressButton(false,customerRequest,position)
             }
 
-            itemView.tv_price.text = "${customerRequest.orderInfo.grandTotal.toMoneyFormat()}"
+            view.tv_price.text = "${customerRequest.orderInfo.grandTotal.toMoneyFormat()}"
 
-            itemView.tv_customer_name.text = customerRequest.customer.fullName
-            itemView.tv_customer_details.text = customerRequest.orderInfo.pickupLocationLabel
-            Glide.with(itemView.context)
-                    .load(itemView.context.getDrawable(customerRequest.cartMeta.cartTypeId.idToCartType().drawableId))
-                    .into(itemView.iv_icon)
-            Glide.with(itemView.context)
+            view.tv_customer_name.text = customerRequest.customer.fullName
+            view.tv_customer_details.text = customerRequest.orderInfo.pickupLocationLabel
+            Glide.with(view.context)
+                    .load(view.context.getDrawable(customerRequest.cartMeta.cartTypeId.idToCartType().drawableId))
+                    .into(view.iv_icon)
+            Glide.with(view.context)
                     .load(customerRequest.customer.profilePicture)
-                    .into(itemView.iv_customer_image)
+                    .into(view.iv_customer_image)
         }
     }
 
     interface CustomerRequestListener {
         fun onSelectItem(customerRequest: CustomerRequest)
-        fun onPressButton(accepted: Boolean, customerRequest: CustomerRequest)
+        fun onPressButton(accepted: Boolean, customerRequest: CustomerRequest, index: Int)
     }
 }

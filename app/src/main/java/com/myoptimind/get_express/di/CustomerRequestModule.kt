@@ -1,5 +1,7 @@
 package com.myoptimind.get_express.di
 
+import com.myoptimind.get_express.features.db.DeclinedRequestDao
+import com.myoptimind.get_express.features.db.GetExpressDB
 import com.myoptimind.get_express.features.edit_profile.api.ProfileService
 import com.myoptimind.get_express.features.rider.customer_requests_list.CustomerRequestRepository
 import com.myoptimind.get_express.features.rider.customer_requests_list.api.CustomerRequestService
@@ -28,14 +30,24 @@ class CustomerRequestModule {
             riderDashboardService: CustomerRequestService,
             profileService: ProfileService,
             riderTopupService: RiderTopupService,
+            declinedRequestDao: DeclinedRequestDao,
             appSharedPref: AppSharedPref
     ): CustomerRequestRepository {
         return CustomerRequestRepository(
                 riderDashboardService,
                 profileService,
                 riderTopupService,
+                declinedRequestDao,
                 appSharedPref
         )
+    }
+
+    @ActivityRetainedScoped
+    @Provides
+    fun provideDeclinedRequestDao(
+        getExpressDB: GetExpressDB
+    ): DeclinedRequestDao {
+        return getExpressDB.getDeclinedRequestDao()
     }
 
 }

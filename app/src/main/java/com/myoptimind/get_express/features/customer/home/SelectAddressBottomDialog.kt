@@ -117,16 +117,6 @@ class SelectAddressBottomDialog: BottomSheetDialogFragment() {
                 .show()
     }
 
-    private fun showPlacesAutocomplete(requestCode: Int){
-        // Set the fields to specify which types of place data to
-        // return after the user has made a selection.
-        val fields = listOf(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS)
-
-        // Start the autocomplete intent.
-        val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
-                .build(requireContext())
-        startActivityForResult(intent, requestCode)
-    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.model.Place
 import com.myoptimind.get_express.features.customer.delivery.DeliveryRepository
 import com.myoptimind.get_express.features.customer.food_grocery.StoresRepository
@@ -38,6 +39,13 @@ class CartViewModel @ViewModelInject constructor(
     val place: LiveData<Place> get() = _place
     private val _place = MutableLiveData<Place>()
 
+
+    val currentLocation: LiveData<LatLng?> get() = _currentLocation
+    private val _currentLocation = MutableLiveData<LatLng?>()
+
+    fun updateCurrentLocation(latLng: LatLng){
+        _currentLocation.value = latLng
+    }
 
     val fromLocation: LiveData<Place> get() = _fromLocation
     private val _fromLocation = MutableLiveData<Place>()

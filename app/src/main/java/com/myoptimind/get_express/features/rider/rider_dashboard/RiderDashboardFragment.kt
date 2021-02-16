@@ -17,6 +17,7 @@ import androidx.core.view.GravityCompat
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
+import androidx.lifecycle.observe
 import com.bumptech.glide.Glide
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.myoptimind.get_express.MainActivity
@@ -47,6 +48,7 @@ import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
+import kotlin.jvm.Throws
 
 private const val REFRESH_INTERVAL_SECOND = 10
 
@@ -114,6 +116,7 @@ class RiderDashboardFragment : ProfileFragment() {
         return inflater.inflate(R.layout.fragment_rider_dashboard, container, false)
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initUpload()
@@ -176,13 +179,6 @@ class RiderDashboardFragment : ProfileFragment() {
 
     }
 
-    override fun onResume() {
-        super.onResume()
-    }
-
-    override fun onPause() {
-        super.onPause()
-    }
 
     private fun initObservers() {
 

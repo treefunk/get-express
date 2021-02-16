@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.DatePicker
 import com.myoptimind.get_express.R
 import com.myoptimind.get_express.features.shared.BaseDialogFragment
 import com.myoptimind.get_express.features.shared.toReadableDateTime
@@ -50,7 +51,9 @@ class DatePickerDialogFragment(): BaseDialogFragment(){
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
-        return inflater.inflate(R.layout.dialog_date_picker,container,false)
+        val v = inflater.inflate(R.layout.dialog_date_picker,container,false)
+//        v.findViewById<DatePicker>(R.id.date_picker).style
+        return v
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -65,6 +68,7 @@ class DatePickerDialogFragment(): BaseDialogFragment(){
                     date_picker.minDate = it.getLong(ARGS_MIN_DATE)
                 }
 
+
                 date_picker.init(it.getInt(ARGS_YEAR),
                         it.getInt(ARGS_MONTH_OF_YEAR),
                         it.getInt(ARGS_DAY_OF_MONTH)){ _, year, monthOfYear, dayOfMonth ->
@@ -76,7 +80,7 @@ class DatePickerDialogFragment(): BaseDialogFragment(){
                             Activity.RESULT_OK,
                             Intent().putExtra(EXTRA_DATE,dt.toReadableDateTime()) // PARSE THIS ("yyyy M d")
                     )
-                    this.dismiss()
+//                    this.dismiss()
                 }
             }
         }

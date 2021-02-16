@@ -5,14 +5,20 @@ import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.lifecycle.observe
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.view.GravityCompat
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.libraries.places.api.Places
 import com.myoptimind.get_express.features.login.LoginActivity
 import com.myoptimind.get_express.features.login.LoginViewModel
+import com.myoptimind.get_express.features.login.SignUpRiderFragment
 import com.myoptimind.get_express.features.login.data.UserType
+import com.myoptimind.get_express.features.rider.customer_requests_list.CustomerRequestViewModel
 import com.myoptimind.get_express.features.rider.selected_customer_request.RiderTrackingService
 import com.myoptimind.get_express.features.shared.AppSharedPref
 import com.myoptimind.get_express.features.shared.api.Result
@@ -21,19 +27,27 @@ import com.myoptimind.get_express.features.shared.show
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.partial_nav_top.*
+import pub.devrel.easypermissions.EasyPermissions
+import pub.devrel.easypermissions.PermissionRequest
+import timber.log.Timber
 import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
 
     @Inject
     lateinit var appSharedPref: AppSharedPref
 
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+
+
     private val loginViewModel by viewModels<LoginViewModel>()
+    private val customerRequestViewModel by viewModels<CustomerRequestViewModel>()
 
 
     companion object {
+        private const val REQUEST_LOCATION_PERMISSION = 333
         private const val ABOUT_URL                = "https://getexpress.ph/about-us/"
         private const val FAQS_URL                 = "https://getexpress.ph/faqs/"
         private const val CUSTOMER_SERVICE_URL     = "https://getexpress.ph/contact-us/"
@@ -59,16 +73,55 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+
+    }
+
+    override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
+        if(requestCode == REQUEST_LOCATION_PERMISSION &&
+            perms.contains(android.Manifest.permission.ACCESS_COARSE_LOCATION) &&
+            perms.contains(android.Manifest.permission.ACCESS_FINE_LOCATION)){
+            //
+        }
+    }
+
+
+
+
+    override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
+        if(requestCode == REQUEST_LOCATION_PERMISSION){
+            Toast.makeText(this,"Permission denied.",Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         initSideNav()
         initPlaces()
+        Timber.v("oncreate activity")
 
-
+        /*EasyPermissions.requestPermissions(
+            PermissionRequest.Builder(this,
+                REQUEST_LOCATION_PERMISSION,
+                android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                android.Manifest.permission.ACCESS_FINE_LOCATION)
+                .build()
+        )
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+*/
 
         if(appSharedPref.getUserType() == UserType.RIDER){
 
+            customerRequestViewModel.clearDeclinedRequests()
             findNavController(R.id.nav_host_container).navigate(R.id.action_homeFragment_to_riderDashboardFragment)
 //            tv_history.setOnClickListener {
 //                findNavController(R.id.nav_host_container).navigate(R.id.action_global_riderHistoryFragment)
