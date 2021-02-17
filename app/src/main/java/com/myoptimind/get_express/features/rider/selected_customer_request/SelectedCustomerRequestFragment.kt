@@ -42,8 +42,6 @@ import com.myoptimind.get_express.features.customer.cart.data.*
 import com.myoptimind.get_express.features.login.data.VehicleType
 import com.myoptimind.get_express.features.login.data.idToVehicleType
 import com.myoptimind.get_express.features.rider.customer_requests_list.CustomerRequestViewModel
-import com.myoptimind.get_express.features.rider.customer_requests_list.data.CustomerRequest
-import com.myoptimind.get_express.features.rider.topup.TOPUP_PAYMENT_TYPE
 import com.myoptimind.get_express.features.shared.TitleOnlyFragment
 import com.myoptimind.get_express.features.shared.api.Result
 import com.myoptimind.get_express.features.shared.data.CartType
@@ -212,11 +210,7 @@ class SelectedCustomerRequestFragment: TitleOnlyFragment() {
         return true
     }
 
-    private fun sendCommandToService(action: String, cartId: String) = RiderTrackingService.createIntent(
-        requireContext(),
-        action,
-        cartId
-    )
+
 
 
     override fun onRequestPermissionsResult(
@@ -334,8 +328,15 @@ class SelectedCustomerRequestFragment: TitleOnlyFragment() {
                         val cartStatus = cart.status.toCartStatus()
 
 
-
                         initMap(cart.pickUpLocation, cart.deliveryLocation)
+
+                        btn_open_in_google_maps.setOnClickListener {
+                            val uri = "https://www.google.com/maps/dir/?api=1&origin=${Uri.encode(cart.pickUpLocation.addressText)}&destination=${Uri.encode(cart.deliveryLocation.addressText)}"
+                            Timber.v("MAP STRING ->\n" + Uri.parse(uri))
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
+                            intent.setClassName("com.google.android.apps.maps","com.google.android.maps.MapsActivity")
+                            startActivity(intent)
+                        }
 
 
                         updateCommonUILabels(cart, cartType)
@@ -347,7 +348,8 @@ class SelectedCustomerRequestFragment: TitleOnlyFragment() {
                             initLocationObserver(cart.id, cart.vehicleId)
                             sendCommandToService(
                                 RiderTrackingService.ACTION_START_OR_RESUME_SERVICE,
-                                cart.id
+                                cart.id,
+                                true
                             )
                         } else { // HISTORY
                             Glide.with(requireContext())
@@ -374,7 +376,7 @@ class SelectedCustomerRequestFragment: TitleOnlyFragment() {
                                 group_sub_total_and_delivery_fee.visibility = View.VISIBLE
                                 label_summary.text = "Order Summary"
                                 val itemsBasket = cart.initBasketForGrocery()
-
+                                label_delivery_fee.text = "Delivery Fee (${itemsBasket.distanceInKm} km)"
                                 Timber.d(itemsBasket.toString())
                                 tv_sub_total.text = itemsBasket.subTotal.toMoneyFormat()
                                 tv_delivery_fee.text = itemsBasket.deliveryFee.toMoneyFormat()
@@ -392,8 +394,9 @@ class SelectedCustomerRequestFragment: TitleOnlyFragment() {
                                 label_delivery_fee.text = "Estimated Total"
                                 label_delivery_fee.visibility = View.VISIBLE
                                 tv_delivery_fee.visibility = View.VISIBLE
-                                tv_delivery_fee.text = pabiliBasket.estimateTotalAmount.toMoneyFormat()
-                                label_total.text = "Pabili Fee"
+                                tv_delivery_fee.text =
+                                    pabiliBasket.estimateTotalAmount.toMoneyFormat()
+                                label_total.text = "Pabili Fee (${pabiliBasket.distanceInKm} km)"
                                 tv_total.text = pabiliBasket.deliveryFee.toMoneyFormat()
 
 
@@ -411,6 +414,8 @@ class SelectedCustomerRequestFragment: TitleOnlyFragment() {
                                 val items = ArrayList<CartItem>().apply {
                                     add(deliveryBasket)
                                 }
+
+                                label_total.text = "Total (${deliveryBasket.distanceInKm} km)"
                                 tv_total.text = deliveryBasket.grandTotal.toMoneyFormat()
                                 adapter?.itemList = items
                                 adapter?.notifyDataSetChanged()
@@ -450,8 +455,9 @@ class SelectedCustomerRequestFragment: TitleOnlyFragment() {
                             CartStatus.ARRIVED -> Unit
                             CartStatus.DELIVERED -> {
                                 sendCommandToService(
-                                    RiderTrackingService.ACTION_STOP_SERVICE,
-                                    cart.id
+                                    RiderTrackingService.ACTION_START_OR_RESUME_SERVICE,
+                                    cart.id,
+                                    sendCoordinates = false
                                 )
                             }
                             CartStatus.CANCELLED, CartStatus.INIT -> {
@@ -472,12 +478,13 @@ class SelectedCustomerRequestFragment: TitleOnlyFragment() {
                 }
                 is Result.Error -> {
                     Timber.e(result.metaResponse.message)
-                    Toast.makeText(requireContext(),result.metaResponse.message,Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), result.metaResponse.message, Toast.LENGTH_LONG)
+                        .show()
                     backToDashboard()
                 }
                 is Result.HttpError -> {
                     Timber.e(result.error.message)
-                    Toast.makeText(requireContext(),result.error.message,Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), result.error.message, Toast.LENGTH_LONG).show()
                     backToDashboard()
                 }
             }
@@ -486,7 +493,7 @@ class SelectedCustomerRequestFragment: TitleOnlyFragment() {
     }
 
     private fun openCallAndSmsDialog(phone: String, label: String){
-        val choices = listOf<String>("Call","Text")
+        val choices = listOf<String>("Call", "Text")
         MaterialAlertDialogBuilder(requireContext())
             .setTitle("Contact ${label} via:")
             .setItems(choices.toTypedArray()) { dialog, which ->
@@ -516,12 +523,14 @@ class SelectedCustomerRequestFragment: TitleOnlyFragment() {
             ) {
                 trackingJob.run {
                     this?.cancel()
-                    trackingJob = sendRiderLocationJob(
-                        cartId,
-                        vehicleId.idToVehicleType(),
-                        latLong.latitude,
-                        latLong.longitude
-                    )
+                    if(latLong != null){
+                        trackingJob = sendRiderLocationJob(
+                            cartId,
+                            vehicleId.idToVehicleType(),
+                            latLong.latitude,
+                            latLong.longitude
+                        )
+                    }
                     trackingJob?.start()
                 }
             }
@@ -643,7 +652,7 @@ class SelectedCustomerRequestFragment: TitleOnlyFragment() {
             val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phone))
             startActivity(intent)
         }else{
-            Toast.makeText(requireContext(),"Contact Number is not available.",Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Contact Number is not available.", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -651,7 +660,7 @@ class SelectedCustomerRequestFragment: TitleOnlyFragment() {
         if(phone.isNotBlank()){
             startActivity(Intent(Intent.ACTION_VIEW, Uri.fromParts("sms", phone, null)))
         }else{
-            Toast.makeText(requireContext(),"Contact Number is not available.",Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Contact Number is not available.", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -706,6 +715,7 @@ class SelectedCustomerRequestFragment: TitleOnlyFragment() {
 
     override fun onDestroy() {
         super.onDestroy()
+/*
         requireContext().stopService(
             Intent(
                 requireContext(),
@@ -713,6 +723,12 @@ class SelectedCustomerRequestFragment: TitleOnlyFragment() {
             ).also {
                 requireContext().startService(it)
             })
+*/
+        sendCommandToService(
+            RiderTrackingService.ACTION_START_OR_RESUME_SERVICE,
+            null,
+            false
+        )
 
     }
 

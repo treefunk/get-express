@@ -14,14 +14,15 @@ class RiderHistoryRepository @Inject constructor(
 ){
     fun getRiderHistory(serviceId: String?) = flow {
         val userId = appSharedPref.getUserId()
+        val idKey = when(appSharedPref.getUserType()){
+            UserType.CUSTOMER -> "customer_id"
+            UserType.RIDER -> "rider_id"
+        }
         val response = if(serviceId.isNullOrBlank()){
-            val idKey = when(appSharedPref.getUserType()){
-                UserType.CUSTOMER -> "customer_id"
-                UserType.RIDER -> "rider_id"
-            }
+
             riderHistoryService.getRiderHistory(userId,idKey)
         }else{
-            riderHistoryService.getRiderHistoryByService(appSharedPref.getUserId(),serviceId)
+            riderHistoryService.getRiderHistoryByService(appSharedPref.getUserId(),serviceId,idKey)
         }
         emit(Result.Success(response))
     }.applyDefaultEffects()

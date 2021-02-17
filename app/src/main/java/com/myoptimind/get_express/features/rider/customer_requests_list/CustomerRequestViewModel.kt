@@ -31,6 +31,17 @@ class CustomerRequestViewModel @ViewModelInject constructor(
         }
     }
 
+    val riderLocationRiderTable: LiveData<Result<CustomerRequestService.UpdateRiderLocationResponse>> get() = _riderLocationRiderTable
+    private val _riderLocationRiderTable = MutableLiveData<Result<CustomerRequestService.UpdateRiderLocationResponse>>()
+
+    fun updateRiderLocationTable(latitude: Double, longi: Double){
+        viewModelScope.launch(IO) {
+            customerRequestRepository.updateRiderLocationRiderTable(latitude,longi).collect {
+                _riderLocationRiderTable.postValue(it)
+            }
+        }
+    }
+
     fun declineRequest(customerRequest: CustomerRequest) {
         viewModelScope.launch(Dispatchers.IO){
             customerRequestRepository.addDeclinedRequest(

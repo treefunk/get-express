@@ -66,6 +66,9 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
 import timber.log.Timber
 import java.lang.StringBuilder
+import java.util.*
+import java.util.concurrent.TimeUnit
+import kotlin.collections.ArrayList
 
 private const val REFRESH_INTERVAL_SECOND = 10
 
@@ -95,6 +98,7 @@ class CustomerRiderSearchFragment : TitleOnlyFragment() {
 
     private var getCartInformationJob: Job? = null
     private var loadingTextJob: Job? = null
+    private var expiryTimerJob: Job? = null
 
     private val trackingBroadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
@@ -136,6 +140,13 @@ class CustomerRiderSearchFragment : TitleOnlyFragment() {
             delay(1000)
         }
         cartViewModel.getCartInformation(cartId)
+    }
+
+    private fun timerTask() = lifecycleScope.launchWhenCreated {
+            delay(TimeUnit.MINUTES.toMillis(5))
+            cartViewModel.cancelBooking(args.cartId)
+//            Toast.makeText(requireContext(),"Looks like our riders are full at the moment, please try again.",Toast.LENGTH_LONG).show()
+            Snackbar.make(requireView(),"Looks like our riders are full at the moment, please try again.",Snackbar.LENGTH_LONG).show()
     }
 
     private fun loadingTask() = lifecycleScope.launchWhenResumed {
@@ -320,7 +331,20 @@ class CustomerRiderSearchFragment : TitleOnlyFragment() {
                                 .load(cartType.drawableId)
                                 .into(iv_icon)
 
+                        if(cartStatus != CartStatus.PENDING){
+                            expiryTimerJob?.cancel()
+                            expiryTimerJob = null
+                            Timber.d("not pending")
+                        }else if(cartStatus == CartStatus.PENDING){
+                            expiryTimerJob?.cancel()
+                            expiryTimerJob = timerTask()
+                            expiryTimerJob?.start()
+                        }
+
                         if (cartStatus == CartStatus.PENDING) {
+
+
+
                             initMap(cart.pickUpLocation, cart.deliveryLocation)
 //                            initMap(cart.deliveryLocation)
                             group_looking_for.visibility = View.VISIBLE
@@ -344,6 +368,7 @@ class CustomerRiderSearchFragment : TitleOnlyFragment() {
                             }
 
                         }else if(cartStatus == CartStatus.DELIVERED){
+                            Timber.d("Cart Delivered")
                             Snackbar.make(requireView(),"Booking Completed.",Snackbar.LENGTH_LONG).show()
                             cartViewModel.clearCartItemList()
                             cartViewModel.updateFromLocation(null)
@@ -375,6 +400,8 @@ class CustomerRiderSearchFragment : TitleOnlyFragment() {
                                 if(itemsBasket.etaText.isNullOrBlank().not() || itemsBasket.etaText!! == "-"){
                                     group_eta.visibility = View.VISIBLE
                                     tv_eta.text = itemsBasket.etaText
+                                }else{
+                                    group_eta.visibility = View.GONE
                                 }
 
                                 Timber.d(itemsBasket.toString())
@@ -391,6 +418,8 @@ class CustomerRiderSearchFragment : TitleOnlyFragment() {
                                 if(pabiliBasket.etaText.isNullOrBlank().not() || pabiliBasket.etaText != "-"){
                                     group_eta.visibility = View.VISIBLE
                                     tv_eta.text = pabiliBasket.etaText
+                                }else{
+                                    group_eta.visibility = View.GONE
                                 }
                                 //                                group_sub_total_and_delivery_fee.visibility = View.GONE
                                 label_sub_total.visibility = View.GONE
@@ -410,6 +439,8 @@ class CustomerRiderSearchFragment : TitleOnlyFragment() {
                                 if(deliveryBasket.etaText.isNullOrBlank().not()){
                                     group_eta.visibility = View.VISIBLE
                                     tv_eta.text = deliveryBasket.etaText
+                                }else{
+                                    group_eta.visibility = View.GONE
                                 }
                                 Timber.d(deliveryBasket.toString())
 

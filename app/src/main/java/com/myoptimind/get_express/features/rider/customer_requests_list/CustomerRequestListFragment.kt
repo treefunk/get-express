@@ -22,6 +22,7 @@ import com.myoptimind.get_express.features.rider.customer_requests_list.api.Cust
 import com.myoptimind.get_express.features.rider.rider_dashboard.RiderDashboardFragment
 import com.myoptimind.get_express.features.rider.customer_requests_list.data.CustomerRequest
 import com.myoptimind.get_express.features.rider.rider_dashboard.RiderDashboardViewModel
+import com.myoptimind.get_express.features.rider.selected_customer_request.RiderTrackingService
 import com.myoptimind.get_express.features.rider.topup.MyWalletDialog
 import com.myoptimind.get_express.features.rider.topup.RiderTopUpDialog
 import com.myoptimind.get_express.features.rider.topup.TOPUP_PAYMENT_TYPE
@@ -69,6 +70,12 @@ class CustomerRequestListFragment: LogoOnlyFragment() {
             Timber.d("hashcode - ${this.hashCode()} refreshing in $i..")
             delay(1000)
         }
+        if(RiderTrackingService.latLong.value != null){
+            Timber.d("lat long is not null")
+            val riderLatLng = RiderTrackingService.latLong.value!!
+//            viewModel.updateRiderLocationTable(riderLatLng.latitude,riderLatLng.longitude)
+        }
+
         viewModel.getCustomerRequests()
     }
 
@@ -155,6 +162,24 @@ class CustomerRequestListFragment: LogoOnlyFragment() {
 
     private fun initObservers() {
 
+
+        viewModel.riderLocationRiderTable.observe(viewLifecycleOwner){ result ->
+            when(result){
+                is Result.Progress ->{
+                }
+                is Result.Success -> {
+                    if(result.data != null){
+                        Timber.d("result:${result.data.meta.message}")
+                    }
+                }
+                is Result.Error -> {
+                    Timber.d("result:${result.metaResponse.message}")
+                }
+                is Result.HttpError -> {
+                    Timber.d("result:${result.error.message}")
+                }
+            }
+        }
 
 
         viewModel.customerRequestsResult.observe(viewLifecycleOwner){ result ->

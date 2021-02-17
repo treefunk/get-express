@@ -18,9 +18,10 @@ interface RiderHistoryService {
             val meta: MetaResponse
     )
 
-    @GET("cart/rider_id/{user_id}/history/services/{service_id}")
+    @GET("cart/{user_type}/{user_id}/history/services/{service_id}")
     suspend fun getRiderHistoryByService(
             @Path("user_id") userId: String,
-            @Path("service_id") serviceId: String
+            @Path("service_id") serviceId: String,
+            @Path("user_type") userType: String
     ): GetRiderHistoryResponse
 }

@@ -6,6 +6,7 @@ import com.myoptimind.get_express.features.customer.delivery.PERSON_TYPE
 import com.myoptimind.get_express.features.customer.delivery.RecipientDeliveryDialog
 import com.myoptimind.get_express.features.customer.home.SelectAddressBottomDialog
 import com.myoptimind.get_express.features.login.data.Address
+import com.myoptimind.get_express.features.rider.selected_customer_request.RiderTrackingService
 import com.myoptimind.get_express.features.shared.data.CartType
 import timber.log.Timber
 
@@ -24,6 +25,13 @@ abstract class BaseFragment: Fragment() {
     open fun onBackPressed(): Boolean {
         return false
     }
+
+    internal fun sendCommandToService(action: String, cartId: String?, sendCoordinates: Boolean) = RiderTrackingService.createIntent(
+        requireContext().applicationContext,
+        action,
+        cartId,
+        sendCoordinates
+    )
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

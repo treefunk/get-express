@@ -45,4 +45,16 @@ class CustomerRequestRepository @Inject constructor(
     suspend fun clearDeclinedRequests(){
         declinedRequestDao.deleteAllDeclinedRequests()
     }
+
+    suspend fun updateRiderLocationRiderTable(
+        latitude: Double,
+        longitude: Double
+    ) = flow {
+        val response = customerRequestService.sendRiderLocationRiderTable(
+            appSharedPref.getUserId(),
+             latitude,
+             longitude
+        )
+        emit(Result.Success(response))
+    }.applyDefaultEffects(false,true)
 }

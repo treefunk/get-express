@@ -12,6 +12,7 @@ import androidx.core.view.GravityCompat
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.libraries.places.api.Places
 import com.myoptimind.get_express.features.login.LoginActivity
@@ -88,10 +89,40 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
         if(requestCode == REQUEST_LOCATION_PERMISSION &&
             perms.contains(android.Manifest.permission.ACCESS_COARSE_LOCATION) &&
             perms.contains(android.Manifest.permission.ACCESS_FINE_LOCATION)){
-            //
+            sendCommandToService(
+                RiderTrackingService.ACTION_START_OR_RESUME_SERVICE,
+                null,
+                false
+            )
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        stopService(
+            Intent(
+                this,
+                RiderTrackingService::class.java
+            ).also {
+                startService(it)
+            })
+    }
+
+    private fun sendCommandToService(action: String, cartId: String?, sendCoordinates: Boolean) = RiderTrackingService.createIntent(
+        applicationContext,
+        action,
+        cartId,
+        sendCoordinates
+    )
+
+
+    fun createLocationRequest() {
+        val locationRequest = LocationRequest.create()?.apply {
+            interval = 10000
+            fastestInterval = 5000
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        }
+    }
 
 
 
@@ -102,6 +133,7 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
     }
 
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -109,7 +141,7 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
         initPlaces()
         Timber.v("oncreate activity")
 
-        /*EasyPermissions.requestPermissions(
+        EasyPermissions.requestPermissions(
             PermissionRequest.Builder(this,
                 REQUEST_LOCATION_PERMISSION,
                 android.Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -117,7 +149,6 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
                 .build()
         )
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-*/
 
         if(appSharedPref.getUserType() == UserType.RIDER){
 

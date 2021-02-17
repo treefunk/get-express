@@ -9,13 +9,17 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
+import com.google.android.libraries.places.api.model.LocationBias
 import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.api.model.RectangularBounds
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.AutocompleteActivity
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.myoptimind.get_express.R
 import com.myoptimind.get_express.features.login.data.Address
+import com.myoptimind.get_express.features.rider.selected_customer_request.RiderTrackingService
 import com.myoptimind.get_express.features.shared.BaseDialogFragment
 import com.myoptimind.get_express.features.shared.api.Result
 import com.myoptimind.get_express.features.shared.izNotBlank
@@ -143,11 +147,44 @@ class AddAddressDialog: BaseDialogFragment() {
         // return after the user has made a selection.
         val fields = listOf(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS)
 
+        var locationBias: LocationBias? = if(RiderTrackingService.latLong.value != null){
+            val latLng = RiderTrackingService.latLong.value!!
+
+            val meters = 500.0
+
+            val coef = meters * 0.0000089
+
+            val latMax = latLng.latitude + coef
+            val lngMax = latLng.longitude + coef / Math.cos(latLng.latitude * 0.18)
+
+            val latMin = latLng.latitude - coef
+            val lngMin = latLng.longitude - coef / Math.cos(latLng.latitude * 0.18)
+
+
+            /*  val northSide = SphericalUtil.computeOffset(latLng,5000.0,0.0)
+              val southSide = SphericalUtil.computeOffset(latLng,5000.0,180.0)
+  */
+
+            val northSide = LatLng(latMax,lngMax)
+            val southSide = LatLng(latMin,lngMin)
+            val bounds = LatLngBounds.builder()
+                .include(northSide)
+                .include(southSide)
+                .build()
+            Timber.d("location bias detected.")
+
+            Timber.d("northside: https://www.google.com/maps/place/${northSide.latitude},${northSide.longitude}")
+            Timber.d("southside: https://www.google.com/maps/place/${southSide.latitude},${southSide.longitude}")
+            Timber.d("path northside to southside: https://www.google.com/maps/dir/?api=1&origin=${northSide.latitude},${northSide.longitude}&destination=${southSide.latitude},${southSide.longitude}")
+            RectangularBounds.newInstance(bounds)
+        }else{
+            null
+        }
         // Start the autocomplete intent.
         val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
-                .setCountry("PH")
-                .build(requireContext())
-        startActivityForResult(intent, requestCode)
+            .setCountry("PH")
+//        intent.build(requireContext())
+        startActivityForResult(intent.setLocationBias(locationBias).build(requireContext()), requestCode)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

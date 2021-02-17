@@ -21,6 +21,8 @@ import com.google.android.gms.location.*
 import com.google.android.gms.maps.model.LatLng
 import com.myoptimind.get_express.MainActivity
 import com.myoptimind.get_express.R
+import com.myoptimind.get_express.features.login.data.UserType
+import com.myoptimind.get_express.features.shared.AppSharedPref
 import com.myoptimind.get_express.features.shared.api.Result
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers.IO
@@ -35,8 +37,10 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class RiderTrackingService: LifecycleService() {
 
+
     private var isFirstRun = true
     private var isServiceKilled = false
+    private var sendCoordinates = false
     private var currentLocation: Location? = null
 
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
@@ -45,11 +49,16 @@ class RiderTrackingService: LifecycleService() {
     @Inject
     lateinit var customerRequestRepository: CustomerRequestRepository
 
-    lateinit var cartId: String
+    @Inject
+    lateinit var appSharedPref: AppSharedPref
+
+    var cartId: String? = null
 
 
 
     companion object {
+        private const val EXTRA_SEND_COORDINATES = "extra_send_coordinates"
+
         const val ACTION_START_OR_RESUME_SERVICE = "start_or_resume_service"
         const val ACTION_PAUSE_SERVICE           = "pause_service"
         const val ACTION_STOP_SERVICE            = "stop_service"
@@ -62,12 +71,13 @@ class RiderTrackingService: LifecycleService() {
 
         const val EXTRA_CART_ID                  = "extra_cart_id"
 
-        val latLong = MutableLiveData<LatLng>()
+        val latLong = MutableLiveData<LatLng?>()
 
-        fun createIntent(context: Context, action: String, cartId: String): Intent  {
+        fun createIntent(context: Context, action: String, cartId: String?, sendCoordinates: Boolean): Intent  {
             return Intent(context, RiderTrackingService::class.java).also {
                 it.action = action
                 it.putExtra(EXTRA_CART_ID,cartId)
+                it.putExtra(EXTRA_SEND_COORDINATES,sendCoordinates)
                 context.startService(it)
             }
         }
@@ -100,6 +110,8 @@ class RiderTrackingService: LifecycleService() {
         }
     }
 
+
+
     private val locationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult?) {
 
@@ -109,11 +121,11 @@ class RiderTrackingService: LifecycleService() {
                     currentLocation = locationResult.lastLocation.also {
                         val latLng = LatLng(it.latitude,it.longitude)
                         latLong.postValue(latLng)
-                        Timber.d("cart id $cartId")
 
-                        if(sendLocationJob == null || sendLocationJob!!.isCompleted){
+                        if(cartId != null && (sendLocationJob == null || sendLocationJob!!.isCompleted) && sendCoordinates){
+                            Timber.d("cart id $cartId")
                             sendLocationJob?.cancel()
-                            sendLocationJob = sendLocation(cartId,it.latitude,it.longitude)
+                            sendLocationJob = sendLocation(cartId!!,it.latitude,it.longitude)
 //                        sendLocationJob?.start()
                         }
                     }
@@ -163,9 +175,15 @@ class RiderTrackingService: LifecycleService() {
                     if(isFirstRun){
                         Timber.d("started service")
                         startForegroundService()
+
                         isFirstRun = false
                         isServiceKilled = false
-                        cartId = it.extras?.get(EXTRA_CART_ID) as String
+                        if(it.extras?.get(EXTRA_CART_ID) != null){
+                            cartId = it.extras?.get(EXTRA_CART_ID) as String
+                        }else{
+                            cartId = null
+                        }
+                        sendCoordinates = it.extras?.get(EXTRA_SEND_COORDINATES) as Boolean
                     }else{
                         Timber.d("resuming service")
                     }

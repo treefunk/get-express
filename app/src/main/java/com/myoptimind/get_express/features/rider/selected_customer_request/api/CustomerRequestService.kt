@@ -1,6 +1,7 @@
 package com.myoptimind.get_express.features.rider.selected_customer_request.api
 
 import com.myoptimind.get_express.features.customer.cart.data.GetCartInfoResponse
+import com.myoptimind.get_express.features.shared.api.MetaResponse
 //import com.myoptimind.getexpress.features.customer.cart.data.CartForItems
 import retrofit2.http.*
 
@@ -41,6 +42,7 @@ interface CustomerRequestService {
             @Field("total_price") totalPrice: String,
             @Field("payment_status") paymentStatus: String
     ): GetCartInfoResponse
+
 
 
 
