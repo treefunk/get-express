@@ -67,7 +67,7 @@ class StoresRepository @Inject constructor(
         emit(Result.Success(response))
     }.applyDefaultEffects(false,false)
 
-    fun EmptyThenAddItemToCart(
+    fun emptyThenAddItemToCart(
             cartId: String,
             productId: String,
             quantity: String,

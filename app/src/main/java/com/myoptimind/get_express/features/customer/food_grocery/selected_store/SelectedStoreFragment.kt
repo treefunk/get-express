@@ -245,7 +245,10 @@ class SelectedStoreFragment: TitleOnlyFragment() {
 
                                 cartViewModel.updateCartItemList(itemsBasket.items.map{ it.toItemPayload() } )
 
-                                if(itemsBasket.items.isNotEmpty() && (cart.partnerId.isNotBlank() && cart.partnerId == args.storeId)){
+
+                                cartViewModel.shouldEmptyCartFirst = (cart.partnerId != "" && cart.partnerId != args.storeId)
+
+                                if(itemsBasket.items.isNotEmpty() && (cart.partnerId != "" && cart.partnerId == args.storeId)){
 
                                     group_basket.visibility = View.VISIBLE
                                     tv_basket_label.text = "View Basket (${itemsBasket.totalItems} items)"
@@ -275,7 +278,9 @@ class SelectedStoreFragment: TitleOnlyFragment() {
 
                             cartViewModel.updateCartItemList(itemsBasket.items.map{ it.toItemPayload() } )
 
-                            if(itemsBasket.items.isNotEmpty()){
+                                cartViewModel.shouldEmptyCartFirst = (cart.partnerId != "" && cart.partnerId != args.storeId)
+
+                            if(itemsBasket.items.isNotEmpty()  && (cart.partnerId != "" && cart.partnerId == args.storeId)){
 
                                 group_basket.visibility = View.VISIBLE
                                 tv_basket_label.text = "View Basket (${itemsBasket.totalItems} items)"
@@ -383,37 +388,75 @@ class SelectedStoreFragment: TitleOnlyFragment() {
                                 cartItemId = null
                             }
                         }
-                            cartViewModel.addItemToCart(
+                            if(cartViewModel.shouldEmptyCartFirst){
+                                cartViewModel.emptyThenAddItemToCart(
                                     args.cartId,
                                     itemPayload.productId,
                                     quantity,
                                     "",
                                     cartItemId = cartItemId,
                                     addOnIds = itemPayload.addons?.map { it.id }
-                            )
+                                )
+
+                            }else{
+                                cartViewModel.addItemToCart(
+                                    args.cartId,
+                                    itemPayload.productId,
+                                    quantity,
+                                    "",
+                                    cartItemId = cartItemId,
+                                    addOnIds = itemPayload.addons?.map { it.id }
+                                )
+                            }
+
                     }else{
-                        cartViewModel.addItemToCart(
+                        if(cartViewModel.shouldEmptyCartFirst){
+
+                            cartViewModel.emptyThenAddItemToCart(
                                 args.cartId,
                                 itemPayload.productId,
                                 itemPayload.quantity,
                                 itemPayload.notes,
                                 cartItemId = itemPayload.cartItemId,
                                 addOnIds = itemPayload.addons?.map { it.id }
-                        )
+                            )
+                        }else{
+                            cartViewModel.addItemToCart(
+                                args.cartId,
+                                itemPayload.productId,
+                                itemPayload.quantity,
+                                itemPayload.notes,
+                                cartItemId = itemPayload.cartItemId,
+                                addOnIds = itemPayload.addons?.map { it.id }
+                            )
+                        }
+
                     }
                 }
             }
         }else if(requestCode == REQUEST_FOOD_UPDATE_CART && resultCode == Activity.RESULT_OK){
             val itemPayload = data?.getParcelableExtra<ItemPayload>(ProductFoodDialog.PRODUCT_DATA_PAYLOAD)
             if(data != null && itemPayload != null ){
-                cartViewModel.addItemToCart(
-                    args.cartId,
-                    itemPayload.productId,
-                    itemPayload.quantity,
-                    itemPayload.notes,
-                    cartItemId = itemPayload.cartItemId,
-                    addOnIds = itemPayload.addons?.map { it.id }
-                )
+                if(cartViewModel.shouldEmptyCartFirst){
+                    cartViewModel.emptyThenAddItemToCart(
+                        args.cartId,
+                        itemPayload.productId,
+                        itemPayload.quantity,
+                        itemPayload.notes,
+                        cartItemId = itemPayload.cartItemId,
+                        addOnIds = itemPayload.addons?.map { it.id }
+                    )
+                }else{
+                    cartViewModel.addItemToCart(
+                        args.cartId,
+                        itemPayload.productId,
+                        itemPayload.quantity,
+                        itemPayload.notes,
+                        cartItemId = itemPayload.cartItemId,
+                        addOnIds = itemPayload.addons?.map { it.id }
+                    )
+                }
+
             }
         }
 

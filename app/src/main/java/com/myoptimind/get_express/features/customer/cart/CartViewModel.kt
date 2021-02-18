@@ -114,7 +114,9 @@ class CartViewModel @ViewModelInject constructor(
     val cart: LiveData<Result<GetCartInfoResponse>> get() = _cart
     private val _cart = MutableLiveData<Result<GetCartInfoResponse>>()
 
-    fun EmptyThenAddItemToCart(
+    var shouldEmptyCartFirst = false
+
+    fun emptyThenAddItemToCart(
             cartId: String,
             productId: String,
             quantity: String,
@@ -124,7 +126,7 @@ class CartViewModel @ViewModelInject constructor(
     ){
         Timber.d("adding item from viewmodel..")
         viewModelScope.launch(Dispatchers.IO){
-            storesRepository.EmptyThenAddItemToCart(
+            storesRepository.emptyThenAddItemToCart(
                     cartId,
                     productId,
                     quantity,

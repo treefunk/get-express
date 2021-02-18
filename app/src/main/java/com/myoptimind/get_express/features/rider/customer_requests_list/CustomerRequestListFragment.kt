@@ -239,7 +239,9 @@ class CustomerRequestListFragment: LogoOnlyFragment() {
                                 rv_customer_request.visibility = View.INVISIBLE
                                 group_top_up_notice.visibility = View.VISIBLE
                                 (activity as MainActivity).ib_top_up.visibility = View.VISIBLE
-                                (activity as MainActivity).group_expires.visibility = View.GONE
+                                if((activity as MainActivity).group_expires.visibility == View.VISIBLE){
+                                    (activity as MainActivity).group_expires.visibility = View.GONE
+                                }
 
                                 (activity as MainActivity).ib_top_up.setOnClickListener {
                                     riderDashBoardViewModel.getWalletOffers(
