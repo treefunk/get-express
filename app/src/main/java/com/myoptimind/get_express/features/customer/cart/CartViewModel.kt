@@ -47,6 +47,11 @@ class CartViewModel @ViewModelInject constructor(
         _currentLocation.value = latLng
     }
 
+    fun clearFromToLocations(){
+        _fromLocation.value = null
+        _toLocation.value = null
+    }
+
     val fromLocation: LiveData<Place> get() = _fromLocation
     private val _fromLocation = MutableLiveData<Place>()
 
@@ -108,6 +113,29 @@ class CartViewModel @ViewModelInject constructor(
 
     val cart: LiveData<Result<GetCartInfoResponse>> get() = _cart
     private val _cart = MutableLiveData<Result<GetCartInfoResponse>>()
+
+    fun EmptyThenAddItemToCart(
+            cartId: String,
+            productId: String,
+            quantity: String,
+            notes: String,
+            addOnIds: List<String>? = null,
+            cartItemId: String? = null
+    ){
+        Timber.d("adding item from viewmodel..")
+        viewModelScope.launch(Dispatchers.IO){
+            storesRepository.EmptyThenAddItemToCart(
+                    cartId,
+                    productId,
+                    quantity,
+                    notes,
+                    addOnIds,
+                    cartItemId
+            ).collect {
+                _cart.postValue(it)
+            }
+        }
+    }
 
     fun addItemToCart(
             cartId: String,

@@ -220,7 +220,7 @@ class SelectedStoreFragment: TitleOnlyFragment() {
                     if(result.data != null){
                         val cart = result.data.data
 
-                        if(result.data.meta.code.equals("ok2")){
+                        if(result.data.meta.code.equals("ok2") && result.data.meta.status == 200){
                             if(result.data != null && result.data.meta.status == 200){
                                 Timber.v("pre finalizing...")
                                 SelectedStoreFragmentDirections.actionSelectedStoreFragmentToCustomerCartFragment(result.data.data.notes).also {
@@ -245,7 +245,7 @@ class SelectedStoreFragment: TitleOnlyFragment() {
 
                                 cartViewModel.updateCartItemList(itemsBasket.items.map{ it.toItemPayload() } )
 
-                                if(itemsBasket.items.isNotEmpty()){
+                                if(itemsBasket.items.isNotEmpty() && (cart.partnerId.isNotBlank() && cart.partnerId == args.storeId)){
 
                                     group_basket.visibility = View.VISIBLE
                                     tv_basket_label.text = "View Basket (${itemsBasket.totalItems} items)"
@@ -350,6 +350,7 @@ class SelectedStoreFragment: TitleOnlyFragment() {
                             quantity = (matchedProduct[0].quantity.toInt() + itemPayload.quantity.toInt()).toString()
                         }
                     }
+
                     cartViewModel.addItemToCart(
                             args.cartId,
                             itemPayload.productId,

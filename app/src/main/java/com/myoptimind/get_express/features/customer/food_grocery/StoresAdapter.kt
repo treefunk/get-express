@@ -1,5 +1,7 @@
 package com.myoptimind.get_express.features.customer.food_grocery
 
+import android.graphics.ColorMatrix
+import android.graphics.ColorMatrixColorFilter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,18 +28,26 @@ class StoresAdapter constructor(
     override fun getItemCount() = stores.size
 
     inner class ViewHolder constructor(
-            private val itemView: View,
+            private val view: View,
             private val listener: StoreListener?
-    ) : RecyclerView.ViewHolder(itemView) {
+    ) : RecyclerView.ViewHolder(view) {
         fun bind(store: Store, position: Int) {
-            if(store.image.isBlank().not()){
-                Glide.with(itemView.context)
-                        .load(store.image)
-                        .into(itemView.iv_store_image)
 
+            if(store.image.isBlank().not()){
+                Glide.with(view.context)
+                        .load(store.image)
+                        .into(view.iv_store_image)
+                if(store.isStoreAvailable.not()){
+                    val colorMatrix = ColorMatrix()
+                    colorMatrix.setSaturation(0F)
+                    val filter = ColorMatrixColorFilter(colorMatrix)
+                    view.iv_store_image.colorFilter = filter
+                }else{
+                    view.iv_store_image.clearColorFilter()
+                }
             }
-            itemView.tv_store_name.text = store.name
-            itemView.setOnClickListener {
+            view.tv_store_name.text = store.name
+            view.setOnClickListener {
                 listener?.onPressed(store,position)
             }
         }

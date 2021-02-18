@@ -71,6 +71,8 @@ interface StoresService {
     ): GetCartInfoResponse
 
 
+
+
     @GET("cart/{cart_id}/info")
     suspend fun getCartInformation(
             @Path("cart_id") cartId: String

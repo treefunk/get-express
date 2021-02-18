@@ -26,7 +26,7 @@
     </style>
 
     <style name="datepicker_theme" parent="@android:style/Widget.DatePicker">
-
+        <item name="android:datePickerStyle">@android:style/Widget.DatePicker</item>
 
         <item name="colorAccent">@color/colorAccent</item>                   <!--header background-->
         <item name="android:windowBackground">@color/colorPrimary</item>     <!--calendar background-->
@@ -39,4 +39,6 @@
         <item name="android:windowBackground">@drawable/splash_image</item>
         <item name="android:statusBarColor">@color/yellow_200</item>
     </style>
+
+
 </resources>

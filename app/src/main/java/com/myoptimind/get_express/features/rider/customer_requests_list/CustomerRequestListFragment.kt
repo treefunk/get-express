@@ -73,9 +73,8 @@ class CustomerRequestListFragment: LogoOnlyFragment() {
         if(RiderTrackingService.latLong.value != null){
             Timber.d("lat long is not null")
             val riderLatLng = RiderTrackingService.latLong.value!!
-//            viewModel.updateRiderLocationTable(riderLatLng.latitude,riderLatLng.longitude)
+            viewModel.updateRiderLocationTable(riderLatLng.latitude,riderLatLng.longitude)
         }
-
         viewModel.getCustomerRequests()
     }
 

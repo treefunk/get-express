@@ -467,4 +467,12 @@
         <item name="checkedIconTint">@color/blue_200</item>
     </style>
 
+    <style name="MySpinnerDatePickerStyle" parent="GetExpressDialog">
+        <item name="android:datePickerStyle">@style/MySpinnerDatePicker</item>
+    </style>
+
+    <style name="MySpinnerDatePicker" parent="android:Widget.Material.Light.DatePicker">
+        <item name="android:datePickerMode">spinner</item>
+    </style>
+
 </resources>

@@ -251,6 +251,7 @@ class CustomerDashboardFragment : LogoOnlyFragment() {
                         val cartType = cart.cartTypeId.idToCartType()
 
                         cartViewModel.setCartInfo(result)
+                        cartViewModel.clearFromToLocations()
                         when (cartType) {
                             CartType.CAR -> TODO()
                             CartType.GROCERY, CartType.FOOD -> {

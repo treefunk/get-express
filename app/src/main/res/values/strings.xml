@@ -21,5 +21,6 @@
     <string name="facebook_app_id">746056413009918</string>
     <string name="fb_login_protocol_scheme">fb746056413009918</string>
     <string name="label_skip_link"><u><![CDATA[SKIP >>]]></u></string>
+    <string name="label_remove_cart_warning">You currently have items in your cart from another partner, proceeding to add to cart will remove the said items,\nwould you like to proceed?</string>
 
 </resources>

@@ -67,6 +67,28 @@ class StoresRepository @Inject constructor(
         emit(Result.Success(response))
     }.applyDefaultEffects(false,false)
 
+    fun EmptyThenAddItemToCart(
+            cartId: String,
+            productId: String,
+            quantity: String,
+            notes: String,
+            addOnIds: List<String>?,
+            cartItemId: String?
+    ) = flow {
+        val emptyCartResponse = storesService.emptyCart(cartId)
+        if(emptyCartResponse.meta.status == 200){
+            val response = storesService.addOrUpdateItem(
+                    cartId,
+                    productId,
+                    quantity,
+                    notes,
+                    addOnIds,
+                    cartItemId
+            )
+            emit(Result.Success(response))
+        }
+    }.applyDefaultEffects(false,false)
+
     fun finalizeCart(
         cartId: String,
         notes: String,
@@ -120,5 +142,5 @@ class StoresRepository @Inject constructor(
                 cartId
         )
         emit(Result.Success(response))
-    }.applyDefaultEffects(false,false)
+    }.applyDefaultEffects(false,true)
 }

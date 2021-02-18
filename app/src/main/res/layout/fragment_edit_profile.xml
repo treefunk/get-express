@@ -3,6 +3,8 @@
     android:layout_width="match_parent"
     android:fillViewport="true"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:mask="http://schemas.android.com/apk/res-auto"
+
     >
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -107,7 +109,7 @@
 
         />
 
-    <EditText
+    <br.com.sapereaude.maskedEditText.MaskedEditText
         android:id="@+id/et_mobile"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -118,8 +120,18 @@
         android:layout_marginTop="4dp"
 
         style="@style/GetExpressEditTextLogin.EditProfile"
-        tools:text="Jhondee Diaz"
+
+        android:inputType="number"
+        android:hint="###########"
+        android:textColorHint="@color/grey_200"
+        mask:allowed_chars="1234567890"
+        mask:mask="09##-###-####"
+        app:keep_hint="false"
+        android:singleLine="true"
+        android:lines="1"
+        android:maxLines="1"
         />
+
 
     <ImageView
         android:id="@+id/iv_birthdate"

@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.lifecycle.observe
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.libraries.places.api.model.LocationBias
@@ -151,7 +152,7 @@ class DeliveryFormFragment: TitleOnlyFragment() {
 
 
 
-                        if (result.data.meta.code.equals("ok2")) {
+                        if (result.data.meta.code.equals("ok2") && result.data.meta.status == 200) {
                             if (result.data != null && result.data.meta.status == 200) {
                                 cartViewModel.setCartInfo(result)
 
@@ -163,7 +164,6 @@ class DeliveryFormFragment: TitleOnlyFragment() {
                             }
                             return@observe
                         }
-
                         cartViewModel.cartId = cart.id
                         val cartType = cart.cartTypeId.idToCartType()
                         val cartStatus = cart.status.toCartStatus()
@@ -175,8 +175,8 @@ class DeliveryFormFragment: TitleOnlyFragment() {
                         if (cart.deliveryLocation.addressText.isBlank().not()) {
                             cartViewModel.updateToLocation(cart.deliveryLocation.toPlace())
                         }*/
-                        et_delivery_category.setText(deliveryBasket.category)
-                        et_delivery_instructions.setText(deliveryBasket.notes)
+//                        et_delivery_category.setText(deliveryBasket.category)
+//                        et_delivery_instructions.setText(deliveryBasket.notes)
 
 
                     }

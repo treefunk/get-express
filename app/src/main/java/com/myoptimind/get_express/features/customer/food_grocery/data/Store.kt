@@ -19,6 +19,10 @@ data class Store(
         val storeAvailability: String,
         @SerializedName("store_schedule")
         val storeSchedule: String,
+        @SerializedName("store_availability_meta")
+        val availabilityMeta: Boolean,
+        @SerializedName("store_schedule_meta")
+        val scheduleAvailabilityMeta: Boolean,
         @SerializedName("contact_numbers")
         val contactNumbers: String,
         val about: String,
@@ -27,6 +31,9 @@ data class Store(
         val coordinates: Coordinates,
         val image: String
 ): BaseRemoteEntity(), Parcelable {
+
+        val isStoreAvailable: Boolean
+                get() = availabilityMeta && scheduleAvailabilityMeta
 
         val latLng: LatLng
                 get() = LatLng(this.coordinates.latitude.toDouble(),this.coordinates.longitude.toDouble())

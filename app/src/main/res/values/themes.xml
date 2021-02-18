@@ -23,7 +23,13 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="MyDatePicker" parent="android:Widget.Material.DatePicker">
+    <style name="datepicker_style2" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorPrimary">@color/blue_500</item>
+        <item name="colorPrimaryDark">@color/blue_200</item>
+        <item name="colorAccent">@color/yellow_200</item>
+    </style>
+
+    <style name="MyDatePicker" parent="android:Widget.Material.Light.DatePicker">
         <item name="android:datePickerMode">spinner</item>
     </style>
 
@@ -41,11 +47,5 @@
         <item name="android:windowBackground">@drawable/splash_image</item>
         <item name="android:statusBarColor">@color/yellow_200</item>
     </style>
-    <style name="MySpinnerDatePickerStyle" parent="android:Theme.Material.Dialog">
-        <item name="android:datePickerStyle">@style/MySpinnerDatePicker</item>
-    </style>
 
-    <style name="MySpinnerDatePicker" parent="android:Widget.Material.DatePicker">
-        <item name="android:datePickerMode">spinner</item>
-    </style>
 </resources>

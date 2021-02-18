@@ -92,7 +92,6 @@ class PabiliFormFragment: TitleOnlyFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         et_delivery_instructions.initMultilineEditText()
         rv_pabili.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
         itemList = ArrayList()
@@ -172,7 +171,7 @@ class PabiliFormFragment: TitleOnlyFragment() {
                         val cart = result.data.data
 
 
-                        if (result.data.meta.code.equals("ok2")) {
+                        if (result.data.meta.code.equals("ok2") && result.data.meta.status == 200) {
                             if (result.data != null && result.data.meta.status == 200) {
                                 Timber.v("pre finalizing...")
                                 PabiliFormFragmentDirections.actionPabiliFormFragmentToCustomerCartFragment().also {
@@ -189,7 +188,7 @@ class PabiliFormFragment: TitleOnlyFragment() {
                         val cartStatus = cart.status.toCartStatus()
                         val basket = cart.initBasketForPabili()
 //                        adapter.pabiliItemList = ArrayList(basket.items)
-                        et_est_total_amount.setText(basket.estimateTotalWithoutDeliveryFee)
+//                        et_est_total_amount.setText(basket.estimateTotalWithoutDeliveryFee)
 
 /*                        if (cart.pickUpLocation.addressText.isBlank().not()) {
                             cartViewModel.updateFromLocation(cart.pickUpLocation.toPlace())
@@ -198,18 +197,18 @@ class PabiliFormFragment: TitleOnlyFragment() {
                             cartViewModel.updateToLocation(cart.deliveryLocation.toPlace())
                         }*/
                         itemList.clear()
-                        if (cartViewModel.pabiliItemList.value.isNullOrEmpty()) {
+/*                        if (cartViewModel.pabiliItemList.value.isNullOrEmpty()) {
                             itemList.addAll(basket.items)
                         } else {
                             itemList.addAll(cartViewModel.pabiliItemList.value!!)
-                        }
-                        if (basket.items.size < 5) {
-                            var y = basket.items.size
+                        }*/
+//                        if (basket.items.size < 5) {
+                            var y = 0
                             while (y < 5) {
                                 itemList.add(ItemInPabili())
                                 y++
                             }
-                        }
+//                        }
                         adapter.pabiliItemList = itemList
                         adapter.notifyDataSetChanged()
 

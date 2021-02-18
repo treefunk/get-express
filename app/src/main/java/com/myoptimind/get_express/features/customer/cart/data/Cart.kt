@@ -12,6 +12,9 @@ open class Cart(
         @SerializedName("cart_type_id")
         val cartTypeId: String = "",
 
+        @SerializedName("partner_id")
+        val partnerId: String = "",
+
         val customer: CustomerRequest,
 
         val rider: RiderInCart,

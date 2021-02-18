@@ -24,12 +24,9 @@ import com.myoptimind.get_express.MainActivity
 import com.myoptimind.get_express.R
 import com.myoptimind.get_express.features.login.data.UserType
 import com.myoptimind.get_express.features.rider.selected_customer_request.RiderTrackingService
+import com.myoptimind.get_express.features.shared.*
 import com.myoptimind.get_express.features.shared.DatePickerDialogFragment.Companion.EXTRA_DATE
 import com.myoptimind.get_express.features.shared.api.Result
-import com.myoptimind.get_express.features.shared.clearTextViews
-import com.myoptimind.get_express.features.shared.initDatePicker
-import com.myoptimind.get_express.features.shared.izBlank
-import com.myoptimind.get_express.features.shared.validateEmail
 import kotlinx.android.synthetic.main.fragment_sign_up_customer.*
 import kotlinx.android.synthetic.main.fragment_sign_up_customer.btn_fb_signup
 import kotlinx.android.synthetic.main.fragment_sign_up_customer.btn_google_signup
@@ -42,6 +39,8 @@ import kotlinx.android.synthetic.main.fragment_sign_up_customer.et_location
 import kotlinx.android.synthetic.main.fragment_sign_up_customer.et_mobile_number
 import kotlinx.android.synthetic.main.fragment_sign_up_customer.et_password
 import kotlinx.android.synthetic.main.fragment_sign_up_customer.tv_sign_in_link
+import org.joda.time.DateTime
+import org.joda.time.format.DateTimeFormat
 import timber.log.Timber
 
 private const val REQUEST_CODE_DATE_PICKER = 767
@@ -269,17 +268,13 @@ class SignUpCustomerFragment : BaseLoginFragment(UserType.CUSTOMER) {
             )
         }
 
-        et_birth_date.initDatePicker(
+/*        et_birth_date.initDatePicker(
             parentFragmentManager,
             this@SignUpCustomerFragment,
             "birth_date",
             REQUEST_CODE_DATE_PICKER
-        )
-/*        et_birth_date.setOnClickListener {
-            DatePickerDialog(requireContext(),DatePickerDialog.OnDateSetListener({ d, year, month, dayOfMonth ->
-
-            }),2001,1,1).show()
-        }*/
+        )*/
+        et_birth_date.initDatePickerSpinner(requireContext())
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

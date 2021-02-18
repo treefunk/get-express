@@ -1,5 +1,6 @@
 package com.myoptimind.get_express.features.shared
 
+import android.app.DatePickerDialog
 import android.content.Context
 import android.database.Cursor
 import android.net.Uri
@@ -14,11 +15,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.google.android.libraries.places.api.model.Place
 import com.google.gson.Gson
+import com.myoptimind.get_express.R
 import com.myoptimind.get_express.features.customer.cart.data.CartLocation
 import com.myoptimind.get_express.features.login.data.Address
 import com.myoptimind.get_express.features.shared.api.MetaErrorResponse
 import com.myoptimind.get_express.features.shared.api.MetaResponse
 import com.myoptimind.get_express.features.shared.api.Result
+import kotlinx.android.synthetic.main.fragment_sign_up_customer.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import org.joda.time.DateTime
@@ -153,6 +156,23 @@ fun DateTime.toReadableDateTime(): String {
     return DateTimeFormat.forPattern(pattern).print(this)
 }
 
+fun EditText.initDatePickerSpinner(
+        context: Context
+){
+
+    this.setOnClickListener {
+        val dtNow = if (this.text.toString().isEmpty()) {
+            DateTime()
+        } else {
+            DateTime.parse(this.text.toString(), DateTimeFormat.forPattern("yyyy-MM-dd"))
+        }
+        DatePickerDialog(context, R.style.MySpinnerDatePickerStyle, DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+            val dt = DateTimeFormat.forPattern("yyyy M d").parseDateTime("$year ${month + 1} $dayOfMonth")
+            this.setText(dt.toReadableDateTime())
+        },dtNow.year,dtNow.monthOfYear - 1,dtNow.dayOfMonth).show()
+    }
+}
+
 fun EditText.initDatePicker(
     fragmentManager: FragmentManager,
     targetFragment: Fragment,
@@ -162,6 +182,7 @@ fun EditText.initDatePicker(
     minDate: Long? = null
 ) {
     this.setOnClickListener {
+
         val dt = if (this.text.toString().isEmpty()) {
             DateTime()
         } else {

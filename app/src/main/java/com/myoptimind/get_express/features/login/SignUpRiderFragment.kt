@@ -32,8 +32,11 @@ import com.myoptimind.get_express.features.rider.selected_customer_request.Rider
 import com.myoptimind.get_express.features.shared.*
 import com.myoptimind.get_express.features.shared.DatePickerDialogFragment.Companion.EXTRA_DATE
 import com.myoptimind.get_express.features.shared.api.Result
+import kotlinx.android.synthetic.main.fragment_sign_up_customer.*
 import kotlinx.android.synthetic.main.fragment_sign_up_rider.*
 import kotlinx.android.synthetic.main.fragment_sign_up_rider.btn_customer
+import kotlinx.android.synthetic.main.fragment_sign_up_rider.btn_fb_signup
+import kotlinx.android.synthetic.main.fragment_sign_up_rider.btn_google_signup
 import kotlinx.android.synthetic.main.fragment_sign_up_rider.btn_sign_up
 import kotlinx.android.synthetic.main.fragment_sign_up_rider.et_birth_date
 import kotlinx.android.synthetic.main.fragment_sign_up_rider.et_email_address
@@ -42,6 +45,7 @@ import kotlinx.android.synthetic.main.fragment_sign_up_rider.et_location
 import kotlinx.android.synthetic.main.fragment_sign_up_rider.et_mobile_number
 import kotlinx.android.synthetic.main.fragment_sign_up_rider.et_password
 import kotlinx.android.synthetic.main.fragment_sign_up_rider.tv_sign_in_link
+import org.joda.time.DateTime
 import pub.devrel.easypermissions.EasyPermissions
 import pub.devrel.easypermissions.PermissionRequest
 import timber.log.Timber
@@ -378,12 +382,16 @@ class SignUpRiderFragment : BaseLoginFragment(UserType.RIDER), EasyPermissions.P
             )
         }
 
+/*
         et_birth_date.initDatePicker(
             parentFragmentManager,
             this@SignUpRiderFragment,
             "birth_date",
             REQUEST_CODE_DATE_PICKER
         )
+*/
+        et_birth_date.initDatePickerSpinner(requireContext())
+
 
 
     }

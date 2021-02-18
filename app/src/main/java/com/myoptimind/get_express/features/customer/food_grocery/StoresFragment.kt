@@ -6,10 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.model.Place
+import com.google.android.material.snackbar.Snackbar
 import com.myoptimind.get_express.R
 import com.myoptimind.get_express.features.customer.cart.CartViewModel
 import com.myoptimind.get_express.features.customer.food_grocery.data.Store
@@ -65,6 +67,10 @@ class StoresFragment: TitleOnlyFragment() {
                         val adapter = StoresAdapter(ArrayList(), object: StoresAdapter.StoreListener {
                             override fun onPressed(store: Store, index: Int) {
 //                Toast.makeText(requireContext(),store.name + " pressed.",Toast.LENGTH_LONG).show()
+                                if(store.isStoreAvailable.not()){
+                                    Snackbar.make(requireView(),"Sorry, This Store is closed. Please try again later.",Snackbar.LENGTH_SHORT).show()
+                                    return
+                                }
                                 val cart = result.data.data
                                 val cartType = cart.cartTypeId.idToCartType()
                                 when(cartType){

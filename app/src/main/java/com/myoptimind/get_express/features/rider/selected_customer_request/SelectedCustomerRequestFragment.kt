@@ -139,6 +139,7 @@ class SelectedCustomerRequestFragment: TitleOnlyFragment() {
             if(args.historyOnly){
                 group_history_views.visibility = View.GONE
                 group_status_change.visibility = View.GONE
+                btn_open_in_google_maps.visibility = View.GONE
             }
             viewModel.initCartInfo(args.cartId)
         }else{

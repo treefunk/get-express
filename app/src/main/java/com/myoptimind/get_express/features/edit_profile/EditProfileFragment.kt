@@ -20,11 +20,12 @@ import com.myoptimind.get_express.features.shared.AppSharedPref
 import com.myoptimind.get_express.features.shared.ProfileFragment
 import com.myoptimind.get_express.features.shared.TitleOnlyFragment
 import com.myoptimind.get_express.features.shared.api.Result
+import com.myoptimind.get_express.features.shared.initDatePickerSpinner
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_edit_profile.*
 import kotlinx.android.synthetic.main.fragment_edit_profile.et_fullname
 import kotlinx.android.synthetic.main.fragment_edit_profile.et_location
-import kotlinx.android.synthetic.main.fragment_sign_up_rider.*
+import org.joda.time.DateTime
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
@@ -74,6 +75,9 @@ class EditProfileFragment: TitleOnlyFragment() {
         super.onViewCreated(view, savedInstanceState)
         initObservers()
         initClickListeners()
+
+        et_birthdate.initDatePickerSpinner(requireContext())
+
     }
 
     private fun initClickListeners() {
