@@ -39,13 +39,13 @@ class AppModule {
                         .build())
             }
 
-        val loggingInterceptor = HttpLoggingInterceptor()
+/*        val loggingInterceptor = HttpLoggingInterceptor()
         loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
         okHttpClient.addInterceptor(loggingInterceptor)
         okHttpClient.apply {
 
             addInterceptor(loggingInterceptor)
-        }
+        }*/
 
         return Retrofit.Builder()
             .baseUrl("http://getapp.betaprojex.com/api/")
