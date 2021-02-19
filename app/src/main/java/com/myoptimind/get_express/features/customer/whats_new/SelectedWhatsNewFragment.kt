@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.myoptimind.get_express.R
 import com.myoptimind.get_express.features.shared.TitleOnlyFragment
 import kotlinx.android.synthetic.main.fragment_selected_whats_new.*
@@ -32,5 +34,16 @@ class SelectedWhatsNewFragment: TitleOnlyFragment() {
         tv_type.text = whatsNew.category
         tv_title.text = whatsNew.title
         tv_body.text = whatsNew.body
+        if(whatsNew.linkedPartnerId != "0"){
+            btn_view_store.setOnClickListener {
+                        SelectedWhatsNewFragmentDirections.actionSelectedWhatsNewFragmentToSelectedStoreFragment(
+                            whatsNew.linkedServiceId,"", whatsNew.linkedPartnerId,true
+                        ).also {
+                            findNavController().navigate(it)
+                        }
+            }
+        }else{
+            btn_view_store.visibility = View.GONE
+        }
     }
 }

@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="6"
         android:gravity="left"
-        android:padding="8dp"
+        android:padding="10dp"
         android:textColor="@color/main_text_color"
         android:textSize="10sp"
         android:fontFamily="@font/lato_regular"

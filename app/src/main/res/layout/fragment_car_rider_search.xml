@@ -423,11 +423,11 @@
 
             android:layout_marginLeft="12dp"
             android:layout_marginRight="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="12dp"
             android:text="Additional Notes to Rider"
 
             android:textColor="@color/main_text_color"
-            style="@style/GetExpressLabel.LabelSelectedCustomerRequestLarge"
+            style="@style/GetExpressLabel_additional_notes_to_rider"
 
             />
 
@@ -444,7 +444,7 @@
             android:textColor="@color/main_text_color"
             android:textSize="10sp"
             android:lineHeight="15dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="5dp"
             app:layout_constraintTop_toBottomOf="@id/label_additional_notes_to_rider"
             app:layout_constraintLeft_toLeftOf="@id/label_additional_notes_to_rider"
             app:layout_constraintRight_toRightOf="@id/label_additional_notes_to_rider"
@@ -466,7 +466,7 @@
             android:text="Payment Method"
 
             android:textColor="@color/main_text_color"
-            style="@style/GetExpressLabel.LabelSelectedCustomerRequestMedium"
+            style="@style/GetExpressLabel_additional_notes_to_rider"
 
             />
 

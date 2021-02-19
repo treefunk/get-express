@@ -20,7 +20,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginLeft="12dp"
         android:layout_marginRight="12dp"
-        style="@style/GetExpressLabel.EditProfileName"
+        style="@style/GetExpressLabel_Whats_New"
         android:text="What's New"
         android:textColor="@color/main_text_color"
         />

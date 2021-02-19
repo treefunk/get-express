@@ -242,7 +242,7 @@ class CustomerCartFragment: TitleOnlyFragment() {
                                 btn_get.setOnClickListener {
                                     cartViewModel.finalizeCart(
                                             cartViewModel.cartId!!,
-                                            "notes",
+                                            et_notes_to_driver.text.toString(),
                                             pickupLocation = null,
                                             deliveryLocation = CartLocation.fromPlace(cartViewModel.toLocation.value!!),
                                             paymentType = "COD"
@@ -281,7 +281,7 @@ class CustomerCartFragment: TitleOnlyFragment() {
                                     btn_get.setOnClickListener {
                                         cartViewModel.finalizeCart(
                                                 cartViewModel.cartId!!,
-                                                "notes",
+                                                et_notes_to_driver.text.toString(),
                                                 pickupLocation = null,
                                                 deliveryLocation = CartLocation.fromPlace(cartViewModel.toLocation.value!!),
                                                 paymentType = "COD"

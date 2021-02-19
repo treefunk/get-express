@@ -14,6 +14,7 @@ import kotlinx.android.synthetic.main.item_store_category.view.*
 class ProductCategoryAdapter constructor(
         var productCategories: List<ProductCategory>,
         var cartType: CartType,
+        val forViewingOnly: Boolean,
         val listener: ProductAdapter.ProductListener? = null
 ) : RecyclerView.Adapter<ProductCategoryAdapter.ViewHolder>() {
 
@@ -36,14 +37,14 @@ class ProductCategoryAdapter constructor(
             when(cartType){
                 CartType.GROCERY -> {
                     itemView.tv_store_name.text = productCategory.categoryName
-                    val productAdapter = ProductAdapter(productCategory.products,cartType,listener)
+                    val productAdapter = ProductAdapter(productCategory.products,cartType,forViewingOnly,listener)
                     itemView.rv_store_items.layoutManager = GridLayoutManager(itemView.context,2,RecyclerView.VERTICAL,false)
                     itemView.rv_store_items.adapter = productAdapter
                     productAdapter.notifyDataSetChanged()
                 }
                 CartType.FOOD -> {
                     itemView.tv_store_name.text = productCategory.categoryName
-                    val productAdapter = ProductAdapter(productCategory.products,cartType,listener)
+                    val productAdapter = ProductAdapter(productCategory.products,cartType,forViewingOnly,listener)
                     itemView.rv_store_items.layoutManager = LinearLayoutManager(itemView.context,RecyclerView.VERTICAL,false)
                     itemView.rv_store_items.adapter = productAdapter
                     productAdapter.notifyDataSetChanged()

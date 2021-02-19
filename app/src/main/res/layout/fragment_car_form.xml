@@ -245,7 +245,7 @@
         android:text="Payment Method"
 
         android:textColor="@color/main_text_color"
-        style="@style/GetExpressLabel.LabelSelectedCustomerRequestMedium"
+        style="@style/GetExpressLabel_additional_notes_to_rider"
         />
 
 

@@ -69,6 +69,21 @@ class CartViewModel @ViewModelInject constructor(
     val initCartResult: LiveData<Result<GetCartInfoResponse>> get() = _initCartResult
     private val _initCartResult = MutableLiveData<Result<GetCartInfoResponse>>()
 
+    fun getStoreById(
+        storeId: String,
+    ){
+        viewModelScope.launch(Dispatchers.IO){
+            storesRepository.getStorebyId(
+                storeId
+            ).collect { result ->
+                if(result is Result.Success && result.data != null){
+                    _activeStore.postValue(result.data.data)
+                }
+            }
+        }
+    }
+
+
 
     val activeStore: LiveData<Store>
         get() = _activeStore

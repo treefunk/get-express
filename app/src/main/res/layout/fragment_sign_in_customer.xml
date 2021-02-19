@@ -35,8 +35,7 @@
         app:layout_constraintRight_toRightOf="@id/label_sign_in"
         app:layout_constraintBottom_toTopOf="@id/btn_customer"
         android:text="I am a"
-        android:textSize="15sp"
-        style="@style/GetExpressTextDescription"
+        style="@style/GetExpressText_i_am_a"
         android:layout_marginTop="4dp"
         />
 
@@ -188,7 +187,7 @@
         app:layout_constraintLeft_toLeftOf="@id/btn_fb_signup"
 
         android:layout_marginTop="8dp"
-        style="@style/GetExpressLabel.MediumBlack"
+        style="@style/GetExpressLabel_signup_with"
         android:gravity="center"
 
         android:text="Sign in with Email Address"

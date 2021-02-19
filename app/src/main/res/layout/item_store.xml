@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginTop="12dp"
-    android:layout_marginLeft="6dp"
-    android:layout_marginRight="6dp"
+    android:layout_marginLeft="4dp"
+    android:layout_marginRight="4dp"
     app:cardCornerRadius="8dp"
     app:cardElevation="0dp"
     app:cardMaxElevation="0dp"
@@ -34,12 +34,14 @@
         style="@style/GetExpressStoreListLabel"
         tools:text="Grocery Store"
 
-        android:textStyle="bold"
         android:textColor="@color/main_text_color"
         android:layout_marginTop="4dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="10dp"
+        android:minLines="2"
+        android:maxLines="2"
+        android:ellipsize="end"
         />
 
 <!--

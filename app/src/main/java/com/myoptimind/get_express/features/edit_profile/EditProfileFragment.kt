@@ -199,7 +199,7 @@ class EditProfileFragment: TitleOnlyFragment() {
         )
         val linearLayoutManager = object : LinearLayoutManager(requireContext()){
             override fun checkLayoutParams(lp: RecyclerView.LayoutParams?): Boolean {
-                val margin = 8
+                val margin = 4
                 lp?.height = (height / 2) - margin * 2
                 lp?.bottomMargin = margin
                 lp?.topMargin = margin

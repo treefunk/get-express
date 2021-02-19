@@ -178,15 +178,16 @@ class RiderTrackingService: LifecycleService() {
 
                         isFirstRun = false
                         isServiceKilled = false
-                        if(it.extras?.get(EXTRA_CART_ID) != null){
-                            cartId = it.extras?.get(EXTRA_CART_ID) as String
-                        }else{
-                            cartId = null
-                        }
-                        sendCoordinates = it.extras?.get(EXTRA_SEND_COORDINATES) as Boolean
+
                     }else{
                         Timber.d("resuming service")
                     }
+                    if(it.extras?.get(EXTRA_CART_ID) != null){
+                        cartId = it.extras?.get(EXTRA_CART_ID) as String
+                    }else{
+                        cartId = null
+                    }
+                    sendCoordinates = it.extras?.get(EXTRA_SEND_COORDINATES) as Boolean
                 }
                 ACTION_PAUSE_SERVICE -> {
                     Timber.d("paused service")
@@ -215,7 +216,7 @@ class RiderTrackingService: LifecycleService() {
         val notificationBuilder = NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
             .setAutoCancel(false)
             .setOngoing(true)
-            .setSmallIcon(R.drawable.ic_location)
+            .setSmallIcon(R.drawable.home_logo)
             .setContentTitle("Get Express")
             .setContentText("Tracking your location..")
             .setContentIntent(getMainActivityPendingIntent())

@@ -132,6 +132,12 @@
             app:argType="string"
             android:defaultValue=""
             />
+
+        <argument
+            android:name="forViewingOnly"
+            app:argType="boolean"
+            android:defaultValue="false"
+            />
         <action
             android:id="@+id/action_selectedStoreFragment_to_customerCartFragment"
             app:destination="@id/customerCartFragment" />
@@ -278,6 +284,9 @@
             app:argType="com.myoptimind.get_express.features.customer.whats_new.data.WhatsNew"
             app:nullable="false"
             />
+        <action
+            android:id="@+id/action_selectedWhatsNewFragment_to_selectedStoreFragment"
+            app:destination="@id/selectedStoreFragment" />
 
     </fragment>
     <action

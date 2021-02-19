@@ -9,7 +9,12 @@ import com.myoptimind.get_express.R
 import com.myoptimind.get_express.features.customer.food_grocery.data.Product
 import com.myoptimind.get_express.features.shared.data.CartType
 import com.myoptimind.get_express.features.shared.toMoneyFormat
+import kotlinx.android.synthetic.main.item_store_food.view.*
 import kotlinx.android.synthetic.main.item_store_grocery.view.*
+import kotlinx.android.synthetic.main.item_store_grocery.view.ib_add_to_cart
+import kotlinx.android.synthetic.main.item_store_grocery.view.iv_product_image
+import kotlinx.android.synthetic.main.item_store_grocery.view.tv_product_name
+import kotlinx.android.synthetic.main.item_store_grocery.view.tv_product_price
 
 
 private const val VIEW_TYPE_GROCERY = 767
@@ -18,6 +23,7 @@ private const val VIEW_TYPE_GROCERY = 767
 class ProductAdapter constructor(
         var products: List<Product>,
         var cartType: CartType,
+        val forViewingOnly: Boolean,
         val listener: ProductListener? = null,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -50,6 +56,11 @@ class ProductAdapter constructor(
 
             itemView.tv_product_name.text = product.productName
             itemView.tv_product_price.text = product.basePrice.toMoneyFormat()
+
+            if(forViewingOnly){
+                itemView.ib_add_to_cart.visibility = View.INVISIBLE
+            }
+
             itemView.setOnClickListener {
                 listener?.onPressProduct(product,false)
             }

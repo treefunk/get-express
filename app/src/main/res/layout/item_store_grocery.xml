@@ -41,6 +41,7 @@
 
             android:layout_marginTop="4dp"
             android:layout_marginRight="8dp"
+            android:textSize="11sp"
             android:textColor="@color/main_text_color"
             tools:text="@tools:sample/full_names" />
 
@@ -55,8 +56,10 @@
             android:layout_marginRight="8dp"
             android:layout_marginBottom="6dp"
             android:includeFontPadding="false"
-            android:fontFamily="@font/lato_bold"
+            android:fontFamily="@font/lato_black"
             android:textColor="@color/main_text_color"
+            android:textSize="11sp"
+
             tools:text="14000.00" />
 
     </LinearLayout>

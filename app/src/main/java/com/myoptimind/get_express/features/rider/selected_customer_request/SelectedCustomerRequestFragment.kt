@@ -700,17 +700,21 @@ class SelectedCustomerRequestFragment: TitleOnlyFragment() {
                         R.color.status_button_grey
                     )
                 )
+                this.setTextColor(ContextCompat.getColor(requireContext(),android.R.color.white))
             }else if (currentStatus.order >= buttonStatus.order){
-                this.background.setTint(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.yellow_700
-                    )
-                )
+                this.background.setTint(ContextCompat.getColor(requireContext(), R.color.yellow_120))
+                this.setTextColor(ContextCompat.getColor(requireContext(),android.R.color.white))
             }
         }else{
             this.isEnabled = false
-            this.background.setTint(ContextCompat.getColor(requireContext(), R.color.yellow_500))
+
+            this.background.setTint(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.yellow_200
+                )
+            )
+            this.setTextColor(ContextCompat.getColor(requireContext(),R.color.blue_200))
         }
     }
 

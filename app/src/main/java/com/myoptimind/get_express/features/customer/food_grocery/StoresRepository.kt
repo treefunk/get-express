@@ -27,6 +27,13 @@ class StoresRepository @Inject constructor(
         emit(Result.Success(response))
     }.applyDefaultEffects()
 
+    fun getStorebyId(
+        partnerId: String
+    ) = flow {
+        val response = storesService.getStore(partnerId)
+        emit(Result.Success(response))
+    }.applyDefaultEffects(false,true)
+
 
     fun getProductsByStore(
             storeId: String,
@@ -124,7 +131,7 @@ class StoresRepository @Inject constructor(
                 customerId
         )
         emit(Result.Success(response))
-    }.applyDefaultEffects(true, false)
+    }.applyDefaultEffects(false, true)
 
     fun cancelBooking(
             cartId: String

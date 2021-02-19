@@ -12,5 +12,11 @@ data class WhatsNew(
         val category: String,
         val body: String,
         @SerializedName("banner_image")
-        val bannerImage: String
+        val bannerImage: String,
+        @SerializedName("linked_partner_id")
+        val linkedPartnerId: String,
+        @SerializedName("service_id")
+        val linkedServiceId: String,
+        @SerializedName("linked_partner_name")
+        val linkedPartnerName: String
 ): BaseRemoteEntity(), Parcelable

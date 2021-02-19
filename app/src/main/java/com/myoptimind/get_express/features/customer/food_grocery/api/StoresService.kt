@@ -26,6 +26,16 @@ interface StoresService {
             @Query("cart_id") cartId: String? = null
     ): StoreByServiceResponse
 
+    @GET("partners/{partner_id}")
+    suspend fun getStore(
+        @Path("partner_id") partnerId: String
+    ): SingleStoreResponse
+
+    data class SingleStoreResponse(
+        val data: Store,
+        val meta: MetaResponse
+    )
+
     @GET("inventory/partner/{partner_id}")
     suspend fun getProductsByStore(
             @Path("partner_id") storeId: String,

@@ -42,25 +42,8 @@ import com.myoptimind.get_express.features.shared.data.idToCartType
 import com.myoptimind.get_express.features.shared.data.toCartStatus
 import com.myoptimind.get_express.features.shared.toMoneyFormat
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_car_rider_search.*
 import kotlinx.android.synthetic.main.fragment_customer_rider_search.*
-import kotlinx.android.synthetic.main.fragment_customer_rider_search.card_customer_request
-import kotlinx.android.synthetic.main.fragment_customer_rider_search.group_sub_total_and_delivery_fee
-import kotlinx.android.synthetic.main.fragment_customer_rider_search.iv_icon
-import kotlinx.android.synthetic.main.fragment_customer_rider_search.label_delivery_fee
-import kotlinx.android.synthetic.main.fragment_customer_rider_search.label_sub_total
-import kotlinx.android.synthetic.main.fragment_customer_rider_search.label_summary
-import kotlinx.android.synthetic.main.fragment_customer_rider_search.label_total
-import kotlinx.android.synthetic.main.fragment_customer_rider_search.rv_orders
-import kotlinx.android.synthetic.main.fragment_customer_rider_search.tv_customer_details
-import kotlinx.android.synthetic.main.fragment_customer_rider_search.tv_customer_name
-import kotlinx.android.synthetic.main.fragment_customer_rider_search.tv_delivery_fee
-import kotlinx.android.synthetic.main.fragment_customer_rider_search.tv_status
-import kotlinx.android.synthetic.main.fragment_customer_rider_search.tv_sub_total
-import kotlinx.android.synthetic.main.fragment_customer_rider_search.tv_to_location
-import kotlinx.android.synthetic.main.fragment_customer_rider_search.tv_total
 import kotlinx.android.synthetic.main.fragment_customer_rider_search.view.*
-import kotlinx.android.synthetic.main.fragment_selected_customer_request.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
@@ -321,6 +304,7 @@ class CustomerRiderSearchFragment : TitleOnlyFragment() {
                         val cartType = cart.cartTypeId.idToCartType()
                         val cartStatus = cart.status.toCartStatus()
                         tv_customer_details.text = "${cart.rider.vehicleModel} | ${cart.rider.plateNumber}"
+                        tv_additional_notes_to_rider.text = cart.notes
 
                         /** B A S K E T **/
                         val basketMap = cart.basket as Map<*, *>

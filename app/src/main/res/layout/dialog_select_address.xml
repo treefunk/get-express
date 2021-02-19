@@ -7,49 +7,39 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="12dp"
-        android:layout_marginRight="12dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:background="@color/blue_200"
         >
         <TextView
             android:id="@+id/tv_select_address"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_weight="1"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             style="@style/GetExpressLoginHeader"
+            android:fontFamily="@font/lato_black"
             android:gravity="center"
 
-            android:textColor="@color/main_text_color"
+            android:textColor="@color/yellow_200"
             android:text="Select Delivery Address:"
             />
     </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.3dp"
-        android:background="@color/blue_200"
-        />
 
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.3dp"
-        android:background="@color/blue_200"
-        />
 
     <Button
         android:id="@+id/btn_select_from_address_book"
         android:layout_width="match_parent"
-        android:layout_height="55dp"
+        android:layout_height="50dp"
         android:gravity="center"
         style="@style/GetExpressTextDescription"
         android:text="Select from Address Book"
         android:textColor="@color/main_text_color"
         android:includeFontPadding="false"
-        android:paddingLeft="12dp"
         android:fontFamily="@font/lato_regular"
-        android:textSize="14sp"
+        android:textSize="13sp"
         android:background="?android:selectableItemBackground"
         android:textAllCaps="false"
         />
@@ -63,15 +53,14 @@
     <Button
         android:id="@+id/btn_enter_new_address"
         android:layout_width="match_parent"
-        android:layout_height="55dp"
+        android:layout_height="50dp"
         android:gravity="center"
         style="@style/GetExpressTextDescription"
         android:text="Enter new Address"
         android:textColor="@color/main_text_color"
         android:includeFontPadding="false"
-        android:paddingLeft="12dp"
         android:fontFamily="@font/lato_regular"
-        android:textSize="14sp"
+        android:textSize="13sp"
         android:background="?android:selectableItemBackground"
         android:textAllCaps="false"
         />

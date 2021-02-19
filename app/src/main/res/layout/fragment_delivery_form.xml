@@ -210,7 +210,7 @@
         android:layout_marginTop="18dp"
 
         android:textColor="@color/main_text_color"
-        style="@style/GetExpressLabel.LabelSelectedCustomerRequestLarge"
+        style="@style/GetExpressLabel_delivery_item_details"
 
         />
 
@@ -267,12 +267,12 @@
 
     <ImageView
         android:id="@+id/iv_weight"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
         android:src="@drawable/ic_weight"
         app:layout_constraintTop_toBottomOf="@id/et_delivery_category"
         app:layout_constraintLeft_toLeftOf="@id/iv_delivery_category"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="10dp"
         />
 
     <TextView
@@ -287,8 +287,7 @@
         android:layout_marginRight="12dp"
         android:textColor="@color/blue_500"
         android:text="@string/label_weight_description"
-        style="@style/GetExpressTextDescription"
-        android:textSize="11sp"
+        style="@style/GetExpressLabelWeight"
         />
 
     <TextView
@@ -302,11 +301,11 @@
 
         android:text="Delivery Instructions"
         android:layout_marginLeft="12dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         android:layout_marginRight="12dp"
 
         android:textColor="@color/main_text_color"
-        style="@style/GetExpressLabel.LabelSelectedCustomerRequestLarge"
+        style="@style/GetExpressLabel_delivery_item_details"
 
         />
 
@@ -314,8 +313,8 @@
         android:id="@+id/et_delivery_instructions"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:maxLines="5"
-        android:lines="5"
+        android:maxLines="6"
+        android:lines="6"
         android:inputType="textMultiLine"
 
 

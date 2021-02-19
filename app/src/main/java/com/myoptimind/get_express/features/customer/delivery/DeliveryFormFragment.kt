@@ -183,6 +183,10 @@ class DeliveryFormFragment: TitleOnlyFragment() {
                 }
                 is Result.Error -> {
                     Timber.e(result.metaResponse.message)
+                    val errorMeta = result.metaResponse
+                    if(errorMeta.status == 400){
+                        Snackbar.make(requireView(),errorMeta.message,Snackbar.LENGTH_LONG).show()
+                    }
                 }
                 is Result.HttpError -> {
                     Timber.e(result.error.message)
@@ -236,7 +240,7 @@ class DeliveryFormFragment: TitleOnlyFragment() {
 
                         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, data.categories)
                         label_weight_description.text = data.vehicleWeightCapacityText
-                        label_weight_description.setTypeface(label_weight_description.typeface, Typeface.ITALIC)
+//                        label_weight_description.setTypeface(label_weight_description.typeface, Typeface.ITALIC)
                         et_delivery_category.setAdapter(adapter)
                         et_delivery_category.setOnClickListener {
                             et_delivery_category.showDropDown()

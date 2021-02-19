@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.view.menu.ActionMenuItemView
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.activityViewModels
@@ -18,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.facebook.internal.Utility.arrayList
 import com.google.android.libraries.places.api.model.Place
+import com.google.android.material.snackbar.Snackbar
 import com.myoptimind.get_express.MainActivity
 import com.myoptimind.get_express.R
 import com.myoptimind.get_express.features.customer.cart.CartViewModel
@@ -283,6 +285,10 @@ class CustomerDashboardFragment : LogoOnlyFragment() {
                 }
                 is Result.Error -> {
                     Timber.e(result.metaResponse.message)
+                    val errorMeta = result.metaResponse
+                    if(errorMeta.status == 400){
+                        Snackbar.make(requireView(),errorMeta.message,Snackbar.LENGTH_LONG).show()
+                    }
                 }
                 is Result.HttpError -> {
                     Timber.e(result.error.message)

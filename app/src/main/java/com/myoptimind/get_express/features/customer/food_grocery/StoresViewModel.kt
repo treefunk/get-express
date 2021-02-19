@@ -64,6 +64,10 @@ class StoresViewModel @ViewModelInject constructor(
         }
     }
 
+    val storeResult:LiveData<Result<StoresService.SingleStoreResponse>> get() = _storeResult
+    private val _storeResult = MutableLiveData<Result<StoresService.SingleStoreResponse>>()
+
+
     val storeCategories: LiveData<Result<StoresService.CategoriesByStoreResponse>> get() = _storeCategories
     private val _storeCategories = MutableLiveData<Result<StoresService.CategoriesByStoreResponse>>()
 

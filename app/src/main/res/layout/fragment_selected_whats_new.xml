@@ -7,23 +7,51 @@
     android:background="@color/background_color"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
-        android:id="@+id/tv_title_header"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-
+        android:orientation="horizontal"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="12dp"
         android:layout_marginRight="12dp"
         android:layout_marginBottom="12dp"
-        style="@style/GetExpressLabel.EditProfileName"
-        android:text="What's New"
-        android:textColor="@color/main_text_color"
-        />
+        >
+        <TextView
+            android:id="@+id/tv_title_header"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+
+
+            style="@style/GetExpressLabel.EditProfileName"
+            android:text="What's New"
+            android:textColor="@color/main_text_color"
+            tools:text="Spread the Love this Valentine's Day!"
+            />
+
+        <Button
+            android:id="@+id/btn_view_store"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            style="@style/GetExpressButtonFlat"
+
+            android:layout_gravity="center"
+
+            android:textSize="9sp"
+            android:minWidth="80dp"
+
+            android:textColor="@color/yellow_200"
+            android:backgroundTint="@color/blue_200"
+            android:clickable="false"
+            android:text="View Store"
+
+
+            />
+    </LinearLayout>
+
+
+
+
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"

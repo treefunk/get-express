@@ -48,7 +48,13 @@ class RiderHistoryAdapter constructor(
                     .into(itemView.iv_icon)
 
             itemView.tv_customer_name.text = riderHistory.location.label
-            itemView.tv_customer_details.text = "${riderHistory.createdAt} | ${riderHistory.totalItems} Items | ${riderHistory.totalPrice?.toMoneyFormat()}"
+            var historyDetails = StringBuilder()
+            historyDetails.append(riderHistory.createdAt)
+            if(riderHistory.totalItems != null && riderHistory.totalItems.toInt() > 0 ){
+                historyDetails.append(" | ${riderHistory.totalItems} Items ")
+            }
+            historyDetails.append(" | ${riderHistory.totalPrice?.toMoneyFormat()}")
+            itemView.tv_customer_details.text = historyDetails.toString()
 
             Glide.with(itemView.context)
                     .load(riderHistory.icon)

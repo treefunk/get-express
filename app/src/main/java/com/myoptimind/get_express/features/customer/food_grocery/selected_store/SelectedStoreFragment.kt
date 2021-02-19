@@ -15,6 +15,8 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import com.myoptimind.get_express.R
 import com.myoptimind.get_express.features.customer.cart.CartViewModel
 import com.myoptimind.get_express.features.customer.cart.data.CartLocation
@@ -65,6 +67,10 @@ class SelectedStoreFragment: TitleOnlyFragment() {
                 null,
                 null
         )
+        if(args.forViewingOnly){
+            cartViewModel.getStoreById(args.storeId)
+            group_basket.visibility = View.GONE
+        }
 
         storeViewModel.getCategoriesByStore(args.storeId)
     }
@@ -119,7 +125,7 @@ class SelectedStoreFragment: TitleOnlyFragment() {
                         when(cartType){
                             CartType.CAR -> TODO()
                             CartType.GROCERY -> {
-                                adapter = ProductCategoryAdapter(ArrayList(),cartType, object: ProductAdapter.ProductListener{
+                                adapter = ProductCategoryAdapter(ArrayList(),cartType,args.forViewingOnly, object: ProductAdapter.ProductListener{
                                     override fun onPressProduct(product: Product, isInstant: Boolean) {
                                         if(product.isOutStock){
                                             Toast.makeText(requireContext(),"This item is out of stock.", Toast.LENGTH_SHORT).show()
@@ -135,27 +141,34 @@ class SelectedStoreFragment: TitleOnlyFragment() {
                             }
                             CartType.FOOD -> {
 
-                                adapter = ProductCategoryAdapter(ArrayList(),cartType, object: ProductAdapter.ProductListener{
+                                adapter = ProductCategoryAdapter(ArrayList(), cartType, args.forViewingOnly, object: ProductAdapter.ProductListener{
                                     override fun onPressProduct(product: Product, isInstant: Boolean) {
-                                        if(product.isOutStock){
-                                            Toast.makeText(requireContext(),"This item is out of stock.", Toast.LENGTH_SHORT).show()
+                                        val dialogGrocery = ProductFoodDialog.newInstance(product, forViewingOnly = args.forViewingOnly)
+                                        dialogGrocery.setTargetFragment(this@SelectedStoreFragment, REQUEST_FOOD_ADD_TO_CART)
+
+                                        if(args.forViewingOnly){
+                                            dialogGrocery.show(parentFragmentManager,"FOODDIALOG")
                                             return
-                                        }
-                                        product.quantity = "1"
-                                        val sameProducts = cartViewModel.cartItemList!!.filter { product.id == it.productId }
-                                        if(cartViewModel.cartItemList != null
+                                        }else{
+                                            if(product.isOutStock){
+                                                Toast.makeText(requireContext(),"This item is out of stock.", Toast.LENGTH_SHORT).show()
+                                                return
+                                            }
+                                            product.quantity = "1"
+                                            val sameProducts = cartViewModel.cartItemList!!.filter { product.id == it.productId }
+                                            if(cartViewModel.cartItemList != null
                                                 && sameProducts.isNotEmpty()
                                                 && product.addons.isNotEmpty()
-                                        ){
-                                            val productsTrayBottomDialog = ProductsTrayBottomDialog.newInstance(product,ArrayList(sameProducts))
-                                            productsTrayBottomDialog.setTargetFragment(this@SelectedStoreFragment, REQUEST_FOOD_TRAY)
-                                            productsTrayBottomDialog.show(parentFragmentManager,"FOODTRAY")
-                                        }else{
-                                            Timber.d("PRODUCT -- ${product}")
-                                            val dialogGrocery = ProductFoodDialog.newInstance(product)
-                                            dialogGrocery.setTargetFragment(this@SelectedStoreFragment, REQUEST_FOOD_ADD_TO_CART)
-                                            dialogGrocery.show(parentFragmentManager,"FOODDIALOG")
+                                            ){
+                                                val productsTrayBottomDialog = ProductsTrayBottomDialog.newInstance(product,ArrayList(sameProducts))
+                                                productsTrayBottomDialog.setTargetFragment(this@SelectedStoreFragment, REQUEST_FOOD_TRAY)
+                                                productsTrayBottomDialog.show(parentFragmentManager,"FOODTRAY")
+                                            }else{
+                                                Timber.d("PRODUCT -- ${product}")
+                                                dialogGrocery.show(parentFragmentManager,"FOODDIALOG")
+                                            }
                                         }
+
                                     }
                                 })
 
@@ -248,7 +261,7 @@ class SelectedStoreFragment: TitleOnlyFragment() {
 
                                 cartViewModel.shouldEmptyCartFirst = (cart.partnerId != "" && cart.partnerId != args.storeId)
 
-                                if(itemsBasket.items.isNotEmpty() && (cart.partnerId != "" && cart.partnerId == args.storeId)){
+                                if(itemsBasket.items.isNotEmpty() && (cart.partnerId != "" && cart.partnerId == args.storeId) && args.forViewingOnly.not()){
 
                                     group_basket.visibility = View.VISIBLE
                                     tv_basket_label.text = "View Basket (${itemsBasket.totalItems} items)"
@@ -280,7 +293,7 @@ class SelectedStoreFragment: TitleOnlyFragment() {
 
                                 cartViewModel.shouldEmptyCartFirst = (cart.partnerId != "" && cart.partnerId != args.storeId)
 
-                            if(itemsBasket.items.isNotEmpty()  && (cart.partnerId != "" && cart.partnerId == args.storeId)){
+                            if(itemsBasket.items.isNotEmpty()  && (cart.partnerId != "" && cart.partnerId == args.storeId) && args.forViewingOnly.not()){
 
                                 group_basket.visibility = View.VISIBLE
                                 tv_basket_label.text = "View Basket (${itemsBasket.totalItems} items)"
@@ -323,6 +336,10 @@ class SelectedStoreFragment: TitleOnlyFragment() {
                 }
                 is Result.Error -> {
                     Timber.d(result.metaResponse.message)
+                    val errorMeta = result.metaResponse
+                    if(errorMeta.status == 400){
+                        Snackbar.make(requireView(),errorMeta.message, Snackbar.LENGTH_LONG).show()
+                    }
                 }
                 is Result.HttpError -> {
                     Timber.d(result.error.message)
@@ -339,7 +356,7 @@ class SelectedStoreFragment: TitleOnlyFragment() {
                 val itemPayload = data.getParcelableExtra<ItemPayload>(ProductFoodDialog.PRODUCT_DATA_PAYLOAD)
 
                 if(itemPayload != null){
-                    Toast.makeText(requireContext(),"Added ${itemPayload.productName}.",Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(requireContext(),"Added ${itemPayload.productName}.",Toast.LENGTH_SHORT).show()
                     Timber.d("adding item...")
                     var cartItemId: String? = null
                     var quantity = itemPayload.quantity
@@ -356,13 +373,22 @@ class SelectedStoreFragment: TitleOnlyFragment() {
                         }
                     }
 
-                    cartViewModel.addItemToCart(
+/*                    cartViewModel.addItemToCart(
                             args.cartId,
                             itemPayload.productId,
                             quantity,
                             itemPayload.notes,
                             cartItemId = cartItemId,
                             addOnIds = itemPayload.addons?.map { it.id }
+                    )*/
+
+                    addItemToCart(
+                        args.cartId,
+                        itemPayload.productId,
+                        quantity,
+                        itemPayload.notes,
+                        cartItemId = cartItemId,
+                        addOnIds = itemPayload.addons?.map { it.id }
                     )
                 }
             }
@@ -370,7 +396,7 @@ class SelectedStoreFragment: TitleOnlyFragment() {
             if(data != null){
                 val itemPayload = data.getParcelableExtra<ItemPayload>(ProductFoodDialog.PRODUCT_DATA_PAYLOAD)
                 if(itemPayload != null){
-                    Toast.makeText(requireContext(),"Added ${itemPayload.productName}.",Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(requireContext(),"Added ${itemPayload.productName}.",Toast.LENGTH_SHORT).show()
                     Timber.d("addons: ${itemPayload.addons}")
                     Timber.d("adding item...")
                     if(cartViewModel.cartItemList.isNullOrEmpty().not()){
@@ -388,77 +414,68 @@ class SelectedStoreFragment: TitleOnlyFragment() {
                                 cartItemId = null
                             }
                         }
-                            if(cartViewModel.shouldEmptyCartFirst){
-                                cartViewModel.emptyThenAddItemToCart(
-                                    args.cartId,
-                                    itemPayload.productId,
-                                    quantity,
-                                    "",
-                                    cartItemId = cartItemId,
-                                    addOnIds = itemPayload.addons?.map { it.id }
-                                )
-
-                            }else{
-                                cartViewModel.addItemToCart(
-                                    args.cartId,
-                                    itemPayload.productId,
-                                    quantity,
-                                    "",
-                                    cartItemId = cartItemId,
-                                    addOnIds = itemPayload.addons?.map { it.id }
-                                )
-                            }
+                            addItemToCart(
+                                args.cartId,
+                                itemPayload.productId,
+                                quantity,
+                                "",
+                                cartItemId = cartItemId,
+                                addOnIds = itemPayload.addons?.map { it.id }
+                            )
 
                     }else{
-                        if(cartViewModel.shouldEmptyCartFirst){
-
-                            cartViewModel.emptyThenAddItemToCart(
-                                args.cartId,
-                                itemPayload.productId,
-                                itemPayload.quantity,
-                                itemPayload.notes,
-                                cartItemId = itemPayload.cartItemId,
-                                addOnIds = itemPayload.addons?.map { it.id }
-                            )
-                        }else{
-                            cartViewModel.addItemToCart(
-                                args.cartId,
-                                itemPayload.productId,
-                                itemPayload.quantity,
-                                itemPayload.notes,
-                                cartItemId = itemPayload.cartItemId,
-                                addOnIds = itemPayload.addons?.map { it.id }
-                            )
-                        }
-
+                        addItemToCart(
+                            args.cartId,
+                            itemPayload.productId,
+                            itemPayload.quantity,
+                            itemPayload.notes,
+                            cartItemId = itemPayload.cartItemId,
+                            addOnIds = itemPayload.addons?.map { it.id }
+                        )
                     }
                 }
             }
         }else if(requestCode == REQUEST_FOOD_UPDATE_CART && resultCode == Activity.RESULT_OK){
             val itemPayload = data?.getParcelableExtra<ItemPayload>(ProductFoodDialog.PRODUCT_DATA_PAYLOAD)
             if(data != null && itemPayload != null ){
-                if(cartViewModel.shouldEmptyCartFirst){
-                    cartViewModel.emptyThenAddItemToCart(
-                        args.cartId,
-                        itemPayload.productId,
-                        itemPayload.quantity,
-                        itemPayload.notes,
-                        cartItemId = itemPayload.cartItemId,
-                        addOnIds = itemPayload.addons?.map { it.id }
-                    )
-                }else{
-                    cartViewModel.addItemToCart(
-                        args.cartId,
-                        itemPayload.productId,
-                        itemPayload.quantity,
-                        itemPayload.notes,
-                        cartItemId = itemPayload.cartItemId,
-                        addOnIds = itemPayload.addons?.map { it.id }
-                    )
-                }
-
+                addItemToCart(
+                    args.cartId,
+                    itemPayload.productId,
+                    itemPayload.quantity,
+                    itemPayload.notes,
+                    cartItemId = itemPayload.cartItemId,
+                    addOnIds = itemPayload.addons?.map { it.id }
+                )
             }
         }
 
+    }
+
+    private fun addItemToCart(
+        cartId: String,
+        productId: String,
+        quantity: String,
+        notes: String,
+        addOnIds: List<String>? = null,
+        cartItemId: String? = null
+    ){
+        if(cartViewModel.shouldEmptyCartFirst){
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle("Warning!")
+                .setMessage(requireContext().getString(R.string.label_remove_cart_warning))
+                .setNeutralButton("NO") { dialog, which ->
+                    // Respond to neutral button press
+                }
+                .setPositiveButton("YES") { dialog, which ->
+                    cartViewModel.emptyThenAddItemToCart(
+                        cartId, productId, quantity, notes, addOnIds, cartItemId
+                    )
+                }
+                .show()
+        }else{
+            cartViewModel.addItemToCart(
+                cartId, productId, quantity, notes, addOnIds, cartItemId
+            )
+        }
     }
 }

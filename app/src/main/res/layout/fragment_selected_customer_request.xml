@@ -415,10 +415,11 @@
 
         android:layout_marginLeft="12dp"
         android:layout_marginTop="8dp"
+        app:layout_goneMarginTop="12dp"
         tools:text="Get Items"
 
         android:textColor="@color/main_text_color"
-        style="@style/GetExpressLabel.LabelSelectedCustomerRequestLarge"
+        style="@style/GetExpressLabel_get_order_label"
 
         />
 
@@ -575,14 +576,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        app:layout_constraintTop_toBottomOf="@id/card_customer_request"
+        app:layout_constraintTop_toTopOf="@id/label_get"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="@id/guideline_ver_50"
+        app:layout_constraintBottom_toTopOf="@id/flow_status_buttons"
+        app:layout_constraintVertical_chainStyle="packed"
+        android:layout_marginTop="4dp"
+        app:layout_constraintVertical_bias="0"
 
 
-        android:layout_marginTop="8dp"
+
         android:text="Change Status"
 
+        tools:visibility="visible"
         android:textColor="@color/main_text_color"
         style="@style/GetExpressLabel.LabelSelectedCustomerRequestLarge"
         android:visibility="gone"
@@ -640,16 +646,15 @@
 
     <androidx.constraintlayout.helper.widget.Flow
         android:id="@+id/flow_status_buttons"
-        android:layout_width="120dp"
-        android:layout_height="110dp"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/label_change_status"
         app:layout_constraintLeft_toLeftOf="@id/guideline_ver_50"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="@id/line_below_location"
-        app:layout_constraintVertical_chainStyle="spread_inside"
-
+        app:flow_verticalGap="7dp"
+        android:layout_marginTop="8dp"
         android:orientation="vertical"
-
         app:constraint_referenced_ids="btn_got_items,btn_on_the_way,btn_arrived,btn_delivered"
         />
 
@@ -688,7 +693,7 @@
         android:text="Order Summary"
 
         android:textColor="@color/main_text_color"
-        style="@style/GetExpressLabel.LabelSelectedCustomerRequestMedium"
+        style="@style/GetExpressLabel_Order_summary"
 
         />
 
@@ -835,11 +840,11 @@
 
         android:layout_marginLeft="12dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="12dp"
         android:text="Additional Notes to Rider"
 
         android:textColor="@color/main_text_color"
-        style="@style/GetExpressLabel.LabelSelectedCustomerRequestLarge"
+        style="@style/GetExpressLabel_additional_notes_to_rider"
 
         />
 
@@ -847,16 +852,10 @@
         android:id="@+id/tv_additional_notes_to_rider"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/myriad_pro_regular"
-        android:gravity="left|top"
-        android:includeFontPadding="false"
-        android:paddingTop="2dp"
-        android:text=""
         tools:text="@tools:sample/lorem"
         android:textColor="@color/main_text_color"
-        android:textSize="10sp"
-        android:lineHeight="15dp"
-        android:layout_marginTop="4dp"
+        style="@style/GetExpressEditTextNotesToRiderTextView"
+        android:layout_marginTop="8dp"
         app:layout_constraintTop_toBottomOf="@id/label_additional_notes_to_rider"
         app:layout_constraintLeft_toLeftOf="@id/label_additional_notes_to_rider"
         app:layout_constraintRight_toRightOf="@id/label_additional_notes_to_rider"
@@ -877,7 +876,7 @@
         android:text="Payment Method"
 
         android:textColor="@color/main_text_color"
-        style="@style/GetExpressLabel.LabelSelectedCustomerRequestMedium"
+        style="@style/GetExpressLabel_additional_notes_to_rider"
 
         />
 
