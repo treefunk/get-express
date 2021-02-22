@@ -40,7 +40,9 @@ interface StoresService {
     suspend fun getProductsByStore(
             @Path("partner_id") storeId: String,
             @Query("category") category: String? = null,
-            @Query("search") search: String? = null
+            @Query("search") search: String? = null,
+            @Query("price_min") minPrice: String? = null,
+            @Query("price_max") maxPrice: String? = null
     ): ProductsByStoreResponse
 
     data class ProductsByStoreResponse(

@@ -41,6 +41,7 @@ class StoresFragment: TitleOnlyFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.clearFilters()
         val cartType = args.serviceId.idToCartType()
 //        val vehicleType = args.vehicleTypeId.idToVehicleType()
         setNewTitle(cartType.label)

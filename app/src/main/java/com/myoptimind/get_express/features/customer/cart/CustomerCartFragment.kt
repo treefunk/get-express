@@ -155,7 +155,7 @@ class CustomerCartFragment: TitleOnlyFragment() {
                             val cart = result.data.data
                             cartViewModel.finalizeCart(
                                 cart.id,
-                                cart.notes,
+                                et_notes_to_driver.text.toString(),
                                 cartViewModel.fromLocation.value!!.toCartLocation(),
                                 cartViewModel.toLocation.value!!.toCartLocation(),
                                 "COD"

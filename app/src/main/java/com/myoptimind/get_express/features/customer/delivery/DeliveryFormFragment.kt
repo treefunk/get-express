@@ -220,7 +220,10 @@ class DeliveryFormFragment: TitleOnlyFragment() {
                     }
                 }
                 is Result.Error -> {
-                    Timber.e(result.metaResponse.message)
+                    val errorMeta = result.metaResponse
+                    if(errorMeta.status == 400){
+                        Snackbar.make(requireView(),errorMeta.message,Snackbar.LENGTH_LONG).show()
+                    }
                 }
                 is Result.HttpError -> {
                     Timber.e(result.error.message)

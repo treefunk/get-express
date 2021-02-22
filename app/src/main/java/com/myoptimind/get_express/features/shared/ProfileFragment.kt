@@ -11,6 +11,10 @@ open class ProfileFragment: TitleOnlyFragment() {
         Glide.with(requireContext())
                 .load(user.profilePicture)
                 .into(iv_profile_picture)
+        Glide.with(requireContext())
+            .load(user.profilePicture)
+            .into(parentActivity.iv_profile_picture)
+
 
         tv_profile_full_name.text = "Welcome, ${user.fullName}!"
     }

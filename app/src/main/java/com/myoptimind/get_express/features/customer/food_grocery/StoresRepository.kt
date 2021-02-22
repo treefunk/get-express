@@ -38,12 +38,16 @@ class StoresRepository @Inject constructor(
     fun getProductsByStore(
             storeId: String,
             category: String?,
-            search: String?
+            search: String?,
+            minPrice: String?,
+            maxPrice: String?
     ) = flow {
         val response = storesService.getProductsByStore(
                 storeId,
                 category,
-                search
+                search,
+                minPrice,
+                maxPrice
         )
         emit(Result.Success(response))
     }.applyDefaultEffects()

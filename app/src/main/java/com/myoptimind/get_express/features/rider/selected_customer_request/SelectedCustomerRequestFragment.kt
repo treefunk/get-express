@@ -460,6 +460,12 @@ class SelectedCustomerRequestFragment: TitleOnlyFragment() {
                                     cart.id,
                                     sendCoordinates = false
                                 )
+                                Snackbar.make(requireView(),"Booking Completed.", Snackbar.LENGTH_LONG).show()
+                                if(findNavController().currentDestination?.id == R.id.selectedCustomerRequestFragment){
+                                    SelectedCustomerRequestFragmentDirections.actionSelectedCustomerRequestFragmentToRiderDashboardFragment().also {
+                                        findNavController().navigate(it)
+                                    }
+                                }
                             }
                             CartStatus.CANCELLED, CartStatus.INIT -> {
                                 Snackbar.make(
@@ -565,8 +571,9 @@ class SelectedCustomerRequestFragment: TitleOnlyFragment() {
         tv_to_location.text = cart.deliveryLocation.addressText
         if(cart.notes.isBlank()){
             label_additional_notes_to_rider.visibility = View.GONE
-            tv_additional_notes_to_rider.text = cart.notes
+            tv_additional_notes_to_rider.visibility = View.GONE
         }
+        tv_additional_notes_to_rider.text = cart.notes
     }
 
 
@@ -689,11 +696,14 @@ class SelectedCustomerRequestFragment: TitleOnlyFragment() {
         buttonStatus: CartStatus
     ) {
         if(currentStatus != buttonStatus){
-            this.isEnabled = true
+
+            this.isEnabled = currentStatus.order + 1 == buttonStatus.order
+
             this.setOnClickListener {
                 changeStatus(cart, currentStatus, buttonStatus)
             }
             if(currentStatus.order < buttonStatus.order){
+
                 this.background.setTint(
                     ContextCompat.getColor(
                         requireContext(),
@@ -707,7 +717,6 @@ class SelectedCustomerRequestFragment: TitleOnlyFragment() {
             }
         }else{
             this.isEnabled = false
-
             this.background.setTint(
                 ContextCompat.getColor(
                     requireContext(),

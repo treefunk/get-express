@@ -50,14 +50,48 @@ class StoresViewModel @ViewModelInject constructor(
     val productCategoryResult: LiveData<Result<StoresService.ProductsByStoreResponse>> get() = _productCategoryResult
     private val _productCategoryResult = MutableLiveData<Result<StoresService.ProductsByStoreResponse>>()
 
+    val productCategory: LiveData<String?> get() = _productCategory
+    private val _productCategory = MutableLiveData<String?>()
+
+    val productSearch: LiveData<String?> get() = _productSearch
+    private val _productSearch   = MutableLiveData<String?>()
+
+    val productMinPrice: LiveData<String?> get() = _productMinPrice
+    private val _productMinPrice   = MutableLiveData<String?>()
+
+    val productMaxPrice: LiveData<String?> get() = _productMaxPrice
+    private val _productMaxPrice   = MutableLiveData<String?>()
+
+    fun updateCategory(category: String?){
+        _productCategory.value = category
+    }
+
+    fun updateSearch(keyword: String?){
+        _productSearch.value = keyword
+    }
+
+    fun updateMinPrice(minPrice: String?){
+        _productMinPrice.value = minPrice
+    }
+
+    fun updateMaxPrice(maxPrice: String?){
+        _productMaxPrice.value = maxPrice
+    }
+
+    fun clearFilters(){
+        _productSearch.value = null
+        _productCategory.value = null
+        _productMinPrice.value = null
+        _productMaxPrice.value = null
+    }
+
     fun getProductsByStore(
-            storeId: String,
-            category: String?,
-            search: String?
+            storeId: String
     ){
         viewModelScope.launch(Dispatchers.IO){
+            val productCategory = if(_productCategory.value == "All") null else _productCategory.value
             repository.getProductsByStore(
-                    storeId,category,search
+                    storeId,productCategory,_productSearch.value,_productMinPrice.value,_productMaxPrice.value
             ).collect {
                 _productCategoryResult.postValue(it)
             }

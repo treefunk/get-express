@@ -1,7 +1,7 @@
 package com.myoptimind.get_express.di
 
-import com.myoptimind.get_express.features.db.DeclinedRequestDao
-import com.myoptimind.get_express.features.db.GetExpressDB
+import com.myoptimind.get_express.db.DeclinedRequestDao
+import com.myoptimind.get_express.db.GetExpressDB
 import com.myoptimind.get_express.features.edit_profile.api.ProfileService
 import com.myoptimind.get_express.features.rider.customer_requests_list.CustomerRequestRepository
 import com.myoptimind.get_express.features.rider.customer_requests_list.api.CustomerRequestService

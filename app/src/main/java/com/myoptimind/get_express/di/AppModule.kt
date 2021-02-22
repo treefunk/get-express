@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.myoptimind.get_express.BuildConfig
-import com.myoptimind.get_express.features.db.GetExpressDB
+import com.myoptimind.get_express.db.GetExpressDB
 import com.myoptimind.get_express.features.shared.AppSharedPref
 import dagger.Module
 import dagger.Provides

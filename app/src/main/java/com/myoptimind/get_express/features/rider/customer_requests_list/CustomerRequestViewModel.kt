@@ -5,8 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.myoptimind.get_express.features.db.DeclinedRequest
-import com.myoptimind.get_express.features.db.DeclinedRequestDao
+import com.myoptimind.get_express.db.DeclinedRequest
 import com.myoptimind.get_express.features.edit_profile.ProfileRepository
 import com.myoptimind.get_express.features.rider.customer_requests_list.api.CustomerRequestService
 import com.myoptimind.get_express.features.rider.customer_requests_list.data.CustomerRequest

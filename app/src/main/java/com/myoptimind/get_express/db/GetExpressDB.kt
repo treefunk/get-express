@@ -1,4 +1,4 @@
-package com.myoptimind.get_express.features.db
+package com.myoptimind.get_express.db
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

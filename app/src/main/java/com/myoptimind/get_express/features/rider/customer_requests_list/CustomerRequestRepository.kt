@@ -1,12 +1,11 @@
 package com.myoptimind.get_express.features.rider.customer_requests_list
 
-import com.myoptimind.get_express.features.db.DeclinedRequest
-import com.myoptimind.get_express.features.db.DeclinedRequestDao
+import com.myoptimind.get_express.db.DeclinedRequest
+import com.myoptimind.get_express.db.DeclinedRequestDao
 import com.myoptimind.get_express.features.edit_profile.api.ProfileService
 import com.myoptimind.get_express.features.rider.customer_requests_list.api.CustomerRequestService
 import com.myoptimind.get_express.features.rider.topup.api.RiderTopupService
 import com.myoptimind.get_express.features.shared.AppSharedPref
-import com.myoptimind.get_express.features.shared.api.MetaResponse
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 import com.myoptimind.get_express.features.shared.applyDefaultEffects

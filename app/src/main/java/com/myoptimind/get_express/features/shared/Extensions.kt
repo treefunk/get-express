@@ -1,5 +1,7 @@
 package com.myoptimind.get_express.features.shared
 
+import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Context
 import android.database.Cursor
@@ -10,6 +12,7 @@ import android.util.Patterns
 import android.view.View
 import android.view.Window
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -241,4 +244,16 @@ fun EditText.initMultilineEditText() {
 
 fun Window.getSoftInputMode() : Int {
     return attributes.softInputMode
+}
+
+fun hideKeyboard(activity: Activity) {
+    val inputMethodManager =
+        activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+
+    // Check if no view has focus
+    val currentFocusedView = activity.currentFocus
+    currentFocusedView?.let {
+        inputMethodManager.hideSoftInputFromWindow(
+            currentFocusedView.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+    }
 }

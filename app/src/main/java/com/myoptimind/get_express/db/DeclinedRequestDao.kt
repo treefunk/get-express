@@ -1,4 +1,4 @@
-package com.myoptimind.get_express.features.db
+package com.myoptimind.get_express.db
 
 import androidx.room.Dao
 import androidx.room.Insert

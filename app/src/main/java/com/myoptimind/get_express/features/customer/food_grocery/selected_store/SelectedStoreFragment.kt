@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -56,16 +57,17 @@ class SelectedStoreFragment: TitleOnlyFragment() {
     override fun getTitle() = ""
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
+        val v = inflater.inflate(R.layout.fragment_selected_store,container,false)
+        v.findViewById<RecyclerView>(R.id.rv_categories).visibility = View.GONE
         return inflater.inflate(R.layout.fragment_selected_store,container,false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initObservers()
+        storeViewModel.clearFilters()
         storeViewModel.getProductsByStore(
-                args.storeId,
-                null,
-                null
+                args.storeId
         )
         if(args.forViewingOnly){
             cartViewModel.getStoreById(args.storeId)
@@ -104,7 +106,8 @@ class SelectedStoreFragment: TitleOnlyFragment() {
                                     et_food_category.setText("", false)
                                 }
                             }
-                            storeViewModel.getProductsByStore(args.storeId,selectedCategory,null)
+                            storeViewModel.updateCategory(et_food_category.text.toString().trim())
+                            storeViewModel.getProductsByStore(args.storeId)
                         }
                     }
                 }
@@ -120,7 +123,6 @@ class SelectedStoreFragment: TitleOnlyFragment() {
                 }
                 is Result.Success -> {
                     if(result.data != null){
-
                         var adapter: ProductCategoryAdapter? = null
                         when(cartType){
                             CartType.CAR -> TODO()
@@ -185,8 +187,21 @@ class SelectedStoreFragment: TitleOnlyFragment() {
                             ProductCategory(it.key,it.value)
                         }
                         adapter.productCategories = productCategories
-                        adapter.notifyDataSetChanged()
 
+                        if(productCategories.isEmpty()){
+                            label_no_results_found.visibility = View.VISIBLE
+                            if(cartType == CartType.FOOD){
+                                group_select_category.visibility = View.GONE
+                            }
+                        }else{
+                            label_no_results_found.visibility = View.GONE
+                            if(cartType == CartType.FOOD){
+                                group_select_category.visibility = View.VISIBLE
+                            }
+                        }
+
+                        adapter.notifyDataSetChanged()
+                        rv_categories.visibility = View.VISIBLE
                     }
                 }
                 is Result.Error -> {
@@ -215,6 +230,10 @@ class SelectedStoreFragment: TitleOnlyFragment() {
 
                 ib_store_info.setOnClickListener {
                     AboutStoreDialog.newInstance(activeStore).show(parentFragmentManager,"ABOUT_TAG")
+                }
+
+                ib_store_search.setOnClickListener {
+                    SearchProductsDialog.newInstance(activeStore).show(parentFragmentManager,"SEARCH_PRODUCT")
                 }
             }
         }

@@ -334,7 +334,10 @@ class PabiliFormFragment: TitleOnlyFragment() {
                 }
                 is Result.Error -> {
                     Timber.d("result -> %s", result.metaResponse.message)
-
+                    val errorMeta = result.metaResponse
+                    if(errorMeta.status == 400){
+                        Snackbar.make(requireView(),errorMeta.message,Snackbar.LENGTH_LONG).show()
+                    }
                 }
                 is Result.HttpError -> {
                     Timber.d("result -> %s", result.error.message)
