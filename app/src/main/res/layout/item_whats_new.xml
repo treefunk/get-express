@@ -25,7 +25,7 @@
             app:layout_constraintBottom_toTopOf="@id/tv_type"
             tools:src="@tools:sample/backgrounds/scenic"
             android:scaleType="centerCrop"
-
+            android:adjustViewBounds="true"
             />
 
         <TextView

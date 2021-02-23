@@ -61,14 +61,14 @@
         android:id="@+id/label_address_label"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        style="@style/GetExpressLabel.MediumBlack.LabelSelectedCustomerRequestSmall"
+        style="@style/GetExpressLabel.LabelSelectedCustomerRequestMedium"
         app:layout_constraintLeft_toLeftOf="@id/label_add_address"
         app:layout_constraintRight_toRightOf="@id/label_add_address"
         app:layout_constraintTop_toBottomOf="@id/label_add_address"
         app:layout_constraintBottom_toTopOf="@id/et_address_label"
 
         android:textColor="@color/main_text_color"
-        android:text="Address Label"
+        android:text="Save this address as (Optional)"
         android:gravity="left"
         android:layout_marginLeft="24dp"
         android:layout_marginRight="24dp"
@@ -81,12 +81,13 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
 
-        tools:text="test"
+        tools:hint="test"
         app:layout_constraintTop_toBottomOf="@id/label_address_label"
         app:layout_constraintLeft_toLeftOf="@id/label_address_label"
         app:layout_constraintRight_toRightOf="@id/label_address_label"
         app:layout_constraintBottom_toTopOf="@id/label_enter_address"
         style="@style/GetExpressEditTextDialog"
+        android:textColorHint="@color/grey_200_alpha70"
 
         android:background="@drawable/shape_grey_border"
         />
@@ -103,7 +104,7 @@
         android:layout_marginTop="12dp"
 
         android:textColor="@color/main_text_color"
-        android:text="Enter Address"
+        android:text="Enter Address *"
         android:gravity="left"
         android:layout_marginBottom="4dp"
 

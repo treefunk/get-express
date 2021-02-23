@@ -1,5 +1,7 @@
 package com.myoptimind.get_express.features.customer.food_grocery.selected_store
 
+import android.graphics.ColorMatrix
+import android.graphics.ColorMatrixColorFilter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +11,7 @@ import com.myoptimind.get_express.R
 import com.myoptimind.get_express.features.customer.food_grocery.data.Product
 import com.myoptimind.get_express.features.shared.data.CartType
 import com.myoptimind.get_express.features.shared.toMoneyFormat
+import kotlinx.android.synthetic.main.item_store.view.*
 import kotlinx.android.synthetic.main.item_store_food.view.*
 import kotlinx.android.synthetic.main.item_store_grocery.view.*
 import kotlinx.android.synthetic.main.item_store_grocery.view.ib_add_to_cart
@@ -50,9 +53,19 @@ class ProductAdapter constructor(
             private val listener: ProductListener?
     ) : RecyclerView.ViewHolder(itemView) {
         fun bind (product: Product, position: Int) {
+
             Glide.with(itemView.context)
                     .load(product.image)
                     .into(itemView.iv_product_image)
+
+                if(product.isOutStock){
+                    val colorMatrix = ColorMatrix()
+                    colorMatrix.setSaturation(0F)
+                    val filter = ColorMatrixColorFilter(colorMatrix)
+                    itemView.ib_add_to_cart.colorFilter = filter
+                }else{
+                    itemView.ib_add_to_cart.clearColorFilter()
+                }
 
             itemView.tv_product_name.text = product.productName
             itemView.tv_product_price.text = product.basePrice.toMoneyFormat()

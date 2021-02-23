@@ -134,8 +134,9 @@ class ProfileViewModel @ViewModelInject constructor(
             val fullAddress = _selectedPlace.value!!.address!!
             val latitude    = _selectedPlace.value!!.latLng!!.latitude.toString()
             val longitude   = _selectedPlace.value!!.latLng!!.longitude.toString()
+            val newLabel = if(label.isNotBlank()) label else _selectedPlace.value!!.name!!
             profileRepository.addAddress(
-                    label,fullAddress,latitude,longitude,addressId
+                    newLabel,fullAddress,latitude,longitude,addressId
             ).collect {
                 _addAddressResult.postValue(it)
             }

@@ -74,7 +74,7 @@ class EnterAddressDialog: BaseDialogFragment() {
                 }
                 is Result.Success -> {
                     if(result.data != null){
-                        et_enter_address.setText(result.data.address)
+                        et_enter_address.setText(result.data.name + "\n" + result.data.address)
                         val place = result.data
                         viewModel.updateSelectedPlace(result.data)
                     }
@@ -102,11 +102,22 @@ class EnterAddressDialog: BaseDialogFragment() {
             this@EnterAddressDialog.dismiss()
         }
         btn_save_address.setOnClickListener {
-            if(et_address_label.izNotBlank() && et_enter_address.izNotBlank() && viewModel.selectedPlace.value != null){
+            if(et_enter_address.izNotBlank() && viewModel.selectedPlace.value != null){
+                val selectedPlace = viewModel.selectedPlace.value!!
+                val place = if(et_address_label.izNotBlank())
+                    Place.builder()
+                            .setName(et_address_label.text.toString()) // overwrite label
+                            .setAddress(selectedPlace.address)
+                            .setLatLng(selectedPlace.latLng)
+                            .build()
+                else
+                    selectedPlace
+
+
                 targetFragment?.onActivityResult(
                         targetRequestCode,
                         Activity.RESULT_OK,
-                        Intent().putExtra(EXTRA_ENTER_ADDRESS,viewModel.selectedPlace.value) // PARSE THIS ("yyyy M d")
+                        Intent().putExtra(EXTRA_ENTER_ADDRESS, place) // PARSE THIS ("yyyy M d")
                 )
                 this.dismiss()
             }else{
@@ -173,11 +184,7 @@ class EnterAddressDialog: BaseDialogFragment() {
                         val place = Autocomplete.getPlaceFromIntent(data)
                         Timber.d("Place: ${place.name}, ${place.id}")
                         viewModel.checkLocationIfValid(
-                                Place.builder()
-                                        .setName(et_address_label.text.toString()) // overwrite label
-                                        .setAddress(place.address)
-                                        .setLatLng(place.latLng)
-                                        .build()
+                                place
                         )
                     }
                 }

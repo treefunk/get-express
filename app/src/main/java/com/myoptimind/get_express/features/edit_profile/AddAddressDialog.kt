@@ -22,6 +22,7 @@ import com.myoptimind.get_express.features.login.data.Address
 import com.myoptimind.get_express.features.rider.selected_customer_request.RiderTrackingService
 import com.myoptimind.get_express.features.shared.BaseDialogFragment
 import com.myoptimind.get_express.features.shared.api.Result
+import com.myoptimind.get_express.features.shared.izBlank
 import com.myoptimind.get_express.features.shared.izNotBlank
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.dialog_add_address.*
@@ -87,7 +88,11 @@ class AddAddressDialog: BaseDialogFragment() {
     private fun initObservers() {
         viewModel.selectedPlace.observe(viewLifecycleOwner){ selectedPlace ->
             if(selectedPlace != null){
-                et_enter_address.setText(selectedPlace.address)
+                var address = selectedPlace.address
+                if(selectedPlace.name != null){
+                    address = selectedPlace.name + "\n" + address
+                }
+                et_enter_address.setText(address)
             }
         }
 
@@ -99,7 +104,6 @@ class AddAddressDialog: BaseDialogFragment() {
                         Toast.makeText(requireContext(),result.data.meta.message,Toast.LENGTH_SHORT).show()
                         this@AddAddressDialog.dismiss()
                         viewModel.getCustomerProfile()
-
                     }
                 }
                 is Result.Error -> {
@@ -125,10 +129,14 @@ class AddAddressDialog: BaseDialogFragment() {
             this@AddAddressDialog.dismiss()
         }
         btn_save_address.setOnClickListener {
-            if(et_address_label.izNotBlank() && et_enter_address.izNotBlank()){
+            if(address != null && et_address_label.izBlank()){
+                Toast.makeText(requireContext(),"Please fill in required fields.", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
+            if(et_enter_address.izNotBlank()){
                 val addressId = address?.id ?: "0"
                 viewModel.addAddress(
-                        et_address_label.text.toString(),
+                        et_address_label.text.toString().trim(),
                         addressId
                 )
             }else{

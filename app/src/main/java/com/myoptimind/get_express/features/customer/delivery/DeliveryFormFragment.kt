@@ -75,6 +75,7 @@ class DeliveryFormFragment: TitleOnlyFragment() {
         initObservers()
         et_delivery_instructions.initMultilineEditText()
         viewModel.getDeliveryFormDetails(args.vehicleTypeId)
+        profileViewModel.updateSelectedPlace(null)
     }
 
     private fun initObservers() {

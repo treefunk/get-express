@@ -103,68 +103,6 @@
         android:layout_marginBottom="14dp"
         />
 
-    <TextView
-        android:id="@+id/label_dont_have_account"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/GetExpressTextDescription"
 
-        app:layout_constraintTop_toBottomOf="@id/btn_send"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/tv_sign_up_link"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        android:layout_marginRight="4dp"
-        android:layout_marginTop="24dp"
-        android:textStyle="bold"
-        android:text="Don't have an account yet?"
-        android:layout_marginBottom="16dp"
-        />
-
-    <TextView
-        android:id="@+id/tv_sign_up_link"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/GetExpressTextDescription"
-
-        app:layout_constraintBaseline_toBaselineOf="@id/label_dont_have_account"
-        app:layout_constraintLeft_toRightOf="@id/label_dont_have_account"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="16dp"
-        android:text="@string/label_sign_up_link"
-        android:textColor="@color/blue_200"
-
-        />
-
-    <TextView
-        android:id="@+id/label_already_have"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/GetExpressTextDescription"
-
-        app:layout_constraintTop_toBottomOf="@id/label_dont_have_account"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/tv_sign_in_link"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        android:layout_marginRight="4dp"
-        android:layout_marginTop="8dp"
-        android:textStyle="bold"
-        android:text="Already have an account?"
-        android:layout_marginBottom="16dp"
-        />
-
-    <TextView
-        android:id="@+id/tv_sign_in_link"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/GetExpressTextDescription"
-
-        app:layout_constraintBaseline_toBaselineOf="@id/label_already_have"
-        app:layout_constraintLeft_toRightOf="@id/label_already_have"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="16dp"
-        android:text="@string/label_sign_in_link"
-        android:textColor="@color/blue_200"
-
-        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

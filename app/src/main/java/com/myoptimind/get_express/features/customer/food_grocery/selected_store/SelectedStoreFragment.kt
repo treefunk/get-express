@@ -130,7 +130,7 @@ class SelectedStoreFragment: TitleOnlyFragment() {
                                 adapter = ProductCategoryAdapter(ArrayList(),cartType,args.forViewingOnly, object: ProductAdapter.ProductListener{
                                     override fun onPressProduct(product: Product, isInstant: Boolean) {
                                         if(product.isOutStock){
-                                            Toast.makeText(requireContext(),"This item is out of stock.", Toast.LENGTH_SHORT).show()
+                                            Snackbar.make(requireView(),"This item is out of stock.", Snackbar.LENGTH_SHORT).show()
                                             return
                                         }
                                         product.quantity = "1"
@@ -153,7 +153,7 @@ class SelectedStoreFragment: TitleOnlyFragment() {
                                             return
                                         }else{
                                             if(product.isOutStock){
-                                                Toast.makeText(requireContext(),"This item is out of stock.", Toast.LENGTH_SHORT).show()
+                                                Snackbar.make(requireView(),"This item is out of stock.", Snackbar.LENGTH_SHORT).show()
                                                 return
                                             }
                                             product.quantity = "1"
