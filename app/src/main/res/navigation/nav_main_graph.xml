@@ -289,7 +289,11 @@
             />
         <action
             android:id="@+id/action_selectedWhatsNewFragment_to_selectedStoreFragment"
-            app:destination="@id/selectedStoreFragment" />
+            app:destination="@id/selectedStoreFragment"
+            app:launchSingleTop="true"
+            app:popUpToInclusive="true"
+            app:popUpTo="@id/whatsNewFragment"
+            />
 
     </fragment>
     <action

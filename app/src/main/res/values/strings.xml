@@ -3,6 +3,7 @@
     <string name="label_sign_in_link"><u>SIGN IN</u></string>
     <string name="label_forgot_password"><b><u>Forgot Password</u></b></string>
     <string name="label_sign_up_link"><u>SIGN UP</u></string>
+    <string name="label_resend_link"><u>RESEND</u></string>
     <string name="label_edit_profile_underlined"><u>EDIT PROFILE</u></string>
     <string name="label_history_underlined"><u>HISTORY</u></string>
     <string name="take_photo_label">Take Photo</string>

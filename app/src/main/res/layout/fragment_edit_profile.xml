@@ -162,7 +162,7 @@
         tools:text="Jhondee Diaz"
         />
 
-    <ImageView
+<!--    <ImageView
         android:id="@+id/iv_location"
         android:layout_width="30dp"
         android:layout_height="0dp"
@@ -188,7 +188,7 @@
 
         style="@style/GetExpressEditTextLogin.EditProfile"
         tools:text="Jhondee Diaz"
-        />
+        />-->
 
 
 
@@ -197,7 +197,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
 
-        app:layout_constraintTop_toBottomOf="@id/et_location"
+        app:layout_constraintTop_toBottomOf="@id/et_birthdate"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintBottom_toTopOf="@id/et_new_password"

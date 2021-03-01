@@ -185,7 +185,7 @@ class RiderDashboardFragment : ProfileFragment() {
         riderDashBoardViewModel.topUpWalletByBalanceResult.observe(viewLifecycleOwner){ result ->
             when(result){
                 is Result.Progress -> {
-
+                    initCenterProgress(result.isLoading)
                 }
                 is Result.Success -> {
                     if (result.data != null) {
@@ -206,7 +206,7 @@ class RiderDashboardFragment : ProfileFragment() {
         riderDashBoardViewModel.walletOffersResult.observe(viewLifecycleOwner) { result ->
             when (result) {
                 is Result.Progress -> {
-
+                    initCenterProgress(result.isLoading)
                 }
                 is Result.Success -> {
                     if (result.data != null) {
@@ -233,7 +233,7 @@ class RiderDashboardFragment : ProfileFragment() {
         riderDashBoardViewModel.topUpWalletResult.observe(viewLifecycleOwner) { result ->
             when (result) {
                 is Result.Progress -> {
-
+                    initCenterProgress(result.isLoading)
                 }
                 is Result.Success -> {
                     if (result.data != null) {
@@ -260,7 +260,7 @@ class RiderDashboardFragment : ProfileFragment() {
         riderDashBoardViewModel.updateCashOnHandResult.observe(viewLifecycleOwner) { result ->
             when (result) {
                 is Result.Progress -> {
-
+                    initCenterProgress(result.isLoading)
                 }
                 is Result.Success -> {
                     if (result.data != null) {
@@ -287,7 +287,7 @@ class RiderDashboardFragment : ProfileFragment() {
         riderDashBoardViewModel.addWalletBalanceResult.observe(viewLifecycleOwner) { result ->
             when (result) {
                 is Result.Progress -> {
-
+                    initCenterProgress(result.isLoading)
                 }
                 is Result.Success -> {
                     if (result.data != null) {

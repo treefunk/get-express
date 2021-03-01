@@ -3,6 +3,7 @@ package com.myoptimind.get_express.features.rider.selected_customer_request
 import com.myoptimind.get_express.features.rider.selected_customer_request.api.CustomerRequestService
 import com.myoptimind.get_express.features.shared.api.Result
 import com.myoptimind.get_express.features.shared.applyDefaultEffects
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
@@ -13,6 +14,8 @@ class CustomerRequestRepository @Inject constructor(
         cartId: String
     ) = flow {
         val response = customerRequestService.getCartInfo(cartId)
+        emit(Result.Progress(isLoading = false))
+        delay(100)
         emit(Result.Success(response))
     }.applyDefaultEffects(false,true)
 
@@ -21,6 +24,8 @@ class CustomerRequestRepository @Inject constructor(
             cartId: String
     ) = flow {
         val response = customerRequestService.acceptCustomerRequest(cartId, riderId)
+        emit(Result.Progress(isLoading = false))
+        delay(100)
         emit(Result.Success(response))
     }.applyDefaultEffects(false,true)
 
@@ -29,6 +34,8 @@ class CustomerRequestRepository @Inject constructor(
             status: String
     ) = flow {
         val response = customerRequestService.changeCustomerRequestStatus(cartId,status)
+        emit(Result.Progress(isLoading = false))
+        delay(100)
         emit(Result.Success(response))
     }.applyDefaultEffects(false,true)
 
@@ -38,6 +45,8 @@ class CustomerRequestRepository @Inject constructor(
             paymentStatus: String
     ) = flow {
         val response = customerRequestService.completeBooking(cartId,totalPrice,paymentStatus)
+        emit(Result.Progress(isLoading = false))
+        delay(100)
         emit(Result.Success(response))
     }.applyDefaultEffects(false,true)
 
@@ -51,6 +60,8 @@ class CustomerRequestRepository @Inject constructor(
             latitude,
             longitude
         )
+        emit(Result.Progress(isLoading = false))
+        delay(100)
         emit(Result.Success(response))
     }.applyDefaultEffects(false,true)
 

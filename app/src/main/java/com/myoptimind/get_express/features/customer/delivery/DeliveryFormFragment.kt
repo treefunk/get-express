@@ -34,6 +34,7 @@ import com.myoptimind.get_express.features.shared.TitleOnlyFragment
 import com.myoptimind.get_express.features.shared.api.Result
 import com.myoptimind.get_express.features.shared.data.idToCartType
 import com.myoptimind.get_express.features.shared.data.toCartStatus
+import com.myoptimind.get_express.features.shared.hideKeyboard
 import com.myoptimind.get_express.features.shared.initMultilineEditText
 import com.myoptimind.get_express.features.shared.toCartLocation
 import dagger.hilt.android.AndroidEntryPoint
@@ -144,7 +145,8 @@ class DeliveryFormFragment: TitleOnlyFragment() {
         cartViewModel.cart.observe(viewLifecycleOwner) { result ->
             when (result) {
                 is Result.Progress -> {
-
+                    initCenterProgress(result.isLoading)
+                    enableWidgets(result.isLoading.not())
                 }
                 is Result.Success -> {
                     if (result.data != null) {
@@ -198,7 +200,10 @@ class DeliveryFormFragment: TitleOnlyFragment() {
         cartViewModel.deliveryResult.observe(viewLifecycleOwner){ result ->
             when(result){
                 is Result.Progress -> {
-
+                    if(result.isLoading){
+                        showLoading()
+                    }
+                    enableWidgets(result.isLoading.not())
                 }
                 is Result.Success -> {
                     if(result.data != null){
@@ -235,7 +240,8 @@ class DeliveryFormFragment: TitleOnlyFragment() {
         viewModel.deliveryFormDetails.observe(viewLifecycleOwner){ result ->
             when(result){
                 is Result.Progress -> {
-
+                    initCenterProgress(result.isLoading)
+                    enableWidgets(result.isLoading.not())
                 }
                 is Result.Success -> {
                     if (result.data != null) {
@@ -384,6 +390,12 @@ class DeliveryFormFragment: TitleOnlyFragment() {
             return
         }
         super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    private fun enableWidgets(enable: Boolean){
+        et_delivery_category.isEnabled = enable
+        et_delivery_instructions.isEnabled = enable
+        btn_getdelivery.isEnabled = enable
     }
 
 }

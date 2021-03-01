@@ -5,6 +5,7 @@ import com.myoptimind.get_express.features.rider.rider_history.api.RiderHistoryS
 import com.myoptimind.get_express.features.shared.AppSharedPref
 import com.myoptimind.get_express.features.shared.api.Result
 import com.myoptimind.get_express.features.shared.applyDefaultEffects
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
@@ -24,6 +25,8 @@ class RiderHistoryRepository @Inject constructor(
         }else{
             riderHistoryService.getRiderHistoryByService(appSharedPref.getUserId(),serviceId,idKey)
         }
+        emit(Result.Progress(isLoading = false))
+        delay(100)
         emit(Result.Success(response))
     }.applyDefaultEffects()
 }

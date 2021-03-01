@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,7 +25,6 @@ import com.myoptimind.get_express.features.shared.initDatePickerSpinner
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_edit_profile.*
 import kotlinx.android.synthetic.main.fragment_edit_profile.et_fullname
-import kotlinx.android.synthetic.main.fragment_edit_profile.et_location
 import org.joda.time.DateTime
 import timber.log.Timber
 import java.util.*
@@ -98,12 +98,17 @@ class EditProfileFragment: TitleOnlyFragment() {
             Snackbar.make(requireView(), "Password does not match", Snackbar.LENGTH_SHORT).show()
             return
         }
+
+        if(et_mobile.text.toString().isNotEmpty() && et_mobile.text.toString().replace("#","").length != 13){
+            Snackbar.make(requireView(),"Invalid Mobile Number.", Snackbar.LENGTH_SHORT).show()
+            return
+        }
         viewModel.updateProfile(
             et_fullname.text.toString().ifBlank { null },
             et_email.text.toString().ifBlank { null },
             et_mobile.text.toString().ifBlank { null },
             et_birthdate.text.toString().ifBlank { null },
-            et_location.text.toString().ifBlank { null },
+             null ,
             et_new_password.text.toString().ifBlank { null }
         )
     }
@@ -113,6 +118,7 @@ class EditProfileFragment: TitleOnlyFragment() {
     override fun onResume() {
         super.onResume()
         setNewTitle("Edit Profile")
+//        newTitle = "Edit Profile"
         when(appSharedPref.getUserType()){
             UserType.CUSTOMER -> {
                 viewModel.getCustomerProfile()
@@ -136,7 +142,8 @@ class EditProfileFragment: TitleOnlyFragment() {
         viewModel.updateProfileResult.observe(viewLifecycleOwner){ result ->
             when(result){
                 is Result.Progress -> {
-                    //todo
+                    initCenterProgress(result.isLoading)
+                    enableViews(result.isLoading.not())
                 }
                 is Result.Success -> {
                     if (result.data != null) {
@@ -214,7 +221,8 @@ class EditProfileFragment: TitleOnlyFragment() {
         viewModel.getRiderProfile.observe(viewLifecycleOwner) { result ->
             when (result) {
                 is Result.Progress -> {
-
+                    initCenterProgress(result.isLoading)
+                    enableViews(result.isLoading.not())
                 }
                 is Result.Success -> {
                     if (result.data != null) {
@@ -247,7 +255,8 @@ class EditProfileFragment: TitleOnlyFragment() {
         viewModel.changeActiveVehicleResponse.observe(viewLifecycleOwner){ result ->
             when (result) {
                 is Result.Progress -> {
-
+                    initCenterProgress(result.isLoading)
+                    enableViews(result.isLoading.not())
                 }
                 is Result.Success -> {
                     if (result.data != null) {
@@ -313,7 +322,8 @@ class EditProfileFragment: TitleOnlyFragment() {
         viewModel.getCustomerProfile.observe(viewLifecycleOwner){ result ->
             when(result){
                 is Result.Progress -> {
-
+                    initCenterProgress(result.isLoading)
+                    enableViews(result.isLoading.not())
                 }
                 is Result.Success -> {
                     if (result.data != null) {
@@ -351,13 +361,24 @@ class EditProfileFragment: TitleOnlyFragment() {
     private fun fillCommonFields(user: User){
         et_fullname.setText(user.fullName)
         et_email.setText(user.email)
-        et_mobile.setText(user.mobileNum)
+        if(user.mobileNum.isNotEmpty()){
+            et_mobile.setText(user.mobileNum.substring(2,user.mobileNum.length))
+        }
         et_birthdate.setText(user.birthdate)
-        et_location.setText(user.location)
     }
 
 
 
+    private fun enableViews(enable: Boolean){
+        et_fullname.isEnabled = enable
+        et_email.isEnabled = enable
+        et_mobile.isEnabled = enable
+        et_birthdate.isEnabled = enable
+        btn_save_edits_rider.isEnabled = enable
+        btn_save_edits_customer.isEnabled = enable
+        tv_add_address_link.isEnabled = enable
+        tv_add_vehicle_link.isEnabled = enable
+    }
 
 
 }

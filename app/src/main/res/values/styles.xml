@@ -92,6 +92,13 @@
         <item name="android:textSize">12.5sp</item>
         <item name="android:includeFontPadding">false</item>
     </style>
+
+    <style name="GetExpressLabel.NavItems_versionText">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:fontFamily">@font/lato_regular</item>
+        <item name="android:textSize">9sp</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
     
     <style name="GetExpressLabel.NavItems.NavLogout">
         <item name="android:fontFamily">@font/lato_black</item>
@@ -318,6 +325,25 @@
         <item name="android:letterSpacing">0.04</item>
         <item name="android:singleLine">true</item>
         <item name="android:imeOptions">actionDone</item>
+    </style>
+
+    <style name="GetExpressEditTextOTP">
+        <item name="android:maxLines">1</item>
+        <item name="android:background">@drawable/shape_black_border</item>
+        <item name="android:fontFamily">@font/lato_light</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textColorHint">@color/main_text_color</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:paddingLeft">12dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:paddingRight">12dp</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:width">40dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:maxLength">1</item>
+        <item name="android:minLines">1</item>
+        <item name="android:imeOptions">actionNext</item>
     </style>
 
     <style name="GetExpressEditTextLogin.EditProfile">
@@ -557,6 +583,30 @@
 
     <style name="MySpinnerDatePicker" parent="android:Widget.Material.Light.DatePicker">
         <item name="android:datePickerMode">spinner</item>
+    </style>
+
+    <style name="Widget.App.CircularProgressIndicator" parent="Widget.MaterialComponents.CircularProgressIndicator">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.CircularProgressIndicator</item>
+        <item name="indeterminateAnimationType">disjoint</item>
+        <item name="trackColor">@color/blue_200</item>
+        <item name="android:elevation">100dp</item>
+    </style>
+
+    <style name="ThemeOverlay.App.CircularProgressIndicator" parent="">
+        <item name="colorPrimary">@color/yellow_200</item>
+    </style>
+
+    <style name="Widget.App.CircularProgressIndicatorSmall" parent="Widget.MaterialComponents.CircularProgressIndicator">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.CircularProgressIndicatorSmall</item>
+        <item name="indeterminateAnimationType">disjoint</item>
+        <item name="trackColor">@color/blue_200</item>
+        <item name="android:elevation">100dp</item>
+        <item name="indicatorSize">15dp</item>
+        <item name="trackThickness">2dp</item>
+    </style>
+
+    <style name="ThemeOverlay.App.CircularProgressIndicatorSmall" parent="">
+        <item name="colorPrimary">@color/yellow_200</item>
     </style>
 
 </resources>

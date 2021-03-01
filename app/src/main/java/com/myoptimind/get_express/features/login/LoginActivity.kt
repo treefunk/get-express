@@ -7,11 +7,13 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.constraintlayout.widget.ConstraintSet.*
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.libraries.places.api.Places
 import com.google.android.material.tabs.TabLayoutMediator
+import com.myoptimind.get_express.BaseActivity
 import com.myoptimind.get_express.BuildConfig
 import com.myoptimind.get_express.MainActivity
 import com.myoptimind.get_express.R
@@ -19,12 +21,14 @@ import com.myoptimind.get_express.features.shared.AppSharedPref
 import com.myoptimind.get_express.features.shared.api.Result
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.Job
 import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class LoginActivity: AppCompatActivity() {
+class LoginActivity: BaseActivity() {
+
 
     private val viewModel: LoginViewModel by viewModels()
     private lateinit var job: Job
@@ -145,4 +149,15 @@ class LoginActivity: AppCompatActivity() {
         this@LoginActivity.finish()
     }
 
+    internal fun showLoading() {
+        if (!view_loading_login.isVisible) {
+            view_loading_login.visibility = View.VISIBLE
+        }
+    }
+
+    internal fun hideLoading() {
+        if (view_loading_login.isVisible) {
+            view_loading_login.visibility = View.GONE
+        }
+    }
 }

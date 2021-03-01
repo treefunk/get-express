@@ -14,6 +14,7 @@ import com.myoptimind.get_express.features.shared.api.Result
 import com.myoptimind.get_express.features.shared.izNotBlank
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.dialog_add_vehicle.*
+import kotlinx.android.synthetic.main.dialog_add_vehicle.ib_close
 import timber.log.Timber
 
 
@@ -95,7 +96,16 @@ class AddVehicleDialog: BaseDialogFragment() {
             viewModel.addVehicleResult.observe(viewLifecycleOwner){ result ->
                 when (result) {
                     is Result.Progress -> {
-                        //todo
+                        if(result.isLoading){
+                            view_loading_add_vehicle.visibility = View.VISIBLE
+                            btn_submit_for_approval.text = ""
+                        }else{
+                            view_loading_add_vehicle.visibility = View.GONE
+                        }
+                        btn_submit_for_approval.isEnabled = result.isLoading.not()
+                        et_vehicle_type.isEnabled = result.isLoading.not()
+                        et_vehicle_model.isEnabled = result.isLoading.not()
+                        et_plate_number.isEnabled = result.isLoading.not()
                     }
                     is Result.Success -> {
                         Timber.v(result.data?.meta?.message)

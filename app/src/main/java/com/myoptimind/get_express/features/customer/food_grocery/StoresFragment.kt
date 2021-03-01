@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.forEachIndexed
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.lifecycle.observe
@@ -19,6 +20,7 @@ import com.myoptimind.get_express.features.shared.TitleOnlyFragment
 import com.myoptimind.get_express.features.shared.api.Result
 import com.myoptimind.get_express.features.shared.data.CartType
 import com.myoptimind.get_express.features.shared.data.idToCartType
+import com.myoptimind.get_express.features.shared.data.toCartStatus
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_stores.*
 import timber.log.Timber
@@ -45,6 +47,7 @@ class StoresFragment: TitleOnlyFragment() {
         val cartType = args.serviceId.idToCartType()
 //        val vehicleType = args.vehicleTypeId.idToVehicleType()
         setNewTitle(cartType.label)
+//        newTitle = cartType.label
 
         rv_stores.layoutManager = GridLayoutManager(requireContext(),3)
 
@@ -61,34 +64,41 @@ class StoresFragment: TitleOnlyFragment() {
         cartViewModel.cart.observe(viewLifecycleOwner){ result ->
             when(result){
                 is Result.Progress -> {
-
+                    initCenterProgress(result.isLoading)
                 }
                 is Result.Success -> {
                     if(result.data != null){
+
+                        val cart = result.data.data
+                        val cartType = cart.cartTypeId.idToCartType()
+                        val cartStatus = cart.status.toCartStatus()
+
                         val adapter = StoresAdapter(ArrayList(), object: StoresAdapter.StoreListener {
                             override fun onPressed(store: Store, index: Int) {
+
 //                Toast.makeText(requireContext(),store.name + " pressed.",Toast.LENGTH_LONG).show()
                                 if(store.isStoreAvailable.not()){
                                     Snackbar.make(requireView(),"Sorry, This Store is closed. Please try again later.",Snackbar.LENGTH_SHORT).show()
                                     return
                                 }
-                                val cart = result.data.data
-                                val cartType = cart.cartTypeId.idToCartType()
+
                                 when(cartType){
                                     CartType.GROCERY,CartType.FOOD -> {
                                         val basket = cart.initBasketForGrocery()
 
                                         StoresFragmentDirections.actionStoresFragmentToSelectedStoreFragment(args.serviceId,args.cartId,store.id).also {
-                                            cartViewModel.setActiveStore(store)
-                                            cartViewModel.updateFromLocation(
+                                            if(findNavController().currentDestination?.id == R.id.storesFragment){
+                                                findNavController().navigate(it)
+                                                cartViewModel.setActiveStore(store)
+                                                cartViewModel.updateFromLocation(
                                                     Place.builder()
-                                                            .setName(store.name)
-                                                            .setAddress(store.locationText)
-                                                            .setLatLng(LatLng(store.coordinates.latitude.toDouble(),store.coordinates.longitude.toDouble()))
-                                                    .build()
-                                            )
-                                            cartViewModel.updateToLocation(cart.deliveryLocation.toPlace())
-                                            findNavController().navigate(it)
+                                                        .setName(store.name)
+                                                        .setAddress(store.locationText)
+                                                        .setLatLng(LatLng(store.coordinates.latitude.toDouble(),store.coordinates.longitude.toDouble()))
+                                                        .build()
+                                                )
+                                                cartViewModel.updateToLocation(cart.deliveryLocation.toPlace())
+                                            }
                                         }
                                     }
                                 }
@@ -101,14 +111,16 @@ class StoresFragment: TitleOnlyFragment() {
                         viewModel.storesResult.observe(viewLifecycleOwner){ result ->
                             when(result){
                                 is Result.Progress -> {
-
+                                    initCenterProgress(result.isLoading)
+                                    enableViews(result.isLoading.not())
                                 }
                                 is Result.Success -> {
                                     if(result.data != null){
                                         val response = result.data
-                                        adapter?.stores = response.data
-                                        adapter?.notifyDataSetChanged()
+                                        adapter.stores = response.data
+                                        adapter.notifyDataSetChanged()
                                     }
+
                                 }
                                 is Result.Error -> {
                                     Timber.e(result.metaResponse.message)
@@ -141,6 +153,10 @@ class StoresFragment: TitleOnlyFragment() {
         iv_search_store.setOnClickListener {
             viewModel.searchStores(et_search_store.text.toString(),args.serviceId,args.cartId)
         }
+    }
+
+    private fun enableViews(enable: Boolean){
+        rv_stores.visibility = if(enable) View.VISIBLE else View.INVISIBLE
     }
 
 }

@@ -23,6 +23,7 @@ private const val PREF_RIDER_VEHICLE_MODEL = "rider_vehicle_model"
 private const val PREF_RIDER_VEHICLE_PLATE_NO = "rider_vehicle_plate_no"
 private const val PREF_RIDER_VEHICLE_TYPE_ID = "rider_vehicle_type"
 
+private const val PREF_PENDING_BOOKING = "pref_pending_booking"
 class AppSharedPref(val context: Context) {
     private var preferences: SharedPreferences? = null
 
@@ -52,12 +53,6 @@ class AppSharedPref(val context: Context) {
 
     }
 
-    fun storeUserLogin(userId: String) {
-        val editor = preferences?.edit()
-        editor?.putString(PREF_USER_ID, userId)
-        editor?.apply()
-    }
-
     fun getUserType(): UserType {
         return when(preferences?.getString(PREF_USER_TYPE,"")){
             "rider" -> UserType.RIDER
@@ -65,7 +60,6 @@ class AppSharedPref(val context: Context) {
             else -> UserType.CUSTOMER
         }
     }
-
 
     fun storeLoginCredentials(
         userId: String,
@@ -138,4 +132,22 @@ class AppSharedPref(val context: Context) {
         editor?.remove(PREF_FULL_NAME)
         editor?.apply()
     }
+
+    fun storePendingBooking(cartId: String){
+        preferences?.edit()?.apply {
+            putString(PREF_PENDING_BOOKING,cartId)
+        }?.apply()
+    }
+
+    fun getPendingBooking(): String? {
+        return preferences?.getString(PREF_PENDING_BOOKING,null)
+    }
+
+    fun clearPendingBooking(){
+        preferences?.edit()?.apply {
+            remove(PREF_PENDING_BOOKING)
+        }?.apply()
+    }
+
+
 }

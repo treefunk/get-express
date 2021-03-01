@@ -15,13 +15,18 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
+import com.myoptimind.get_express.MainActivity
 import com.myoptimind.get_express.features.login.data.FacebookUserPayload
 import com.myoptimind.get_express.features.login.data.GoogleUserPayload
 import com.myoptimind.get_express.features.login.data.UserType
+import com.myoptimind.get_express.features.shared.hideKeyboard
 import timber.log.Timber
 
 
 open class BaseLoginFragment(private val userType: UserType): Fragment() {
+
+    internal lateinit var parentActivity: LoginActivity
+
 
     companion object {
         private const val RC_SIGN_IN = 100
@@ -107,6 +112,15 @@ open class BaseLoginFragment(private val userType: UserType): Fragment() {
                 .build()
 
         googleSignInClient = GoogleSignIn.getClient(requireContext(), gso)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        try {
+            parentActivity = (activity as LoginActivity)
+        } catch (exception: TypeCastException) {
+            Timber.e("Parent Activity must be of type \"LoginActivity\"!!")
+        }
     }
 
 
@@ -222,5 +236,26 @@ open class BaseLoginFragment(private val userType: UserType): Fragment() {
     internal fun loginWithGoogle(){
         val signInIntent = googleSignInClient?.signInIntent
         startActivityForResult(signInIntent, RC_SIGN_IN)
+    }
+
+    fun showLoading(){
+        parentActivity.showLoading()
+    }
+
+    fun hideLoading(){
+        parentActivity.hideLoading()
+    }
+
+    override fun onResume() {
+        hideLoading()
+        hideKeyboard(requireActivity())
+        super.onResume()
+    }
+
+    fun initCenterProgress(showLoading: Boolean){
+        if(showLoading)
+            showLoading()
+        else
+            hideLoading()
     }
 }

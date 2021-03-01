@@ -19,7 +19,10 @@ abstract class TitleOnlyFragment : BaseFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         parentActivity.showTitleOnly()
         parentActivity.nav_top_title.text = getTitle()
-//        hideLoading()
         return super.onCreateView(inflater, container, savedInstanceState)
+    }
+
+    override fun onResume() {
+        super.onResume()
     }
 }

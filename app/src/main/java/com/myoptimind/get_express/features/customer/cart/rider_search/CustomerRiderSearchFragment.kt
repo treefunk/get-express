@@ -10,6 +10,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.addCallback
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -35,6 +37,7 @@ import com.myoptimind.get_express.features.customer.cart.data.BasketAdapter
 import com.myoptimind.get_express.features.customer.cart.data.CartItem
 import com.myoptimind.get_express.features.customer.cart.data.CartLocation
 import com.myoptimind.get_express.features.customer.cart.data.CartStatus
+import com.myoptimind.get_express.features.shared.AppSharedPref
 import com.myoptimind.get_express.features.shared.TitleOnlyFragment
 import com.myoptimind.get_express.features.shared.api.Result
 import com.myoptimind.get_express.features.shared.data.CartType
@@ -51,6 +54,7 @@ import timber.log.Timber
 import java.lang.StringBuilder
 import java.util.*
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 import kotlin.collections.ArrayList
 
 private const val REFRESH_INTERVAL_SECOND = 10
@@ -78,6 +82,12 @@ class CustomerRiderSearchFragment : TitleOnlyFragment() {
 
     private var adapter: BasketAdapter? = null
 
+    private lateinit var onCancelBackCallback: OnBackPressedCallback
+    private lateinit var onBackWhenAcceptedBookingCallback: OnBackPressedCallback
+
+    @Inject
+    lateinit var appSharedPref: AppSharedPref
+
 
     private var getCartInformationJob: Job? = null
     private var loadingTextJob: Job? = null
@@ -101,6 +111,25 @@ class CustomerRiderSearchFragment : TitleOnlyFragment() {
 
 
         }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        onCancelBackCallback = object: OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+                cancelBooking()
+            }
+        }
+
+        onBackWhenAcceptedBookingCallback = object: OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+                Toast.makeText(requireContext(),"Please finish ongoing booking first",Toast.LENGTH_SHORT).show()
+            }
+        }
+
+
+
     }
 
 
@@ -182,6 +211,8 @@ class CustomerRiderSearchFragment : TitleOnlyFragment() {
 
     override fun getTitle() = ""
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        super.onCreateView(inflater, container, savedInstanceState)
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,onCancelBackCallback)
         return inflater.inflate(R.layout.fragment_customer_rider_search, container, false)
     }
 
@@ -208,17 +239,21 @@ class CustomerRiderSearchFragment : TitleOnlyFragment() {
 
     private fun initClickListeners() {
         btn_cancel.setOnClickListener {
-            MaterialAlertDialogBuilder(requireContext())
-                    .setTitle("")
-                    .setMessage("Are you sure you want to cancel this booking?")
-                    .setNeutralButton("NO") { dialog, which ->
-                        // Respond to neutral button press
-                    }
-                    .setPositiveButton("YES") { dialog, which ->
-                        cartViewModel.cancelBooking(args.cartId)
-                    }
-                    .show()
+            cancelBooking()
         }
+    }
+
+    private fun cancelBooking(){
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("")
+            .setMessage("Are you sure you want to cancel this booking?")
+            .setNeutralButton("NO") { dialog, which ->
+                // Respond to neutral button press
+            }
+            .setPositiveButton("YES") { dialog, which ->
+                cartViewModel.cancelBooking(args.cartId)
+            }
+            .show()
     }
 
     private fun initMap(pickupLocation: CartLocation, deliveryLocation: CartLocation) {
@@ -270,13 +305,15 @@ class CustomerRiderSearchFragment : TitleOnlyFragment() {
         cartViewModel.cart.observe(viewLifecycleOwner) { result ->
             when (result) {
                 is Result.Progress -> {
+                    initCenterProgress(result.isLoading)
+                    btn_cancel.isEnabled = result.isLoading.not()
                 }
                 is Result.Success -> {
                     if (result.data != null) {
                         val cart = result.data.data
 
-
                         val phone = cart.rider.mobileNum
+
 
                         card_customer_request.box_call.setOnClickListener {
                                 if(phone.isNotBlank()){
@@ -306,6 +343,7 @@ class CustomerRiderSearchFragment : TitleOnlyFragment() {
                         tv_customer_details.text = "${cart.rider.vehicleModel} | ${cart.rider.plateNumber}"
                         tv_additional_notes_to_rider.text = cart.notes
 
+                        setNewTitle(cartType.label)
                         /** B A S K E T **/
                         val basketMap = cart.basket as Map<*, *>
                         adapter?.listType = cartType
@@ -319,10 +357,19 @@ class CustomerRiderSearchFragment : TitleOnlyFragment() {
                             expiryTimerJob?.cancel()
                             expiryTimerJob = null
                             Timber.d("not pending")
+                            onCancelBackCallback.remove()
+
+                            if(cartStatus.order > 1){
+                                requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,onBackWhenAcceptedBookingCallback)
+                            }
+
                         }else if(cartStatus == CartStatus.PENDING){
+                            appSharedPref.storePendingBooking(cart.id)
                             expiryTimerJob?.cancel()
                             expiryTimerJob = timerTask()
                             expiryTimerJob?.start()
+                            onBackWhenAcceptedBookingCallback.remove()
+                            requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,onCancelBackCallback)
                         }
 
                         if (cartStatus == CartStatus.PENDING) {
@@ -346,8 +393,13 @@ class CustomerRiderSearchFragment : TitleOnlyFragment() {
                         }else if(cartStatus == CartStatus.CANCELLED){
                             loadingTextJob?.cancel()
                             if(findNavController().currentDestination?.id == R.id.customerRiderSearchFragment){
-                                CustomerRiderSearchFragmentDirections.actionCustomerRiderSearchFragmentToCustomerCartFragment().also {
-                                    findNavController().navigate(it)
+                                if(appSharedPref.getPendingBooking() != null){
+                                    appSharedPref.clearPendingBooking()
+                                    findNavController().popBackStack()
+                                }else{
+                                    CustomerRiderSearchFragmentDirections.actionCustomerRiderSearchFragmentToCustomerCartFragment().also {
+                                        findNavController().navigate(it)
+                                    }
                                 }
                             }
 
@@ -370,6 +422,10 @@ class CustomerRiderSearchFragment : TitleOnlyFragment() {
                             btn_cancel.visibility = View.GONE
                         }
 
+                        if(cartStatus != CartStatus.PENDING){
+                            appSharedPref.clearPendingBooking()
+                        }
+
                         when (cartType) {
                             CartType.CAR -> {
                                 //
@@ -381,7 +437,7 @@ class CustomerRiderSearchFragment : TitleOnlyFragment() {
 
                                 label_delivery_to.text = "Deliver to (${itemsBasket.distanceInKm} km)"
 
-                                if(itemsBasket.etaText.isNullOrBlank().not() || itemsBasket.etaText!! == "-"){
+                                if(itemsBasket.etaText.isNullOrBlank().not() && itemsBasket.etaText != "-"){
                                     group_eta.visibility = View.VISIBLE
                                     tv_eta.text = itemsBasket.etaText
                                 }else{
@@ -399,13 +455,12 @@ class CustomerRiderSearchFragment : TitleOnlyFragment() {
                                 val pabiliBasket = cart.initBasketForPabili()
                                 label_delivery_to.text = "Deliver to (${pabiliBasket.distanceInKm} km)"
                                 Timber.d(pabiliBasket.toString())
-                                if(pabiliBasket.etaText.isNullOrBlank().not() || pabiliBasket.etaText != "-"){
+                                if(pabiliBasket.etaText.isNullOrBlank().not() && pabiliBasket.etaText != "-"){
                                     group_eta.visibility = View.VISIBLE
                                     tv_eta.text = pabiliBasket.etaText
                                 }else{
                                     group_eta.visibility = View.GONE
                                 }
-                                //                                group_sub_total_and_delivery_fee.visibility = View.GONE
                                 label_sub_total.visibility = View.GONE
                                 tv_sub_total.visibility = View.GONE
                                 label_delivery_fee.text = "Estimated Total"
@@ -420,7 +475,7 @@ class CustomerRiderSearchFragment : TitleOnlyFragment() {
                                 group_sub_total_and_delivery_fee.visibility = View.GONE
                                 val deliveryBasket = cart.initBasketForDelivery()
                                 label_delivery_to.text = "Deliver to (${deliveryBasket.distanceInKm} km)"
-                                if(deliveryBasket.etaText.isNullOrBlank().not()){
+                                if(deliveryBasket.etaText.isNullOrBlank().not() && deliveryBasket.etaText != "-"){
                                     group_eta.visibility = View.VISIBLE
                                     tv_eta.text = deliveryBasket.etaText
                                 }else{

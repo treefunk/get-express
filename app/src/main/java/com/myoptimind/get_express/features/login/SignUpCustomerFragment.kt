@@ -20,6 +20,7 @@ import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.model.RectangularBounds
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
+import com.google.android.material.snackbar.Snackbar
 import com.myoptimind.get_express.MainActivity
 import com.myoptimind.get_express.R
 import com.myoptimind.get_express.features.login.data.UserType
@@ -35,7 +36,6 @@ import kotlinx.android.synthetic.main.fragment_sign_up_customer.btn_sign_up
 import kotlinx.android.synthetic.main.fragment_sign_up_customer.et_birth_date
 import kotlinx.android.synthetic.main.fragment_sign_up_customer.et_email_address
 import kotlinx.android.synthetic.main.fragment_sign_up_customer.et_fullname
-import kotlinx.android.synthetic.main.fragment_sign_up_customer.et_location
 import kotlinx.android.synthetic.main.fragment_sign_up_customer.et_mobile_number
 import kotlinx.android.synthetic.main.fragment_sign_up_customer.et_password
 import kotlinx.android.synthetic.main.fragment_sign_up_customer.tv_sign_in_link
@@ -89,20 +89,20 @@ class SignUpCustomerFragment : BaseLoginFragment(UserType.CUSTOMER) {
 
             if(et_fullname.izBlank() ||
                     et_email_address.izBlank() ||
-                    et_birth_date.izBlank() ||
-                    et_location.izBlank()
+                    et_mobile_number.izBlank() ||
+                    et_birth_date.izBlank()
             ){
-                Toast.makeText(requireContext(),"Please fill in required fields.",Toast.LENGTH_SHORT).show()
+                Snackbar.make(requireView(),"Please fill in required fields.", Snackbar.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            if(et_mobile_number.text.toString().length != 13){
-                Toast.makeText(requireContext(),"Invalid Mobile Number.",Toast.LENGTH_SHORT).show()
+            if(et_mobile_number.text.toString().isNotEmpty() && et_mobile_number.text.toString().replace("#","").length != 13){
+                Snackbar.make(requireView(),"Invalid Mobile Number.", Snackbar.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
             if(!et_email_address.text.toString().validateEmail()){
-                Toast.makeText(requireContext(),"Invalid E-mail format.",Toast.LENGTH_LONG).show()
+                Snackbar.make(requireView(),"Invalid E-mail format.", Snackbar.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -112,7 +112,7 @@ class SignUpCustomerFragment : BaseLoginFragment(UserType.CUSTOMER) {
                     et_email_address.text.toString(),
                     et_mobile_number.text.toString(),
                     et_birth_date.text.toString(),
-                    et_location.text.toString(),
+                    "",
                     socialToken = token,
                     isEmailVerified = "1"
             )
@@ -128,6 +128,23 @@ class SignUpCustomerFragment : BaseLoginFragment(UserType.CUSTOMER) {
                         googleUserPayload.name,
                         googleUserPayload.googleToken
                 )
+
+/*                viewModel.signUpCustomer(
+                    googleUserPayload.name,
+                    googleUserPayload.email,
+                    "",
+                    "",
+                    "",
+                    null,
+                    socialToken = googleUserPayload.googleToken,
+                    isEmailVerified = "1"
+                )*/
+
+            }else{
+                et_email_address.isEnabled = true
+                et_password.isEnabled = true
+                et_password.setBackgroundColor(ContextCompat.getColor(requireContext(), android.R.color.transparent))
+                et_password.background = ContextCompat.getDrawable(requireContext(), R.drawable.shape_grey_border)
             }
         }
 
@@ -138,6 +155,22 @@ class SignUpCustomerFragment : BaseLoginFragment(UserType.CUSTOMER) {
                         facebookUserPayload.firstName + " " + facebookUserPayload.lastName,
                         facebookUserPayload.fbToken
                 )
+
+/*                viewModel.signUpCustomer(
+                    facebookUserPayload.firstName + " " + facebookUserPayload.lastName,
+                    facebookUserPayload.email,
+                    "",
+                    "",
+                    "",
+                    null,
+                    socialToken = facebookUserPayload.fbToken,
+                    isEmailVerified = "1"
+                )*/
+            }else{
+                et_email_address.isEnabled = true
+                et_password.isEnabled = true
+                et_password.setBackgroundColor(ContextCompat.getColor(requireContext(), android.R.color.transparent))
+                et_password.background = ContextCompat.getDrawable(requireContext(), R.drawable.shape_grey_border)
             }
         }
 
@@ -145,14 +178,17 @@ class SignUpCustomerFragment : BaseLoginFragment(UserType.CUSTOMER) {
             when(result){
                 is Result.Progress -> {
                     Timber.v("loading ${result.isLoading}")
+                    initCenterProgress(result.isLoading)
+                    enableViews(result.isLoading.not())
                 }
                 is Result.Success -> {
                     if (result.data != null) {
                         val code = result.data.meta.code
+                        initCenterProgress(false)
+                        enableViews(true)
                         when (code) {
                             "ok" -> {
-                                Toast.makeText(requireContext(), "success", Toast.LENGTH_LONG)
-                                        .show()
+                                Toast.makeText(requireContext(),"Login Successful", Toast.LENGTH_SHORT).show()
                                 requireActivity().finish()
                                 startActivity(
                                         Intent(requireContext(), MainActivity::class.java)
@@ -166,11 +202,14 @@ class SignUpCustomerFragment : BaseLoginFragment(UserType.CUSTOMER) {
                     }
                 }
                 is Result.Error -> {
-                    Toast.makeText(requireContext(), result.metaResponse.message, Toast.LENGTH_LONG)
-                            .show()
+                    Toast.makeText(requireContext(),result.metaResponse.message, Toast.LENGTH_SHORT).show()
+                    initCenterProgress(false)
+                    enableViews(true)
                 }
                 is Result.HttpError -> {
-                    Toast.makeText(requireContext(), result.error.message, Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(),result.error.message, Toast.LENGTH_SHORT).show()
+                    initCenterProgress(false)
+                    enableViews(true)
                 }
             }
         }
@@ -183,29 +222,40 @@ class SignUpCustomerFragment : BaseLoginFragment(UserType.CUSTOMER) {
         viewModel.signUpCustomerResult.observe(viewLifecycleOwner) { result ->
             when (result) {
                 is Result.Progress -> {
-                    Timber.v("loading ${result.isLoading}")
-                    //TODO: ADD LOADING
-
+                    initCenterProgress(result.isLoading)
+                    enableViews(result.isLoading.not())
                 }
                 is Result.Success -> {
                     if(result.data != null){
+                        initCenterProgress(false)
+                        enableViews(true)
+
+                        if(et_password.isEnabled){
+                            viewModel.signInCustomer(result.data.data.email,et_password.text.toString())
+                        }else{
+                            viewModel.signInCustomerSocial(result.data.data.email,result.data.data.socialToken)
+                        }
+
                         arrayOf(
                             et_fullname,
                             et_email_address,
                             et_password,
                             et_mobile_number,
-                            et_birth_date,
-                            et_location
+                            et_birth_date
                         ).clearTextViews()
-                        Toast.makeText(requireContext(), result.data.meta.message, Toast.LENGTH_LONG).show()
+                        viewModel.clearLoginPayloads()
+                        Toast.makeText(requireContext(),"Account Successfully created.", Toast.LENGTH_LONG).show()
                     }
                 }
                 is Result.Error -> {
-                    Toast.makeText(requireContext(), result.metaResponse.message, Toast.LENGTH_LONG)
-                        .show()
+                    Toast.makeText(requireContext(),result.metaResponse.message, Toast.LENGTH_SHORT).show()
+                    initCenterProgress(false)
+                    enableViews(true)
                 }
                 is Result.HttpError -> {
-                    Toast.makeText(requireContext(), result.error.message, Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(),result.error.message, Toast.LENGTH_SHORT).show()
+                    initCenterProgress(false)
+                    enableViews(true)
                 }
             }
         }
@@ -236,24 +286,24 @@ class SignUpCustomerFragment : BaseLoginFragment(UserType.CUSTOMER) {
 
 
         btn_sign_up.setOnClickListener {
-
+            hideKeyboard(requireActivity())
             if(et_fullname.izBlank() ||
                 et_email_address.izBlank() ||
                 et_password.izBlank() ||
                 et_birth_date.izBlank() ||
-                et_location.izBlank()
+                et_mobile_number.izBlank()
                ){
-                Toast.makeText(requireContext(),"Please fill in required fields.",Toast.LENGTH_SHORT).show()
+                Snackbar.make(requireView(),"Please fill in required fields.", Snackbar.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            if(et_mobile_number.text.toString().length != 13){
-                Toast.makeText(requireContext(),"Invalid Mobile Number.",Toast.LENGTH_SHORT).show()
+            if(et_mobile_number.text.toString().isNotEmpty() && et_mobile_number.text.toString().replace("#","").length != 13){
+                Snackbar.make(requireView(),"Invalid Mobile Number.", Snackbar.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
             if(!et_email_address.text.toString().validateEmail()){
-                Toast.makeText(requireContext(),"Invalid E-mail format.",Toast.LENGTH_LONG).show()
+                Snackbar.make(requireView(),"Invalid E-mail format.", Snackbar.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -263,7 +313,7 @@ class SignUpCustomerFragment : BaseLoginFragment(UserType.CUSTOMER) {
                 et_email_address.text.toString(),
                 et_mobile_number.text.toString(),
                 et_birth_date.text.toString(),
-                et_location.text.toString(),
+                "",
                 et_password.text.toString()
             )
         }
@@ -334,5 +384,12 @@ class SignUpCustomerFragment : BaseLoginFragment(UserType.CUSTOMER) {
             .setCountry("PH")
 //        intent.build(requireContext())
         startActivityForResult(intent.setLocationBias(locationBias).build(requireContext()), requestCode)
+    }
+
+    private fun enableViews(enable: Boolean){
+        btn_fb_signup.isEnabled = enable
+        btn_google_signup.isEnabled = enable
+        btn_rider.isEnabled = enable
+        tv_sign_in_link.isEnabled = enable
     }
 }

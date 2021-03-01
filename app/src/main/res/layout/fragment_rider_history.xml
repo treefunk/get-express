@@ -12,6 +12,15 @@
 
     >
 
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintLeft_toLeftOf="@id/flow_history_tabs"
+        app:layout_constraintRight_toRightOf="@id/flow_history_tabs"
+        app:layout_constraintBottom_toBottomOf="@id/flow_history_tabs"
+        app:layout_constraintTop_toTopOf="@id/flow_history_tabs"
+        android:background="@color/blue_200"
+        />
     <TextView
         android:id="@+id/label_get_car"
         android:layout_width="0dp"
@@ -87,6 +96,8 @@
         android:orientation="horizontal"
         app:constraint_referenced_ids="label_get_car,label_get_grocery,label_get_pabili,label_get_delivery,label_get_food"
         />
+
+
 
     <View
         android:id="@+id/line_below_tabs"

@@ -8,6 +8,7 @@ import com.myoptimind.get_express.features.login.api.LoginService
 import com.myoptimind.get_express.features.login.data.UserType
 import com.myoptimind.get_express.features.shared.api.Result
 import com.myoptimind.get_express.features.shared.applyDefaultEffects
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -48,6 +49,8 @@ class LoginRepository @Inject constructor(
         val response = loginService.signUpCustomer(
                 fullname, email, mobileNum, birthdate, location, password,socialToken,isEmailVerified
         )
+        emit(Result.Progress(isLoading = false))
+        delay(100)
         emit(Result.Success(response))
     }.applyDefaultEffects(enableRetry = false, nullOnComplete = true)
 
@@ -62,6 +65,8 @@ class LoginRepository @Inject constructor(
                 email, password, deviceId, firebaseToken
         )
         Timber.v("Customer Sign in Details: \nEmail - $email\nDevice Id - $deviceId\nFirebase Id - $firebaseToken\n")
+        emit(Result.Progress(isLoading = false))
+        delay(100)
         emit(Result.Success(response))
     }.applyDefaultEffects(false, true)
 
@@ -76,18 +81,24 @@ class LoginRepository @Inject constructor(
             email, token, deviceId, firebaseToken
         )
         Timber.v("Customer Sign in Details: \nEmail - $email\nDevice Id - $deviceId\nFirebase Id - $firebaseToken\n")
+        emit(Result.Progress(isLoading = false))
+        delay(100)
         emit(Result.Success(response))
     }.applyDefaultEffects(false, true)
 
     fun signOut(userType: UserType) = flow {
         val deviceId = getDeviceId()
         val response = loginService.signOut(deviceId,userType.label)
+        emit(Result.Progress(isLoading = false))
+        delay(100)
         emit(Result.Success(response))
     }.applyDefaultEffects(false,true)
 
 
-    fun getVehicles() = flow<Result.Success<HomeService.GetVehiclesResponse>> {
+    fun getVehicles() = flow {
         val response = homeService.getVehicles()
+        emit(Result.Progress(isLoading = false))
+        delay(100)
         emit(Result.Success(response))
     }.applyDefaultEffects()
 
@@ -119,6 +130,8 @@ class LoginRepository @Inject constructor(
                 vehicleModel,
                 plateNumber
         )
+        emit(Result.Progress(isLoading = false))
+        delay(100)
         emit(Result.Success(response))
     }.applyDefaultEffects(enableRetry = false, nullOnComplete = true)
 
@@ -134,6 +147,8 @@ class LoginRepository @Inject constructor(
                 email, password, deviceId, firebaseToken
         )
         Timber.v("Rider Sign in Details: \nEmail - $email\nDevice Id - $deviceId\nFirebase Id - $firebaseToken\n")
+        emit(Result.Progress(isLoading = false))
+        delay(100)
         emit(Result.Success(response))
     }.applyDefaultEffects(false, nullOnComplete = true)
 
@@ -148,6 +163,8 @@ class LoginRepository @Inject constructor(
             email, token, deviceId, firebaseToken
         )
         Timber.v("Customer Sign in Details: \nEmail - $email\nDevice Id - $deviceId\nFirebase Id - $firebaseToken\n")
+        emit(Result.Progress(isLoading = false))
+        delay(100)
         emit(Result.Success(response))
     }.applyDefaultEffects(false, true)
 
@@ -159,6 +176,8 @@ class LoginRepository @Inject constructor(
                 "${userType.label}s",
                 email
         )
+        emit(Result.Progress(isLoading = false))
+        delay(100)
         emit(Result.Success(response))
     }.applyDefaultEffects(false, nullOnComplete = true)
 }

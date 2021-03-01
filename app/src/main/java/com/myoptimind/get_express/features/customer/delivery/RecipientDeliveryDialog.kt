@@ -38,6 +38,7 @@ import com.myoptimind.get_express.features.shared.izNotBlank
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.dialog_recipient_delivery.*
+import kotlinx.android.synthetic.main.dialog_recipient_delivery.ib_close
 import timber.log.Timber
 
 @AndroidEntryPoint
@@ -133,7 +134,12 @@ class RecipientDeliveryDialog : BaseDialogFragment() {
         enterAddressViewModel.checkLocationResult.observe(viewLifecycleOwner){ result ->
             when(result){
                 is Result.Progress -> {
-
+                    if(result.isLoading){
+                        view_loading_recipient_delivery.visibility = View.VISIBLE
+                    }else{
+                        view_loading_recipient_delivery.visibility = View.GONE
+                    }
+                    et_address.isEnabled = result.isLoading.not()
                 }
                 is Result.Success -> {
                     if(result.data != null){

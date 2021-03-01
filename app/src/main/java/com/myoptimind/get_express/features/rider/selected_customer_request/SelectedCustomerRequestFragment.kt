@@ -42,6 +42,7 @@ import com.myoptimind.get_express.features.customer.cart.data.*
 import com.myoptimind.get_express.features.login.data.VehicleType
 import com.myoptimind.get_express.features.login.data.idToVehicleType
 import com.myoptimind.get_express.features.rider.customer_requests_list.CustomerRequestViewModel
+import com.myoptimind.get_express.features.shared.AppSharedPref
 import com.myoptimind.get_express.features.shared.TitleOnlyFragment
 import com.myoptimind.get_express.features.shared.api.Result
 import com.myoptimind.get_express.features.shared.data.CartType
@@ -52,6 +53,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_selected_customer_request.*
 import kotlinx.coroutines.Job
 import timber.log.Timber
+import javax.inject.Inject
 
 
 private const val REQUEST_PERMISSION_COARSE_LOCATION = 898
@@ -70,6 +72,9 @@ class SelectedCustomerRequestFragment: TitleOnlyFragment() {
     private var riderMarker: Marker? = null
 
     private val args: SelectedCustomerRequestFragmentArgs by navArgs()
+
+    @Inject
+    lateinit var appSharedPref: AppSharedPref
 
     private fun sendRiderLocationJob(
         cartId: String,
@@ -300,7 +305,7 @@ class SelectedCustomerRequestFragment: TitleOnlyFragment() {
 
     private fun initObservers() {
 
-/*        viewModel.acceptCustomerRequestResult.observe(viewLifecycleOwner){ result ->
+        viewModel.acceptCustomerRequestResult.observe(viewLifecycleOwner){ result ->
             when(result){
                 is Result.Progress -> {
 
@@ -308,19 +313,29 @@ class SelectedCustomerRequestFragment: TitleOnlyFragment() {
                 is Result.Success -> {
                     if(result.data != null){
                         if(result.data.meta.status == 200 || result.data.meta.status == 201){
-                            viewModel
+                            // hmm
                         }
                     }
                 }
-                is Result.Error -> TODO()
-                is Result.HttpError -> TODO()
+                is Result.Error -> {
+                    Timber.e(result.metaResponse.message)
+                    Toast.makeText(requireContext(), result.metaResponse.message, Toast.LENGTH_LONG)
+                        .show()
+                    backToDashboard()
+                }
+                is Result.HttpError -> {
+                    Timber.e(result.error.message)
+                    Toast.makeText(requireContext(), result.error.message, Toast.LENGTH_LONG).show()
+                    backToDashboard()
+                }
             }
-        }*/
+        }
 
         viewModel.cartInfoResult.observe(viewLifecycleOwner) { result ->
             when (result) {
                 is Result.Progress -> {
-                    Timber.v("loading - ${result.isLoading}")
+                    initCenterProgress(result.isLoading)
+                    enableViews(result.isLoading.not())
                 }
                 is Result.Success -> {
                     if (result.data != null) {
@@ -328,6 +343,12 @@ class SelectedCustomerRequestFragment: TitleOnlyFragment() {
                         val cartType = cart.cartTypeId.idToCartType()
                         val cartStatus = cart.status.toCartStatus()
 
+
+
+                        if(args.historyOnly.not() && cartStatus.order > 1 && cart.riderId != appSharedPref.getUserId()){
+                            Toast.makeText(requireContext(),"Order has already been accepted by another rider.",Toast.LENGTH_LONG).show()
+                            backToDashboard()
+                        }
 
                         initMap(cart.pickUpLocation, cart.deliveryLocation)
 
@@ -421,7 +442,7 @@ class SelectedCustomerRequestFragment: TitleOnlyFragment() {
                                 adapter?.itemList = items
                                 adapter?.notifyDataSetChanged()
 
-                                if (!args.historyOnly) {
+                                if (!args.historyOnly && cartStatus.order > 1) {
                                     btn_contact_from.visibility = View.VISIBLE
                                     btn_contact_to.visibility = View.VISIBLE
 
@@ -455,7 +476,8 @@ class SelectedCustomerRequestFragment: TitleOnlyFragment() {
                             CartStatus.OTW -> Unit
                             CartStatus.ARRIVED -> Unit
                             CartStatus.DELIVERED -> {
-                                sendCommandToService(
+                                if(!args.historyOnly){
+                                                                    sendCommandToService(
                                     RiderTrackingService.ACTION_START_OR_RESUME_SERVICE,
                                     cart.id,
                                     sendCoordinates = false
@@ -466,6 +488,8 @@ class SelectedCustomerRequestFragment: TitleOnlyFragment() {
                                         findNavController().navigate(it)
                                     }
                                 }
+                                }
+
                             }
                             CartStatus.CANCELLED, CartStatus.INIT -> {
                                 Snackbar.make(
@@ -563,8 +587,10 @@ class SelectedCustomerRequestFragment: TitleOnlyFragment() {
         tv_from_name.text = cart.pickUpLocation.label
         if(args.historyOnly){
             setNewTitle(cart.pickUpLocation.label)
+//            newTitle = cart.pickUpLocation.label
         }else{
             setNewTitle(cartType.label)
+//            newTitle = cartType.label
         }
         tv_from_location.text = cart.pickUpLocation.addressText
         tv_to_name.text = cart.deliveryLocation.label
@@ -752,6 +778,18 @@ class SelectedCustomerRequestFragment: TitleOnlyFragment() {
             findNavController().navigate(R.id.action_selectedCustomerRequestFragment_to_riderDashboardFragment)
             return
         }
+    }
+
+    private fun enableViews(enable: Boolean){
+        btn_open_in_google_maps.isEnabled = enable
+        btn_contact_to.isEnabled = enable
+        btn_contact_from.isEnabled = enable
+        btn_got_items.isEnabled = enable
+        btn_arrived.isEnabled = enable
+        btn_delivered.isEnabled = enable
+        btn_on_the_way.isEnabled = enable
+        box_accept.isEnabled = enable
+        box_reject.isEnabled = enable
     }
 }
 

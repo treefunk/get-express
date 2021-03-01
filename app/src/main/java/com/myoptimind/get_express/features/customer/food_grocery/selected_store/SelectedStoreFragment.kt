@@ -1,6 +1,5 @@
 package com.myoptimind.get_express.features.customer.food_grocery.selected_store
 
-import ProductCategoryAdapter
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -8,8 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.Toast
-import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -20,12 +17,10 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.myoptimind.get_express.R
 import com.myoptimind.get_express.features.customer.cart.CartViewModel
-import com.myoptimind.get_express.features.customer.cart.data.CartLocation
 import com.myoptimind.get_express.features.customer.food_grocery.StoresViewModel
 import com.myoptimind.get_express.features.customer.food_grocery.data.Product
 import com.myoptimind.get_express.features.customer.food_grocery.data.ProductCategory
 import com.myoptimind.get_express.features.customer.food_grocery.selected_store.data.ItemPayload
-import com.myoptimind.get_express.features.rider.customer_requests_list.data.DeliveryLocation
 import com.myoptimind.get_express.features.shared.TitleOnlyFragment
 import com.myoptimind.get_express.features.shared.api.Result
 import com.myoptimind.get_express.features.shared.data.CartType
@@ -42,6 +37,7 @@ class SelectedStoreFragment: TitleOnlyFragment() {
     private val args: SelectedStoreFragmentArgs by navArgs()
     private val storeViewModel by activityViewModels<StoresViewModel>()
     private val cartViewModel by activityViewModels<CartViewModel>()
+    private var productAdapter: ProductCategoryAdapter? = null
 
 
     companion object {
@@ -58,7 +54,7 @@ class SelectedStoreFragment: TitleOnlyFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         val v = inflater.inflate(R.layout.fragment_selected_store,container,false)
-        v.findViewById<RecyclerView>(R.id.rv_categories).visibility = View.GONE
+//        v.findViewById<RecyclerView>(R.id.rv_categories).visibility = View.GONE
         return inflater.inflate(R.layout.fragment_selected_store,container,false)
     }
 
@@ -73,6 +69,7 @@ class SelectedStoreFragment: TitleOnlyFragment() {
             cartViewModel.getStoreById(args.storeId)
             group_basket.visibility = View.GONE
         }
+
 
         storeViewModel.getCategoriesByStore(args.storeId)
     }
@@ -90,8 +87,8 @@ class SelectedStoreFragment: TitleOnlyFragment() {
                 is Result.Success -> {
                     if(result.data != null){
                         val list = ArrayList(listOf("All") + result.data.data)
-                        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, list)
-                        et_food_category.setAdapter(adapter)
+                        val dropdownAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, list)
+                        et_food_category.setAdapter(dropdownAdapter)
                         et_food_category.setOnClickListener {
                             et_food_category.showDropDown()
                         }
@@ -119,15 +116,15 @@ class SelectedStoreFragment: TitleOnlyFragment() {
         storeViewModel.productCategoryResult.observe(viewLifecycleOwner){ result ->
             when(result){
                 is Result.Progress -> {
-
+                    initCenterProgress(result.isLoading)
+                    enableViews(result.isLoading.not())
                 }
                 is Result.Success -> {
                     if(result.data != null){
-                        var adapter: ProductCategoryAdapter? = null
                         when(cartType){
                             CartType.CAR -> TODO()
                             CartType.GROCERY -> {
-                                adapter = ProductCategoryAdapter(ArrayList(),cartType,args.forViewingOnly, object: ProductAdapter.ProductListener{
+                                productAdapter = ProductCategoryAdapter(ArrayList(),cartType,args.forViewingOnly,true, object: ProductAdapter.ProductListener{
                                     override fun onPressProduct(product: Product, isInstant: Boolean) {
                                         if(product.isOutStock){
                                             Snackbar.make(requireView(),"This item is out of stock.", Snackbar.LENGTH_SHORT).show()
@@ -143,7 +140,7 @@ class SelectedStoreFragment: TitleOnlyFragment() {
                             }
                             CartType.FOOD -> {
 
-                                adapter = ProductCategoryAdapter(ArrayList(), cartType, args.forViewingOnly, object: ProductAdapter.ProductListener{
+                                productAdapter = ProductCategoryAdapter(ArrayList(), cartType, args.forViewingOnly,true, object: ProductAdapter.ProductListener{
                                     override fun onPressProduct(product: Product, isInstant: Boolean) {
                                         val dialogGrocery = ProductFoodDialog.newInstance(product, forViewingOnly = args.forViewingOnly)
                                         dialogGrocery.setTargetFragment(this@SelectedStoreFragment, REQUEST_FOOD_ADD_TO_CART)
@@ -181,12 +178,12 @@ class SelectedStoreFragment: TitleOnlyFragment() {
 
                         }
                         rv_categories.layoutManager = LinearLayoutManager(requireContext(),RecyclerView.VERTICAL, false)
-                        rv_categories.adapter = adapter
+                        rv_categories.adapter = productAdapter
 
                         val productCategories = result.data.data.map {
                             ProductCategory(it.key,it.value)
                         }
-                        adapter.productCategories = productCategories
+                        productAdapter?.productCategories = productCategories
 
                         if(productCategories.isEmpty()){
                             label_no_results_found.visibility = View.VISIBLE
@@ -199,8 +196,7 @@ class SelectedStoreFragment: TitleOnlyFragment() {
                                 group_select_category.visibility = View.VISIBLE
                             }
                         }
-
-                        adapter.notifyDataSetChanged()
+                        productAdapter?.notifyDataSetChanged()
                         rv_categories.visibility = View.VISIBLE
                     }
                 }
@@ -217,6 +213,7 @@ class SelectedStoreFragment: TitleOnlyFragment() {
             if(activeStore != null){
                 tv_store_name.text = activeStore.name
                 setNewTitle(activeStore.name)
+//                newTitle = activeStore.name
                 tv_store_caption.text = activeStore.category
 //                tv_store_description.text = "30 mins  |  5.4 km" //TODO
                 Glide.with(requireContext())
@@ -242,11 +239,8 @@ class SelectedStoreFragment: TitleOnlyFragment() {
         cartViewModel.cart.observe(viewLifecycleOwner){ result ->
             when(result){
                 is Result.Progress -> {
-                    if(result.isLoading){
-                        Timber.d("loading cart..")
-                    }else{
-                        Timber.d("done loading cart..")
-                    }
+                    initCenterProgress(result.isLoading)
+//                    enableViews(result.isLoading.not())
                 }
                 is Result.Success -> {
                     if(result.data != null){
@@ -428,16 +422,18 @@ class SelectedStoreFragment: TitleOnlyFragment() {
                         var quantity = itemPayload.quantity
                         if(matchedProduct.isNotEmpty()){
                             cartItemId = matchedProduct[0].cartItemId!!
-                            quantity = (matchedProduct[0].quantity.toInt() + itemPayload.quantity.toInt()).toString()
+                            quantity =  itemPayload.quantity
                             if(matchedProduct[0].notes.trim().equals(itemPayload.notes.trim(),false).not()){
                                 cartItemId = null
+                            }else{
+                                quantity = ((matchedProduct[0].quantity.toInt()) + quantity.toInt()).toString()
                             }
                         }
                             addItemToCart(
                                 args.cartId,
                                 itemPayload.productId,
                                 quantity,
-                                "",
+                                itemPayload.notes,
                                 cartItemId = cartItemId,
                                 addOnIds = itemPayload.addons?.map { it.id }
                             )
@@ -496,5 +492,13 @@ class SelectedStoreFragment: TitleOnlyFragment() {
                 cartId, productId, quantity, notes, addOnIds, cartItemId
             )
         }
+    }
+
+    private fun enableViews(enable: Boolean){
+        ib_store_info.isEnabled = enable
+        ib_store_search.isEnabled = enable
+        productAdapter?.izEnabled = enable
+        productAdapter?.notifyDataSetChanged()
+//        rv_categories.visibility = if(enable) View.VISIBLE else View.GONE
     }
 }

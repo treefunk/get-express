@@ -31,6 +31,7 @@ import com.myoptimind.get_express.features.customer.whats_new.WhatsNewViewModel
 import com.myoptimind.get_express.features.customer.whats_new.data.WhatsNew
 import com.myoptimind.get_express.features.edit_profile.ProfileViewModel
 import com.myoptimind.get_express.features.login.data.idToVehicleType
+import com.myoptimind.get_express.features.shared.AppSharedPref
 import com.myoptimind.get_express.features.shared.LogoOnlyFragment
 import com.myoptimind.get_express.features.shared.api.Result
 import com.myoptimind.get_express.features.shared.data.CartType
@@ -39,9 +40,16 @@ import com.myoptimind.get_express.features.shared.toCartLocation
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_customer_dashboard.*
+import kotlinx.android.synthetic.main.fragment_customer_dashboard.iv_get_delivery
+import kotlinx.android.synthetic.main.fragment_customer_dashboard.iv_get_food
+import kotlinx.android.synthetic.main.fragment_customer_dashboard.iv_get_grocery
+import kotlinx.android.synthetic.main.fragment_customer_dashboard.iv_get_pabili
+import kotlinx.android.synthetic.main.fragment_customer_dashboard.rv_whats_new
+import kotlinx.android.synthetic.main.fragment_customer_dashboard_original.*
 import kotlinx.android.synthetic.main.partial_nav_top.*
 import kotlinx.coroutines.flow.collect
 import timber.log.Timber
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class CustomerDashboardFragment : LogoOnlyFragment() {
@@ -51,6 +59,9 @@ class CustomerDashboardFragment : LogoOnlyFragment() {
     private val whatsNewViewModel by activityViewModels<WhatsNewViewModel>()
 
     private lateinit var adapter: WhatsNewAdapter
+
+    @Inject
+    lateinit var appSharedPref: AppSharedPref
 
 
     companion object {
@@ -118,7 +129,7 @@ class CustomerDashboardFragment : LogoOnlyFragment() {
             whatsNewViewModel.whatsNewListResult.collect { result ->
                 when (result) {
                     is Result.Progress -> {
-
+                        initCenterProgress(result.isLoading)
                     }
                     is Result.Success -> {
                         if (result.data != null) {
@@ -137,41 +148,6 @@ class CustomerDashboardFragment : LogoOnlyFragment() {
         }
 
 
-        editProfileViewModel.getCustomerProfile.observe(viewLifecycleOwner) { result ->
-            when (result) {
-                is Result.Progress -> {
-                }
-                is Result.Success -> {
-                    if (result.data != null) {
-                        iv_get_food.setOnClickListener {
-                            showAddressSelection(
-                                result.data.data.addresses,
-                                REQUEST_SELECT_ADDRESS, CartType.FOOD
-                            )
-                        }
-                        iv_get_grocery.setOnClickListener {
-                            showAddressSelection(result.data.data.addresses,
-                                REQUEST_SELECT_ADDRESS,CartType.GROCERY)
-                        }
-//        iv_get_car.setOnClickListener {
-//            showVehicleTypeChooser(CartType.CAR)
-//        }
-                        iv_get_pabili.setOnClickListener {
-                            showVehicleTypeChooser(CartType.PABILI)
-                        }
-                        iv_get_delivery.setOnClickListener {
-                            showVehicleTypeChooser(CartType.DELIVERY)
-                        }
-                    }
-                }
-                is Result.Error -> {
-                    Timber.e(result.metaResponse.message)
-                }
-                is Result.HttpError -> {
-                    Timber.e(result.error.message)
-                }
-            }
-        }
 
         cartViewModel.activeBookingResult.observe(viewLifecycleOwner) { result ->
             when (result) {
@@ -179,6 +155,8 @@ class CustomerDashboardFragment : LogoOnlyFragment() {
                     if (result.isLoading) {
                         Timber.d("Checking active booking..")
                     }
+                    initCenterProgress(result.isLoading)
+                    enableViews(result.isLoading.not())
                 }
                 is Result.Success -> {
                     if (result.data != null) {
@@ -192,42 +170,53 @@ class CustomerDashboardFragment : LogoOnlyFragment() {
 
                         cartViewModel.setCartInfo(result)
 
-                        when (cartType) {
-                            CartType.CAR -> TODO()
-                            CartType.GROCERY, CartType.FOOD -> {
-/*                                CustomerDashboardFragmentDirections.actionHomeFragmentToStoresFragment(
-                                    cart.cartTypeId,
+
+                                CustomerDashboardFragmentDirections.actionHomeFragmentToCustomerRiderSearchFragment(
                                     cart.id
-                                ).also {*/
-                                    CustomerDashboardFragmentDirections.actionHomeFragmentToCustomerRiderSearchFragment(
-                                        cart.id
-                                    ).also {
-                                        findNavController().navigate(it)
+                                ).also {
+                                    findNavController().navigate(it)
+                                }
+                    }else{
+
+                        editProfileViewModel.getCustomerProfile.observe(viewLifecycleOwner) { result ->
+                            when (result) {
+                                is Result.Progress -> {
+                                    initCenterProgress(result.isLoading)
+                    enableViews(result.isLoading.not())
+                                }
+                                is Result.Success -> {
+                                    if (result.data != null) {
+                                        iv_get_food.setOnClickListener {
+                                            showAddressSelection(
+                                                result.data.data.addresses,
+                                                REQUEST_SELECT_ADDRESS, CartType.FOOD
+                                            )
+                                        }
+                                        iv_get_grocery.setOnClickListener {
+                                            showAddressSelection(result.data.data.addresses,
+                                                REQUEST_SELECT_ADDRESS,CartType.GROCERY)
+                                        }
+                                        iv_get_pabili.setOnClickListener {
+                                            showVehicleTypeChooser(CartType.PABILI)
+                                        }
+                                        iv_get_delivery.setOnClickListener {
+                                            showVehicleTypeChooser(CartType.DELIVERY)
+                                        }
                                     }
-//                                }
-                            }
-                            CartType.PABILI -> {
-                                CustomerDashboardFragmentDirections.actionHomeFragmentToCustomerRiderSearchFragment(
-                                    cart.id
-                                ).also {
-                                    findNavController().navigate(it)
                                 }
-                            }
-                            CartType.DELIVERY -> {
-                                CustomerDashboardFragmentDirections.actionHomeFragmentToCustomerRiderSearchFragment(
-                                    cart.id
-                                ).also {
-                                    findNavController().navigate(it)
+                                is Result.Error -> {
+                                    Timber.e(result.metaResponse.message)
                                 }
-/*                                CustomerDashboardFragmentDirections.actionHomeFragmentToDeliveryFormFragment(
-                                    cart.id,
-                                    cart.vehicleId
-                                ).also {
-                                    findNavController().navigate(it)
-                                }*/
+                                is Result.HttpError -> {
+                                    Timber.e(result.error.message)
+                                }
                             }
                         }
 
+
+                        appSharedPref.getPendingBooking()?.let {
+                            cartViewModel.getPendingBooking(it)
+                        }
                     }
                 }
                 is Result.Error -> {
@@ -242,9 +231,8 @@ class CustomerDashboardFragment : LogoOnlyFragment() {
         cartViewModel.initCartResult.observe(viewLifecycleOwner) { result ->
             when (result) {
                 is Result.Progress -> {
-                    if (result.isLoading) {
-                        Timber.d("Initializing Cart..")
-                    }
+                    initCenterProgress(result.isLoading)
+                    enableViews(result.isLoading.not())
                 }
                 is Result.Success -> {
                     if (result.data != null) {
@@ -265,6 +253,7 @@ class CustomerDashboardFragment : LogoOnlyFragment() {
                                 }
                             }
                             CartType.PABILI -> {
+                                cartViewModel.clearPabiliItems()
                                 CustomerDashboardFragmentDirections.actionHomeFragmentToPabiliFormFragment(
                                     cart.id,
                                     cart.vehicleId
@@ -351,5 +340,13 @@ class CustomerDashboardFragment : LogoOnlyFragment() {
                 cartViewModel.updateToLocation(selectedPlace!!)
             }
         }
+    }
+
+    private fun enableViews(enable: Boolean){
+//        iv_get_car.isEnabled = enable
+        iv_get_food.isEnabled = enable
+        iv_get_delivery.isEnabled = enable
+        iv_get_pabili.isEnabled = enable
+        iv_get_grocery.isEnabled = enable
     }
 }

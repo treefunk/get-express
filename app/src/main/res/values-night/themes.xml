@@ -18,6 +18,7 @@
         <item name="android:textColorPrimaryInverse">@color/blue_200</item>
         <item name="android:textColorSecondary">@color/blue_200</item>
         <item name="android:textColorSecondaryInverse">@color/blue_500</item>
+        <item name="circularProgressIndicatorStyle">@style/Widget.App.CircularProgressIndicator</item>
 
         <item name="android:datePickerDialogTheme">@style/datepicker_theme</item>
         <!-- Status bar color. -->

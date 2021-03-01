@@ -1,6 +1,5 @@
 package com.myoptimind.get_express.features.shared
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Context
@@ -18,26 +17,28 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.google.android.libraries.places.api.model.Place
 import com.google.gson.Gson
+import com.google.gson.JsonSyntaxException
 import com.myoptimind.get_express.R
 import com.myoptimind.get_express.features.customer.cart.data.CartLocation
 import com.myoptimind.get_express.features.login.data.Address
 import com.myoptimind.get_express.features.shared.api.MetaErrorResponse
 import com.myoptimind.get_express.features.shared.api.MetaResponse
 import com.myoptimind.get_express.features.shared.api.Result
-import kotlinx.android.synthetic.main.fragment_sign_up_customer.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 import retrofit2.HttpException
 import timber.log.Timber
+import java.lang.IllegalStateException
 import java.net.UnknownHostException
 import java.text.DecimalFormat
 
 
 fun HttpException.toMetaResponse(): MetaResponse {
     val errorJsonString = this.response()?.errorBody()?.string()
-    val metaErrorResponse = Gson().fromJson(errorJsonString!!, MetaErrorResponse::class.java)
+    val metaErrorResponse =
+        Gson().fromJson(errorJsonString!!, MetaErrorResponse::class.java)
     return metaErrorResponse.meta
 }
 
@@ -72,6 +73,11 @@ fun <T : Any> Flow<Result<T>>.applyDefaultEffects(
     return retryWhen { cause, _ ->
         when (cause) {
             !is HttpException -> {
+                if (cause is UnknownHostException) {
+                    emit(Result.HttpError(Exception("No Internet Connection")))
+                }else{
+                    emit(Result.HttpError(Exception(cause.message)))
+                }
                 if (enableRetry) {
                     for (i in 10 downTo 1) {
                         Timber.e("retrying request in $i")
@@ -80,25 +86,43 @@ fun <T : Any> Flow<Result<T>>.applyDefaultEffects(
                 }
                 enableRetry
             }
-            else -> false
+            else -> {
+                    emit(Result.Error(MetaResponse("Server is busy. Please Try again later","server_error",500)))
+                    if(enableRetry){
+                        for (i in 10 downTo 1) {
+                            Timber.e("ERROR 500: retrying request in $i")
+                            delay(1000)
+                        }
+                        true
+                    }else{
+                        false
+                    }
+            }
         }
     }.catch { exception ->
         exception.handleErrors({
             if (it is UnknownHostException) {
-                emit(Result.HttpError(Exception("Internet Connection is required. Please try again.")))
+                emit(Result.HttpError(Exception("No Internet Connection")))
             } else {
                 emit(Result.HttpError(it))
             }
+
         }, {
             emit(Result.Error(it))
         })
-    }.onStart { emit(Result.Progress(isLoading = true)) }
+    }.buffer().onStart { emit(Result.Progress(isLoading = true)) }
             .onCompletion {
                 delay(100)
                 Timber.d(this.toString())
                 if(nullOnComplete){
                     emit(Result.Success(null))
                 }
+
+/*
+                emit(Result.Progress(isLoading = false))
+                emit(this@)
+*/
+
 
 
             }

@@ -2,6 +2,7 @@ package com.myoptimind.get_express.features.customer.home.vehicle_options
 
 import android.app.Activity
 import android.content.Intent
+import android.opengl.Visibility
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -81,7 +82,11 @@ class VehicleOptionsDialog: BaseDialogFragment() {
         viewModel.vehicleOptionsResult.observe(viewLifecycleOwner){ result ->
             when(result){
                 is Result.Progress -> {
-
+                    if(result.isLoading){
+                        view_loading_vehicle_options.visibility = View.VISIBLE
+                    }else{
+                        view_loading_vehicle_options.visibility = View.GONE
+                    }
                 }
                 is Result.Success -> {
                     if(result.data != null){

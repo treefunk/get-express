@@ -4,6 +4,7 @@ import com.myoptimind.get_express.features.customer.cart.data.ItemInPabili
 import com.myoptimind.get_express.features.customer.pabili.api.PabiliService
 import com.myoptimind.get_express.features.shared.api.Result
 import com.myoptimind.get_express.features.shared.applyDefaultEffects
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
@@ -22,6 +23,8 @@ class PabiliRepository @Inject constructor(
                 pabiliItems.map { it.itemName },
                 pabiliItems.map { it.quantity }
         )
+        emit(Result.Progress(isLoading = false))
+        delay(100)
         emit(Result.Success(response))
     }.applyDefaultEffects(false,true)
 }

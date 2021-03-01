@@ -8,10 +8,13 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import com.myoptimind.get_express.MainActivity
 import com.myoptimind.get_express.R
 import com.myoptimind.get_express.features.login.data.UserType
 import com.myoptimind.get_express.features.shared.api.Result
+import com.myoptimind.get_express.features.shared.hideKeyboard
+import com.myoptimind.get_express.features.shared.izNotBlank
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_sign_in_customer.*
 import timber.log.Timber
@@ -47,15 +50,17 @@ class SignInCustomerFragment : BaseLoginFragment(UserType.CUSTOMER) {
             when(result){
                 is Result.Progress -> {
                     Timber.v("loading ${result.isLoading}")
-                    //TODO: ADD LOADING
+                    initCenterProgress(result.isLoading)
+                    enableViews(result.isLoading.not())
                 }
                 is Result.Success -> {
                     if (result.data != null) {
+                        initCenterProgress(false)
+                        enableViews(true)
                         val code = result.data.meta.code
                         when (code) {
                             "ok" -> {
-                                Toast.makeText(requireContext(), "Login Successful", Toast.LENGTH_LONG)
-                                    .show()
+                                Toast.makeText(requireContext(),"Login Successful", Toast.LENGTH_SHORT).show()
 
                                 requireActivity().finish()
                                 startActivity(
@@ -72,11 +77,14 @@ class SignInCustomerFragment : BaseLoginFragment(UserType.CUSTOMER) {
                     }
                 }
                 is Result.Error -> {
-                    Toast.makeText(requireContext(), result.metaResponse.message, Toast.LENGTH_LONG)
-                        .show()
+                    Snackbar.make(requireView(),result.metaResponse.message, Snackbar.LENGTH_SHORT).show()
+                    initCenterProgress(false)
+                    enableViews(true)
                 }
                 is Result.HttpError -> {
-                    Toast.makeText(requireContext(), result.error.message, Toast.LENGTH_LONG).show()
+                    Snackbar.make(requireView(),result.error.message.toString(), Snackbar.LENGTH_SHORT).show()
+                    initCenterProgress(false)
+                    enableViews(true)
                 }
             }
         }
@@ -93,7 +101,12 @@ class SignInCustomerFragment : BaseLoginFragment(UserType.CUSTOMER) {
             }
         }
         btn_sign_in.setOnClickListener {
-            viewModel.signInCustomer(et_email_address.text.toString(),et_password.text.toString())
+            hideKeyboard(requireActivity())
+            if(et_email_address.izNotBlank() && et_password.izNotBlank()){
+                viewModel.signInCustomer(et_email_address.text.toString(),et_password.text.toString())
+            }else{
+                Snackbar.make(requireView(),"Please fill in required fields.",Snackbar.LENGTH_SHORT).show()
+            }
         }
         btn_rider.setOnClickListener {
             findNavController().navigate(R.id.action_signInCustomerFragment_to_signInRiderFragment)
@@ -112,4 +125,12 @@ class SignInCustomerFragment : BaseLoginFragment(UserType.CUSTOMER) {
 
     }
 
+    private fun enableViews(enable: Boolean){
+        btn_google_signup.isEnabled = enable
+        btn_fb_signup.isEnabled = enable
+        btn_rider.isEnabled = enable
+        btn_sign_in.isEnabled = enable
+        tv_forgot_password_link.isEnabled = enable
+        tv_sign_up_link.isEnabled = enable
+    }
 }

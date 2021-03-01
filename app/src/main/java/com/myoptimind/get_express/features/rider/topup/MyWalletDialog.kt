@@ -18,6 +18,7 @@ class MyWalletDialog: BaseDialogFragment() {
     companion object {
         private const val ARGS_CURRENT_AMOUNT = "ARGS_CURRENT_AMOUNT"
         private const val ARGS_CASH_ON_HAND   = "ARGS_CASH_ON_HAND"
+        private const val MAX_LIMIT_TO_TOPUP  = 100000
         const val DATA_AMOUNT_TO_LOAD = "DATA_AMOUNT_TO_LOAD"
 
 
@@ -66,11 +67,20 @@ class MyWalletDialog: BaseDialogFragment() {
                 return@setOnClickListener
             }
 
-            if(amount.toDouble() < 100){
+            if(amount.toDouble() < 100 && isCashOnHand.not()){
                 Toast.makeText(requireContext(),"Amount must be greater than 100.",Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
+            if(isCashOnHand.not() && (amount.toDouble() + currentAmount.toDouble()) >= MAX_LIMIT_TO_TOPUP){
+                Toast.makeText(requireContext(),"Amount must not exceed 100000",Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if(isCashOnHand && amount.toDouble() >= MAX_LIMIT_TO_TOPUP){
+                Toast.makeText(requireContext(),"Amount must not exceed 100000",Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
             val data = Intent().apply {
                 putExtra(DATA_AMOUNT_TO_LOAD,amount.toDouble())

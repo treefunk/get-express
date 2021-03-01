@@ -152,7 +152,8 @@ class RiderHistoryFragment : TitleOnlyFragment() {
         viewModel.getRiderHistoryResult.observe(viewLifecycleOwner) { result ->
             when (result) {
                 is Result.Progress -> {
-                    //todo
+                    initCenterProgress(result.isLoading)
+                    enableViews(result.isLoading.not())
                 }
                 is Result.Success -> {
                     if (result.data != null) {
@@ -168,5 +169,13 @@ class RiderHistoryFragment : TitleOnlyFragment() {
                 }
             }
         }
+    }
+
+    private fun enableViews(enable: Boolean){
+        label_get_car.isEnabled = enable
+        label_get_grocery.isEnabled = enable
+        label_get_pabili.isEnabled = enable
+        label_get_delivery.isEnabled = enable
+        label_get_food.isEnabled = enable
     }
 }

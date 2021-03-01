@@ -4,6 +4,7 @@ import com.myoptimind.get_express.features.customer.food_grocery.api.StoresServi
 import com.myoptimind.get_express.features.customer.cart.data.CartLocation
 import com.myoptimind.get_express.features.shared.api.Result
 import com.myoptimind.get_express.features.shared.applyDefaultEffects
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
@@ -15,6 +16,8 @@ class StoresRepository @Inject constructor(
             cartId: String?,
     ) = flow {
         val response = storesService.getStoresByService(serviceId,cartId)
+        emit(Result.Progress(isLoading = false))
+        delay(100)
         emit(Result.Success(response))
     }.applyDefaultEffects()
 
@@ -24,6 +27,8 @@ class StoresRepository @Inject constructor(
             cartId: String?
     ) = flow {
         val response = storesService.getStoresByKeyword(keyword,serviceId,cartId)
+        emit(Result.Progress(isLoading = false))
+        delay(100)
         emit(Result.Success(response))
     }.applyDefaultEffects()
 
@@ -31,6 +36,8 @@ class StoresRepository @Inject constructor(
         partnerId: String
     ) = flow {
         val response = storesService.getStore(partnerId)
+        emit(Result.Progress(isLoading = false))
+        delay(100)
         emit(Result.Success(response))
     }.applyDefaultEffects(false,true)
 
@@ -49,6 +56,8 @@ class StoresRepository @Inject constructor(
                 minPrice,
                 maxPrice
         )
+        emit(Result.Progress(isLoading = false))
+        delay(100)
         emit(Result.Success(response))
     }.applyDefaultEffects()
 
@@ -56,6 +65,8 @@ class StoresRepository @Inject constructor(
         storeId: String
     ) = flow {
         val response = storesService.getCategoriesByStore(storeId)
+        emit(Result.Progress(isLoading = false))
+        delay(100)
         emit(Result.Success(response))
     }.applyDefaultEffects(true,true)
 
@@ -75,6 +86,8 @@ class StoresRepository @Inject constructor(
                 addOnIds,
                 cartItemId
         )
+        emit(Result.Progress(isLoading = false))
+        delay(100)
         emit(Result.Success(response))
     }.applyDefaultEffects(false,false)
 
@@ -96,6 +109,8 @@ class StoresRepository @Inject constructor(
                     addOnIds,
                     cartItemId
             )
+            emit(Result.Progress(isLoading = false))
+            delay(100)
             emit(Result.Success(response))
         }
     }.applyDefaultEffects(false,false)
@@ -116,6 +131,8 @@ class StoresRepository @Inject constructor(
                 paymentType,
                 if(statusChange) null else "false"
         )
+        emit(Result.Progress(isLoading = false))
+        delay(100)
         emit(Result.Success(response))
     }.applyDefaultEffects(false,false)
 
@@ -125,6 +142,8 @@ class StoresRepository @Inject constructor(
         val response = storesService.getCartInformation(
                 cartId
         )
+        emit(Result.Progress(isLoading = false))
+        delay(100)
         emit(Result.Success(response))
     }.applyDefaultEffects(false,true)
 
@@ -134,6 +153,8 @@ class StoresRepository @Inject constructor(
         val response = storesService.getActiveBooking(
                 customerId
         )
+        emit(Result.Progress(isLoading = false))
+        delay(100)
         emit(Result.Success(response))
     }.applyDefaultEffects(false, true)
 
@@ -143,6 +164,8 @@ class StoresRepository @Inject constructor(
         val response = storesService.cancelCart(
                 cartId
         )
+        emit(Result.Progress(isLoading = false))
+        delay(100)
         emit(Result.Success(response))
     }.applyDefaultEffects(false,false)
 
@@ -152,6 +175,8 @@ class StoresRepository @Inject constructor(
         val response = storesService.emptyCart(
                 cartId
         )
+        emit(Result.Progress(isLoading = false))
+        delay(100)
         emit(Result.Success(response))
     }.applyDefaultEffects(false,true)
 }

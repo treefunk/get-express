@@ -27,7 +27,12 @@ class BasketAdapter constructor(
     inner class ItemViewHolder(private val view: View): RecyclerView.ViewHolder(view) {
         fun bind(item: ItemInFoodGrocery){
             view.tv_item_name.text = item.productName
-            view.tv_item_description.text = item.description
+            val description = StringBuilder()
+            description.append(item.description)
+            if(item.notes.isNotBlank()){
+                description.append("\nNotes: ${item.notes}")
+            }
+            view.tv_item_description.text = description
             view.tv_item_price.text = item.basePrice.toMoneyFormat()
             view.tv_quantity.text = "Qty: ${item.quantity}"
             Glide.with(view.context)

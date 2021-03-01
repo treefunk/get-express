@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.observe
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.libraries.places.api.model.LocationBias
@@ -18,6 +19,7 @@ import com.google.android.libraries.places.widget.AutocompleteActivity
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.myoptimind.get_express.R
+import com.myoptimind.get_express.features.customer.home.EnterAddressViewModel
 import com.myoptimind.get_express.features.login.data.Address
 import com.myoptimind.get_express.features.rider.selected_customer_request.RiderTrackingService
 import com.myoptimind.get_express.features.shared.BaseDialogFragment
@@ -35,6 +37,7 @@ import timber.log.Timber
 class AddAddressDialog: BaseDialogFragment() {
 
     private val viewModel by activityViewModels<ProfileViewModel>()
+    private val enterAddressViewModel by activityViewModels<EnterAddressViewModel>()
 
 
     companion object {
@@ -65,7 +68,7 @@ class AddAddressDialog: BaseDialogFragment() {
 
         val address = requireArguments().getParcelable<Address>(ARGS_ADDRESS)
         initClickListeners(address)
-        initObservers()
+        initObservers(address)
         if(address != null){
             btn_save_address.text = "Update Address"
             label_add_address.text = "Edit Address"
@@ -85,7 +88,44 @@ class AddAddressDialog: BaseDialogFragment() {
 
     }
 
-    private fun initObservers() {
+    private fun initObservers(address: Address?) {
+        enterAddressViewModel.checkLocationResult.observe(viewLifecycleOwner){ result ->
+            when(result){
+                is Result.Progress -> {
+                    if(result.isLoading){
+                        view_loading_enter_address.visibility = View.VISIBLE
+                    }else{
+                        view_loading_enter_address.visibility = View.GONE
+                    }
+                    et_enter_address.isEnabled = result.isLoading.not()
+                    et_address_label.isEnabled = result.isLoading.not()
+                    ib_close.isEnabled = result.isLoading.not()
+                    btn_save_address.isEnabled= result.isLoading.not()
+                }
+                is Result.Success -> {
+                    if(result.data != null){
+                        et_enter_address.setText(result.data.name + "\n" + result.data.address)
+                        val place = result.data
+                        viewModel.updateSelectedPlace(result.data)
+                    }
+                }
+                is Result.Error -> {
+
+                }
+                is Result.HttpError -> {
+                    if(result.error is ProfileRepository.AreaLaunchingSoonException){
+                        MaterialAlertDialogBuilder(requireContext())
+                            .setTitle(result.error.title)
+                            .setMessage(result.error.message)
+                            .setPositiveButton("OK") { dialog, which ->
+                                // Respond to neutral button press
+                            }
+                            .show()
+                    }
+                }
+            }
+        }
+
         viewModel.selectedPlace.observe(viewLifecycleOwner){ selectedPlace ->
             if(selectedPlace != null){
                 var address = selectedPlace.address
@@ -98,7 +138,23 @@ class AddAddressDialog: BaseDialogFragment() {
 
         viewModel.addAddressResult.observe(viewLifecycleOwner){ result ->
             when(result){
-                is Result.Progress -> {}
+                is Result.Progress -> {
+                    if(result.isLoading){
+                        view_loading_enter_address_center.visibility = View.VISIBLE
+                        btn_save_address.text = ""
+                    }else{
+                        if(address != null){
+                            btn_save_address.text = "Update Address"
+                        }else{
+                            btn_save_address.text = "Save Address"
+                        }
+                        view_loading_enter_address_center.visibility = View.GONE
+                    }
+                    et_enter_address.isEnabled = result.isLoading.not()
+                    et_address_label.isEnabled = result.isLoading.not()
+                    ib_close.isEnabled = result.isLoading.not()
+                    btn_save_address.isEnabled= result.isLoading.not()
+                }
                 is Result.Success -> {
                     if(result.data != null){
                         Toast.makeText(requireContext(),result.data.meta.message,Toast.LENGTH_SHORT).show()
@@ -204,8 +260,12 @@ class AddAddressDialog: BaseDialogFragment() {
                         Timber.d("Place: ${place.name}, ${place.id}")
                         if (requestCode == ADDRESS_REQUEST) {
 //                            et_enter_address.setText(place.address)
-                            viewModel.updateSelectedPlace(place)
+//                            viewModel.updateSelectedPlace(place)
+
+                            enterAddressViewModel.checkLocationIfValid(place)
+
                         }
+
                     }
                 }
                 AutocompleteActivity.RESULT_ERROR -> {

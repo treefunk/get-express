@@ -51,7 +51,7 @@ class WhatsNewFragment: TitleOnlyFragment() {
             viewModel.whatsNewListResult.collect { result ->
                 when(result){
                     is Result.Progress -> {
-
+                        initCenterProgress(result.isLoading)
                     }
                     is Result.Success -> {
                         if(result.data != null){

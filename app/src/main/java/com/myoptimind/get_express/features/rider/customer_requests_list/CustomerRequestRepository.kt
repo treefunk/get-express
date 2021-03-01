@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 import com.myoptimind.get_express.features.shared.applyDefaultEffects
 import com.myoptimind.get_express.features.shared.api.Result
+import kotlinx.coroutines.delay
 
 
 class CustomerRequestRepository @Inject constructor(
@@ -32,6 +33,8 @@ class CustomerRequestRepository @Inject constructor(
             declinedRequests.map{ declinedRequest -> declinedRequest.cartId }.contains(it.cartId).not()
         }
         customerRequests.data = filteredCustomerRequests
+        emit(Result.Progress(isLoading = false))
+        delay(100)
         emit(Result.Success(customerRequests))
     }.applyDefaultEffects(true,false)
 
@@ -54,6 +57,8 @@ class CustomerRequestRepository @Inject constructor(
              latitude,
              longitude
         )
+        emit(Result.Progress(isLoading = false))
+        delay(100)
         emit(Result.Success(response))
     }.applyDefaultEffects(false,true)
 }

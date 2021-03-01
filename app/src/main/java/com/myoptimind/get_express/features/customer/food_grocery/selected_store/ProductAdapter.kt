@@ -27,6 +27,7 @@ class ProductAdapter constructor(
         var products: List<Product>,
         var cartType: CartType,
         val forViewingOnly: Boolean,
+        var izEnabled: Boolean = true,
         val listener: ProductListener? = null,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -73,6 +74,9 @@ class ProductAdapter constructor(
             if(forViewingOnly){
                 itemView.ib_add_to_cart.visibility = View.INVISIBLE
             }
+
+            itemView.isEnabled = izEnabled
+            itemView.ib_add_to_cart.isEnabled = izEnabled
 
             itemView.setOnClickListener {
                 listener?.onPressProduct(product,false)

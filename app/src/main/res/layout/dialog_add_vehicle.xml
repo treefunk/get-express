@@ -188,6 +188,19 @@
         android:text="SUBMIT FOR APPROVAL"
         />
 
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/view_loading_add_vehicle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        app:layout_constraintTop_toTopOf="@id/btn_submit_for_approval"
+        app:layout_constraintLeft_toLeftOf="@id/btn_submit_for_approval"
+        app:layout_constraintRight_toRightOf="@id/btn_submit_for_approval"
+        app:layout_constraintBottom_toBottomOf="@id/btn_submit_for_approval"
+        android:visibility="gone"
+        app:trackColor="@color/white"
+        />
+
 
 
 

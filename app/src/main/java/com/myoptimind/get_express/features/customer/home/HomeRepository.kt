@@ -5,6 +5,7 @@ import com.myoptimind.get_express.features.customer.home.api.HomeService
 import com.myoptimind.get_express.features.shared.AppSharedPref
 import com.myoptimind.get_express.features.shared.api.Result
 import com.myoptimind.get_express.features.shared.applyDefaultEffects
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
@@ -14,6 +15,8 @@ class HomeRepository @Inject constructor(
 ){
     fun getServices() = flow<Result<HomeService.ServicesResponse>> {
         val response = homeService.getServices()
+        emit(Result.Progress(isLoading = false))
+        delay(100)
         emit(Result.Success(response))
     }.applyDefaultEffects()
 
@@ -28,6 +31,8 @@ class HomeRepository @Inject constructor(
                 vehicleId,
                 cartLocation?.toJsonString()
         )
+        emit(Result.Progress(isLoading = false))
+        delay(100)
         emit(Result.Success(response))
     }.applyDefaultEffects(false,true)
 }

@@ -218,7 +218,7 @@ class RiderTrackingService: LifecycleService() {
             .setOngoing(true)
             .setSmallIcon(R.drawable.home_logo)
             .setContentTitle("Get Express")
-            .setContentText("Tracking your location..")
+            .setContentText("")
             .setContentIntent(getMainActivityPendingIntent())
 
         startForeground(NOTIFICATION_ID,notificationBuilder.build())

@@ -269,9 +269,11 @@ class CustomerRequestListFragment: LogoOnlyFragment() {
                 }
                 is Result.Error -> {
                     Timber.e(result.metaResponse.message)
+                    Toast.makeText(requireContext(),result.metaResponse.message,Toast.LENGTH_SHORT).show()
                 }
                 is Result.HttpError -> {
                     Timber.e(result.error.message)
+                    Toast.makeText(requireContext(),result.error.message,Toast.LENGTH_SHORT).show()
                 }
             }
         }

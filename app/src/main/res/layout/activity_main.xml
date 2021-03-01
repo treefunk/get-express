@@ -10,6 +10,8 @@
     <!--  TOP NAV  -->
     <include layout="@layout/partial_nav_top" />
 
+
+
     <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/drawer_layout"
         android:layout_width="0dp"
@@ -45,19 +47,6 @@
 
 
 
-            <ImageView
-                android:id="@+id/view_loading"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-
-                app:layout_constraintLeft_toLeftOf="@id/nav_host_container"
-                app:layout_constraintTop_toTopOf="@id/nav_host_container"
-                app:layout_constraintBottom_toBottomOf="@id/nav_host_container"
-                app:layout_constraintRight_toRightOf="@id/nav_host_container"
-                android:visibility="gone"
-                />
-
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <!-- Container for contents of drawer - use NavigationView to make configuration easier -->
@@ -83,7 +72,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintBottom_toTopOf="@id/nav_guideline"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_history_side"
 
                     android:background="@color/blue_200"
                     />
@@ -141,7 +130,7 @@
                     app:layout_constraintTop_toBottomOf="@id/tv_profile_full_name"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toLeftOf="@id/line_between_prof_hist"
-                    app:layout_constraintBottom_toTopOf="@id/nav_guideline"
+                    app:layout_constraintBottom_toTopOf="@id/tv_edit_profile"
                     app:layout_constraintHorizontal_chainStyle="packed"
                     android:layout_marginLeft="8dp"
                     android:layout_marginTop="10dp"
@@ -161,7 +150,9 @@
                     app:layout_constraintRight_toLeftOf="@id/tv_history_side"
                     app:layout_constraintTop_toTopOf="@id/tv_edit_profile"
                     app:layout_constraintBottom_toBottomOf="@id/tv_edit_profile"
+
                     />
+
                 <TextView
                     android:id="@+id/tv_history_side"
                     android:layout_width="wrap_content"
@@ -174,15 +165,10 @@
                     android:layout_marginBottom="8dp"
                     android:layout_marginLeft="8dp"
                     android:textColor="@color/yellow_200"
+                    android:paddingBottom="12dp"
+
                     />
 
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/nav_guideline"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    app:layout_constraintGuide_percent=".28"
-                    />
 
                 <ImageView
                     android:id="@+id/iv_about_get_express"
@@ -206,7 +192,7 @@
                     android:id="@+id/tv_about_get_express"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@id/nav_guideline"
+                    app:layout_constraintTop_toBottomOf="@id/tv_history_side"
                     app:layout_constraintLeft_toRightOf="@id/iv_about_get_express"
                     app:layout_constraintRight_toRightOf="parent"
                     style="@style/GetExpressLabel.NavItems"
@@ -367,6 +353,23 @@
                     />
 
 
+<!--                <TextView
+                    android:id="@+id/tv_version_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintLeft_toLeftOf="@id/tv_logout"
+                    app:layout_constraintRight_toLeftOf="@id/tv_version_number"
+                    app:layout_constraintBottom_toTopOf="@id/box_logout"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
+                    tools:text="VERSION"
+                    app:layout_constraintHorizontal_bias="1"
+                    style="@style/GetExpressLabel.NavItems.NavLogout"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="12dp"
+
+                    />-->
+
+
 
 
                 <View
@@ -413,6 +416,20 @@
                     />
 
 
+                <TextView
+                    android:id="@+id/tv_version_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toTopOf="@id/box_logout"
+                    app:layout_constraintRight_toRightOf="parent"
+                    tools:text="App Version - v1.0"
+                    android:textStyle="bold"
+                    style="@style/GetExpressLabel.NavItems_versionText"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_marginRight="12dp"
+
+                    />
 
 
 
@@ -424,5 +441,18 @@
         </com.google.android.material.navigation.NavigationView>
 
     </androidx.drawerlayout.widget.DrawerLayout>
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/view_loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:visibility="gone"
+        />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

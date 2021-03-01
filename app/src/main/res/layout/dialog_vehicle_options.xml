@@ -85,7 +85,22 @@ android:layout_height="match_parent"
         android:orientation="vertical"
         tools:itemCount="10"
         android:paddingBottom="30dp"
+        android:minHeight="100dp"
         />
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/view_loading_vehicle_options"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        app:layout_constraintTop_toTopOf="@id/rv_vehicle_options"
+        app:layout_constraintLeft_toLeftOf="@id/rv_vehicle_options"
+        app:layout_constraintRight_toRightOf="@id/rv_vehicle_options"
+        app:layout_constraintBottom_toBottomOf="@id/rv_vehicle_options"
+        android:visibility="gone"
+        />
+
+
 
 
 

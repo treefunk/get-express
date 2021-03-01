@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,12 +21,9 @@ import com.myoptimind.get_express.features.customer.cart.data.ItemInPabili
 import com.myoptimind.get_express.features.customer.food_grocery.selected_store.SelectedStoreFragmentDirections
 import com.myoptimind.get_express.features.customer.home.SelectAddressBottomDialog
 import com.myoptimind.get_express.features.edit_profile.ProfileViewModel
-import com.myoptimind.get_express.features.shared.TitleOnlyFragment
 import com.myoptimind.get_express.features.shared.api.Result
 import com.myoptimind.get_express.features.shared.data.idToCartType
 import com.myoptimind.get_express.features.shared.data.toCartStatus
-import com.myoptimind.get_express.features.shared.initMultilineEditText
-import com.myoptimind.get_express.features.shared.toCartLocation
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_pabili_form.*
 import kotlinx.android.synthetic.main.fragment_pabili_form.iv_receiver_icon
@@ -41,7 +39,10 @@ import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.libraries.places.api.model.LocationBias
 import com.google.android.libraries.places.api.model.RectangularBounds
 import com.myoptimind.get_express.features.rider.selected_customer_request.RiderTrackingService
-import com.myoptimind.get_express.features.shared.getSoftInputMode
+import com.myoptimind.get_express.features.shared.*
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import kotlin.coroutines.coroutineContext
 
 @AndroidEntryPoint
 class PabiliFormFragment: TitleOnlyFragment() {
@@ -97,14 +98,13 @@ class PabiliFormFragment: TitleOnlyFragment() {
         itemList = ArrayList()
         adapter = PabiliFormAdapter(itemList, object: PabiliFormAdapter.PabiliFormListener{
             override fun onRemove(pabiliItem: ItemInPabili, index: Int) {
-//                Toast.makeText(requireContext(),"index ${index}",Toast.LENGTH_SHORT).show()
-                itemList.removeAt(index)
-                adapter.pabiliItemList = itemList
-                adapter.notifyItemRemoved(index)
-                adapter.notifyItemRangeChanged(index,itemList.size)
-//                adapter.notifyDataSetChanged()
-                if(adapter.pabiliItemList.size > 0) {
-                    Timber.d("list - \n" + adapter.pabiliItemList.map{ it.itemName }.reduce{acc,s -> acc + "\n "+ s})
+                lifecycleScope.launch{
+                    if(index != -1){
+                        itemList.removeAt(index)
+                        adapter.pabiliItemList = itemList
+                        adapter.notifyItemRemoved(index)
+                        adapter.notifyItemRangeChanged(index,itemList.size)
+                    }
                 }
             }
         })
@@ -164,7 +164,9 @@ class PabiliFormFragment: TitleOnlyFragment() {
         cartViewModel.cart.observe(viewLifecycleOwner) { result ->
             when (result) {
                 is Result.Progress -> {
-
+                    initCenterProgress(result.isLoading)
+                    enableViews(result.isLoading.not())
+                    hideKeyboard(requireActivity())
                 }
                 is Result.Success -> {
                     if (result.data != null) {
@@ -202,6 +204,9 @@ class PabiliFormFragment: TitleOnlyFragment() {
                         } else {
                             itemList.addAll(cartViewModel.pabiliItemList.value!!)
                         }*/
+                        if(!cartViewModel.pabiliItemList.value.isNullOrEmpty()){
+                            itemList.addAll(cartViewModel.pabiliItemList.value!!)
+                        }
 //                        if (basket.items.size < 5) {
                             var y = 0
                             while (y < 5) {
@@ -314,7 +319,13 @@ class PabiliFormFragment: TitleOnlyFragment() {
 
         cartViewModel.pabiliResult.observe(viewLifecycleOwner){ result ->
             when(result){
-                is Result.Progress -> { }
+                is Result.Progress -> {
+                    if(result.isLoading){
+                        showLoading()
+                    }
+                    enableViews(result.isLoading.not())
+                    hideKeyboard(requireActivity())
+                }
                 is Result.Success -> {
                     if(result.data != null){
                         Timber.d("result -> %s", result)
@@ -345,6 +356,13 @@ class PabiliFormFragment: TitleOnlyFragment() {
                 }
             }
         }
+    }
+
+    private fun enableViews(enable: Boolean) {
+        btn_get_pabili.isEnabled = enable
+        btn_add_more_items.isEnabled = enable
+        adapter.izEnabled = enable
+        adapter.notifyDataSetChanged()
     }
 
     private fun initClickListeners() {

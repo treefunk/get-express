@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import com.google.android.gms.maps.model.LatLng
@@ -22,12 +23,15 @@ import com.google.maps.android.SphericalUtil
 import com.myoptimind.get_express.R
 import com.myoptimind.get_express.features.customer.home.SelectAddressBottomDialog.Companion.EXTRA_ENTER_ADDRESS
 import com.myoptimind.get_express.features.edit_profile.ProfileRepository
+import com.myoptimind.get_express.features.edit_profile.ProfileViewModel
 import com.myoptimind.get_express.features.rider.selected_customer_request.RiderTrackingService
 import com.myoptimind.get_express.features.shared.BaseDialogFragment
 import com.myoptimind.get_express.features.shared.api.Result
+import com.myoptimind.get_express.features.shared.izBlank
 import com.myoptimind.get_express.features.shared.izNotBlank
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.dialog_add_address.*
+import kotlinx.android.synthetic.main.dialog_add_address.ib_close
 import timber.log.Timber
 
 @AndroidEntryPoint
@@ -35,6 +39,7 @@ class EnterAddressDialog: BaseDialogFragment() {
 
 
     private val viewModel by viewModels<EnterAddressViewModel>()
+    private val profileViewModel by activityViewModels<ProfileViewModel>()
 
     companion object {
 
@@ -67,16 +72,64 @@ class EnterAddressDialog: BaseDialogFragment() {
     }
 
     private fun initObservers() {
+
+        profileViewModel.addAddressResult.observe(viewLifecycleOwner){ result ->
+            when(result){
+                is Result.Progress -> {
+                    if(result.isLoading){
+                        view_loading_enter_address_center.visibility = View.VISIBLE
+                        btn_save_address.text = ""
+                    }else{
+                        view_loading_enter_address_center.visibility = View.GONE
+                    }
+                    enableViews(result.isLoading.not())
+                }
+                is Result.Success -> {
+                    if(result.data != null){
+                        Toast.makeText(requireContext(),result.data.meta.message,Toast.LENGTH_SHORT).show()
+                        targetFragment?.onActivityResult(
+                            targetRequestCode,
+                            Activity.RESULT_OK,
+                            Intent().putExtra(EXTRA_ENTER_ADDRESS, profileViewModel.selectedPlace.value!!) // PARSE THIS ("yyyy M d")
+                        )
+                        profileViewModel.getCustomerProfile()
+                        this@EnterAddressDialog.dismiss()
+                    }
+                }
+                is Result.Error -> {
+                    Toast.makeText(requireContext(),result.metaResponse.message,Toast.LENGTH_SHORT).show()
+                }
+                is Result.HttpError -> {
+                    if(result.error is ProfileRepository.AreaLaunchingSoonException){
+                        MaterialAlertDialogBuilder(requireContext())
+                            .setTitle(result.error.title)
+                            .setMessage(result.error.message)
+                            .setPositiveButton("OK") { dialog, which ->
+                                // Respond to neutral button press
+                            }
+                            .show()
+                    }
+                }
+            }
+        }
+
         viewModel.checkLocationResult.observe(viewLifecycleOwner){ result ->
             when(result){
                 is Result.Progress -> {
-
+                    if(result.isLoading){
+                        view_loading_enter_address.visibility = View.VISIBLE
+                    }else{
+                        view_loading_enter_address.visibility = View.GONE
+                    }
+                    enableViews(result.isLoading.not())
                 }
                 is Result.Success -> {
                     if(result.data != null){
                         et_enter_address.setText(result.data.name + "\n" + result.data.address)
                         val place = result.data
                         viewModel.updateSelectedPlace(result.data)
+                        profileViewModel.updateSelectedPlace(place)
+
                     }
                 }
                 is Result.Error -> {
@@ -114,12 +167,21 @@ class EnterAddressDialog: BaseDialogFragment() {
                     selectedPlace
 
 
-                targetFragment?.onActivityResult(
+                if(et_address_label.izBlank()){
+                    targetFragment?.onActivityResult(
                         targetRequestCode,
                         Activity.RESULT_OK,
                         Intent().putExtra(EXTRA_ENTER_ADDRESS, place) // PARSE THIS ("yyyy M d")
-                )
-                this.dismiss()
+                    )
+                    this.dismiss()
+
+                }else{
+                    profileViewModel.addAddress(
+                        et_address_label.text.toString(),
+                        "0" // for insert
+                    )
+                }
+
             }else{
                 Toast.makeText(requireContext(),"Please fill in required fields.", Toast.LENGTH_LONG).show()
             }
@@ -201,6 +263,13 @@ class EnterAddressDialog: BaseDialogFragment() {
             return
         }
         super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    private fun enableViews(enable: Boolean){
+        et_enter_address.isEnabled = enable
+        et_address_label.isEnabled = enable
+        ib_close.isEnabled = enable
+        btn_save_address.isEnabled= enable
     }
 
 

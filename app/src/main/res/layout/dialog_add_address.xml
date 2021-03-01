@@ -128,6 +128,33 @@
 
         />
 
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/view_loading_enter_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        app:layout_constraintTop_toTopOf="@id/et_enter_address"
+        app:layout_constraintLeft_toLeftOf="@id/et_enter_address"
+        app:layout_constraintRight_toRightOf="@id/et_enter_address"
+        app:layout_constraintBottom_toBottomOf="@id/et_enter_address"
+        style="@style/Widget.App.CircularProgressIndicatorSmall"
+        android:visibility="gone"
+        />
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/view_loading_enter_address_center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        app:layout_constraintTop_toTopOf="@id/btn_save_address"
+        app:layout_constraintLeft_toLeftOf="@id/btn_save_address"
+        app:layout_constraintRight_toRightOf="@id/btn_save_address"
+        app:layout_constraintBottom_toBottomOf="@id/btn_save_address"
+        android:visibility="gone"
+        app:trackColor="@color/white"
+        />
+
+
     <Button
         android:id="@+id/btn_save_address"
         android:layout_width="0dp"

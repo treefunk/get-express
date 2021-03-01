@@ -10,7 +10,7 @@ interface CustomerRequestService {
     @GET("cart/vehicles/{vehicle_id}")
     suspend fun getCustomerRequests(
             @Path("vehicle_id") vehicleId: String,
-            @Query("rider_id") riderId: String? = null
+            @Query("rider_id") riderId: String? = null,
     ): GetCustomerRequestResponse
 
     data class GetCustomerRequestResponse(

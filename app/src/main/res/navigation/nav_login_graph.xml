@@ -156,4 +156,13 @@
             android:id="@+id/action_welcomeFragment_to_signUpCustomerFragment"
             app:destination="@id/signUpCustomerFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/otpVerificationFragment"
+        android:name="com.myoptimind.get_express.features.login.OtpVerificationFragment"
+        android:label="OtpVerificationFragment"
+        tools:layout="@layout/fragment_otp_verification"
+        />
+    <action
+        android:id="@+id/action_global_otpVerificationFragment"
+        app:destination="@id/otpVerificationFragment" />
 </navigation>

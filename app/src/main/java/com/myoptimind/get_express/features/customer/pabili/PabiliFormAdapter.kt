@@ -15,7 +15,8 @@ import kotlinx.android.synthetic.main.item_pabili_post_form.view.*
 class PabiliFormAdapter constructor(
         var pabiliItemList: ArrayList<ItemInPabili>,
         val listener: PabiliFormListener? = null,
-        val isPostForm: Boolean = false
+        val isPostForm: Boolean = false,
+        var izEnabled: Boolean = true
 ) : RecyclerView.Adapter<PabiliFormAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -47,11 +48,15 @@ class PabiliFormAdapter constructor(
                     pabiliItemList[adapterPosition].itemName = it.toString().trim()
                 }
                 itemView.et_name.setText(pabiliItem.itemName)
+                itemView.et_name.isEnabled = this@PabiliFormAdapter.izEnabled
             }
 
             itemView.et_quantity.addTextChangedListener {
                 pabiliItemList[adapterPosition].quantity = it.toString().trim()
             }
+
+            itemView.et_quantity.isEnabled = this@PabiliFormAdapter.izEnabled
+            itemView.btn_remove.isEnabled = this@PabiliFormAdapter.izEnabled
 
             itemView.et_quantity.setText(pabiliItem.quantity)
             itemView.btn_remove.setOnClickListener {

@@ -3,21 +3,23 @@ package com.myoptimind.get_express
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.observe
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.view.GravityCompat
+import androidx.core.view.isVisible
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.libraries.places.api.Places
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.UpdateAvailability
 import com.myoptimind.get_express.features.login.LoginActivity
 import com.myoptimind.get_express.features.login.LoginViewModel
-import com.myoptimind.get_express.features.login.SignUpRiderFragment
 import com.myoptimind.get_express.features.login.data.UserType
 import com.myoptimind.get_express.features.rider.customer_requests_list.CustomerRequestViewModel
 import com.myoptimind.get_express.features.rider.selected_customer_request.RiderTrackingService
@@ -35,7 +37,7 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
+class MainActivity : BaseActivity(), EasyPermissions.PermissionCallbacks {
 
     @Inject
     lateinit var appSharedPref: AppSharedPref
@@ -71,6 +73,18 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
 
         if (!handled) {
             super.onBackPressed()
+        }
+    }
+
+    internal fun showLoading() {
+        if (!view_loading.isVisible) {
+            view_loading.visibility = View.VISIBLE
+        }
+    }
+
+    internal fun hideLoading() {
+        if (view_loading.isVisible) {
+            view_loading.visibility = View.GONE
         }
     }
 
@@ -136,6 +150,10 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
+
+
         setContentView(R.layout.activity_main)
         initSideNav()
         initPlaces()
@@ -175,6 +193,13 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
         loginViewModel.logoutResult.observe(this){ result ->
             when(result){
                 is Result.Progress -> {
+                    if(result.isLoading){
+                        showLoading()
+                        tv_logout.isEnabled = false
+                    }else{
+                        hideLoading()
+                        tv_logout.isEnabled = true
+                    }
                 }
                 is Result.Success -> {
                     if (result.data != null) {
@@ -221,7 +246,7 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
         updateSideNavName(appSharedPref.getUserFullname())
 
 
-
+        tv_version_number.text = "App Version - v" + BuildConfig.VERSION_NAME
         if(appSharedPref.getUserType() == UserType.RIDER){
             tv_edit_profile.setOnClickListener {
                 findNavController(R.id.nav_host_admin_container).navigate(R.id.action_global_editProfileFragment)
@@ -286,9 +311,9 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
     }
 
     private fun navigateToCustomerRequestList(intent: Intent?){
-        if(intent?.action == RiderTrackingService.ACTION_SHOW_CUSTOMER_REQUEST){
+/*        if(intent?.action == RiderTrackingService.ACTION_SHOW_CUSTOMER_REQUEST && appSharedPref.getUserType() == UserType.RIDER){
             nav_host_container.findNavController().navigate(R.id.action_global_riderDashboardFragment)
-        }
+        }*/
     }
 
     private fun openWebPage(url: String) {
@@ -298,6 +323,11 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
             startActivity(intent)
         }
     }
+
+
+
+
+
 
 
 

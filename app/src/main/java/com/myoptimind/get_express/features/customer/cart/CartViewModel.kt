@@ -52,6 +52,10 @@ class CartViewModel @ViewModelInject constructor(
         _toLocation.value = null
     }
 
+    fun clearPabiliItems(){
+        _pabiliItemList.value = null
+    }
+
     val fromLocation: LiveData<Place> get() = _fromLocation
     private val _fromLocation = MutableLiveData<Place>()
 
@@ -254,6 +258,22 @@ class CartViewModel @ViewModelInject constructor(
                     cartId
             ).collect {
                 _fetchCartInfoResult.postValue(it)
+            }
+        }
+    }
+
+    val getPendingBookingResult: LiveData<Result<GetCartInfoResponse>> get() = _getPendingBookingResult
+    private val _getPendingBookingResult = MutableLiveData<Result<GetCartInfoResponse>>()
+
+    fun getPendingBooking(
+        cartId: String
+    ){
+        Timber.d("fetching pending booking")
+        viewModelScope.launch(Dispatchers.IO) {
+            storesRepository.getCartInformation(
+                cartId
+            ).collect {
+                _activeBookingResult.postValue(it)
             }
         }
     }

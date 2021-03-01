@@ -114,6 +114,19 @@
 
         />
 
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/view_loading_recipient_delivery"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        app:layout_constraintTop_toTopOf="@id/et_address"
+        app:layout_constraintLeft_toLeftOf="@id/et_address"
+        app:layout_constraintRight_toRightOf="@id/et_address"
+        app:layout_constraintBottom_toBottomOf="@id/et_address"
+        style="@style/Widget.App.CircularProgressIndicatorSmall"
+        android:visibility="gone"
+        />
+
     <TextView
         android:id="@+id/label_name"
         android:layout_width="0dp"

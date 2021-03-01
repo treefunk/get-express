@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.observe
@@ -31,17 +33,15 @@ import com.myoptimind.get_express.R
 import com.myoptimind.get_express.features.customer.cart.data.*
 import com.myoptimind.get_express.features.customer.pabili.PabiliFormAdapter
 import com.myoptimind.get_express.features.rider.selected_customer_request.RiderTrackingService
-import com.myoptimind.get_express.features.shared.TitleOnlyFragment
+import com.myoptimind.get_express.features.shared.*
 import com.myoptimind.get_express.features.shared.api.Result
 import com.myoptimind.get_express.features.shared.data.CartType
 import com.myoptimind.get_express.features.shared.data.idToCartType
 import com.myoptimind.get_express.features.shared.data.toCartStatus
-import com.myoptimind.get_express.features.shared.initMultilineEditText
-import com.myoptimind.get_express.features.shared.toCartLocation
-import com.myoptimind.get_express.features.shared.toMoneyFormat
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_customer_cart.*
 import timber.log.Timber
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
@@ -55,14 +55,29 @@ class CustomerCartFragment: TitleOnlyFragment() {
     private val args by navArgs<CustomerCartFragmentArgs>()
 
     //for pabili
-    private lateinit var pabiliAdapter: PabiliFormAdapter
+    private var pabiliAdapter: PabiliFormAdapter? = null
     private lateinit var itemList: ArrayList<ItemInPabili>
+
+    private lateinit var onBackWhenPendingBookingCallback: OnBackPressedCallback
+
+
+    @Inject
+    lateinit var appSharedPref: AppSharedPref
 
 
     override fun getTitle() = ""
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_customer_cart,container,false)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        onBackWhenPendingBookingCallback = object: OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                Toast.makeText(requireContext(),"Please wait while we process your booking.",Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -147,7 +162,17 @@ class CustomerCartFragment: TitleOnlyFragment() {
 
         cartViewModel.pabiliResult.observe(viewLifecycleOwner){ result ->
             when(result){
-                is Result.Progress -> { }
+                is Result.Progress -> {
+                    if(result.isLoading){
+                        showLoading()
+                    }
+                    if(result.isLoading){
+                        requireActivity().onBackPressedDispatcher.addCallback(onBackWhenPendingBookingCallback)
+                    }else{
+                        onBackWhenPendingBookingCallback.remove()
+                    }
+                    enableViews(result.isLoading.not())
+                }
                 is Result.Success -> {
                     if(result.data != null){
                         Timber.d("result -> %s", result)
@@ -160,13 +185,6 @@ class CustomerCartFragment: TitleOnlyFragment() {
                                 cartViewModel.toLocation.value!!.toCartLocation(),
                                 "COD"
                             )
-/*                            cartViewModel.finalizeCartForDelivery(
-                                cart.id,
-                                cart.notes,
-                                CartLocation.fromPlace(cartViewModel.fromLocation.value!!),
-                                CartLocation.fromPlace(cartViewModel.toLocation.value!!),
-                                "COD"
-                            )*/
                         }
                     }
                 }
@@ -186,6 +204,15 @@ class CustomerCartFragment: TitleOnlyFragment() {
             when(result){
                 is Result.Progress -> {
 
+                    initCenterProgress(result.isLoading)
+                    if(result.isLoading){
+                        requireActivity().onBackPressedDispatcher.addCallback(onBackWhenPendingBookingCallback)
+                    }else{
+                        onBackWhenPendingBookingCallback.remove()
+                    }
+
+                    enableViews(result.isLoading.not())
+                    hideKeyboard(requireActivity())
                 }
                 is Result.Success -> {
                     if(result.data != null){
@@ -213,6 +240,7 @@ class CustomerCartFragment: TitleOnlyFragment() {
                         when(cartType){
                             CartType.CAR -> TODO()
                             CartType.GROCERY -> {
+                                btn_get.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.btn_get_grocery_now))
                                 val basketForFoodGrocery = cart.initBasketForGrocery()
                                 if(basketForFoodGrocery.items.isEmpty()){
                                     findNavController().popBackStack()
@@ -278,12 +306,15 @@ class CustomerCartFragment: TitleOnlyFragment() {
                                     label_delivery_to.text = "Deliver to (${basketForFoodGrocery.distanceInKm} km)"
 
 
+
                                     btn_get.setOnClickListener {
-                                        cartViewModel.finalizeCart(
+                                        val deliveryLoc = if(cartViewModel.toLocation.value == null && cart.deliveryLocation.addressText != null) cart.deliveryLocation.toPlace() else cartViewModel.toLocation.value
+
+                                    cartViewModel.finalizeCart(
                                                 cartViewModel.cartId!!,
                                                 et_notes_to_driver.text.toString(),
                                                 pickupLocation = null,
-                                                deliveryLocation = CartLocation.fromPlace(cartViewModel.toLocation.value!!),
+                                                deliveryLocation = CartLocation.fromPlace(deliveryLoc!!),
                                                 paymentType = "COD"
                                         )
                                     }
@@ -300,8 +331,9 @@ class CustomerCartFragment: TitleOnlyFragment() {
                                 label_delivery_fee.text = "Estimated Total"
                                 tv_delivery_fee.text = pabiliBasket.estimateTotalAmount.toMoneyFormat()
                                 label_total.text = "Pabili Fee"
-                                tv_total.text = pabiliBasket.deliveryFee
+                                tv_total.text = pabiliBasket.deliveryFee.toMoneyFormat()
                                 label_delivery_to.text = "Deliver to (${pabiliBasket.distanceInKm} km)"
+                                et_notes_to_driver.setText(cart.notes)
 
 
 
@@ -317,9 +349,9 @@ class CustomerCartFragment: TitleOnlyFragment() {
                                                 }
                                                 .setPositiveButton("YES") { dialog, which ->
                                                     itemList.removeAt(index)
-                                                    pabiliAdapter.pabiliItemList = itemList
-                                                    pabiliAdapter.notifyItemRemoved(index)
-                                                    pabiliAdapter.notifyItemRangeChanged(index,itemList.size)
+                                                    pabiliAdapter?.pabiliItemList = itemList
+                                                    pabiliAdapter?.notifyItemRemoved(index)
+                                                    pabiliAdapter?.notifyItemRangeChanged(index,itemList.size)
                                                     cartViewModel.updatePabiliItemList(itemList)
                                                     if(itemList.isEmpty()){
                                                         findNavController().popBackStack()
@@ -334,10 +366,10 @@ class CustomerCartFragment: TitleOnlyFragment() {
                                 itemList.addAll(pabiliBasket.items)
 
 
-                                pabiliAdapter.pabiliItemList = itemList
+                                pabiliAdapter?.pabiliItemList = itemList
                                 rv_orders.layoutManager = LinearLayoutManager(requireContext(),RecyclerView.VERTICAL,false)
                                 rv_orders.adapter = pabiliAdapter
-                                pabiliAdapter.notifyDataSetChanged()
+                                pabiliAdapter?.notifyDataSetChanged()
 
 
                                 cartViewModel.updatePabiliItemList(itemList)
@@ -454,6 +486,7 @@ class CustomerCartFragment: TitleOnlyFragment() {
                         Timber.d("cart is ${cart.id}")
                         if(cartStatus == CartStatus.PENDING){
                             Timber.d("finalize_cart " + result.data.meta.message)
+                            appSharedPref.storePendingBooking(cart.id)
                             if(findNavController().currentDestination?.id == R.id.customerCartFragment){
                                 CustomerCartFragmentDirections.actionCustomerCartFragmentToCustomerRiderSearchFragment(cart.id).also {
                                     findNavController().navigate(it)
@@ -584,5 +617,17 @@ class CustomerCartFragment: TitleOnlyFragment() {
 
         }
 
+    }
+
+    private fun enableViews(isEnabled: Boolean){
+        btn_get.isEnabled = isEnabled
+        tv_add_items.isEnabled = isEnabled
+        et_notes_to_driver.isEnabled = isEnabled
+
+        adapter?.izEnabled = isEnabled
+        adapter?.notifyDataSetChanged()
+
+        pabiliAdapter?.izEnabled = isEnabled
+        pabiliAdapter?.notifyDataSetChanged()
     }
 }

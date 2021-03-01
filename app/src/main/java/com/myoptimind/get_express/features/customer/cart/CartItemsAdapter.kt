@@ -16,6 +16,7 @@ class CartItemsAdapter constructor(
         var items: List<CartItem>,
         var listType: CartType? = null,
         val listener: CartItemListener? = null,
+        var izEnabled: Boolean = true
 ) : RecyclerView.Adapter<CartItemsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -47,11 +48,20 @@ class CartItemsAdapter constructor(
                     var description = if(product.addons.size > 0) "${product.description}\n${product.addons.map { addOn -> addOn.productName }.joinToString(",")}"
                                       else product.description
 
+                    if(product.notes.isNotBlank()){
+                        description += "\nNotes: " + product.notes
+                    }
+
                     itemView.tv_item_description.text = description
                     itemView.tv_item_price.text = product.basePrice.toMoneyFormat()
                     itemView.et_quantity.setText(product.quantity)
+
+                    itemView.btn_plus.isEnabled = izEnabled
+                    itemView.btn_minus.isEnabled = izEnabled
+
                     itemView.btn_plus.setOnClickListener { listener?.onPressed(product,true) }
                     itemView.btn_minus.setOnClickListener { listener?.onPressed(product,false) }
+
                 }
                 CartType.PABILI -> { }
                 CartType.DELIVERY -> {

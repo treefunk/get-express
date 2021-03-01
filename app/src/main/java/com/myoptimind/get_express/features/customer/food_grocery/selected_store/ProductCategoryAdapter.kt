@@ -1,3 +1,4 @@
+package com.myoptimind.get_express.features.customer.food_grocery.selected_store
 
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +16,8 @@ class ProductCategoryAdapter constructor(
         var productCategories: List<ProductCategory>,
         var cartType: CartType,
         val forViewingOnly: Boolean,
-        val listener: ProductAdapter.ProductListener? = null
+        var izEnabled: Boolean = true,
+        val listener: ProductAdapter.ProductListener? = null,
 ) : RecyclerView.Adapter<ProductCategoryAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -37,14 +39,14 @@ class ProductCategoryAdapter constructor(
             when(cartType){
                 CartType.GROCERY -> {
                     itemView.tv_store_name.text = productCategory.categoryName
-                    val productAdapter = ProductAdapter(productCategory.products,cartType,forViewingOnly,listener)
+                    val productAdapter = ProductAdapter(productCategory.products,cartType,forViewingOnly,izEnabled,listener)
                     itemView.rv_store_items.layoutManager = GridLayoutManager(itemView.context,2,RecyclerView.VERTICAL,false)
                     itemView.rv_store_items.adapter = productAdapter
                     productAdapter.notifyDataSetChanged()
                 }
                 CartType.FOOD -> {
                     itemView.tv_store_name.text = productCategory.categoryName
-                    val productAdapter = ProductAdapter(productCategory.products,cartType,forViewingOnly,listener)
+                    val productAdapter = ProductAdapter(productCategory.products,cartType,forViewingOnly,izEnabled,listener)
                     itemView.rv_store_items.layoutManager = LinearLayoutManager(itemView.context,RecyclerView.VERTICAL,false)
                     itemView.rv_store_items.adapter = productAdapter
                     productAdapter.notifyDataSetChanged()

@@ -6,6 +6,7 @@ import com.myoptimind.get_express.features.edit_profile.api.ProfileService
 import com.myoptimind.get_express.features.shared.AppSharedPref
 import com.myoptimind.get_express.features.shared.api.Result
 import com.myoptimind.get_express.features.shared.applyDefaultEffects
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -22,6 +23,8 @@ class ProfileRepository @Inject constructor(
      */
     fun getRiderProfile() = flow {
         val response = profileService.getRiderProfile(appSharedPref.getUserId())
+        emit(Result.Progress(isLoading = false))
+        delay(100)
         emit(Result.Success(response))
     }.applyDefaultEffects()
 
@@ -36,6 +39,8 @@ class ProfileRepository @Inject constructor(
             vehicleModel,
             plateNumber
         )
+        emit(Result.Progress(isLoading = false))
+        delay(100)
         emit(Result.Success(response))
     }.applyDefaultEffects(false, true)
 
@@ -47,6 +52,8 @@ class ProfileRepository @Inject constructor(
             appSharedPref.getUserId(),
             vehicleId
         )
+        emit(Result.Progress(isLoading = false))
+        delay(100)
         emit(Result.Success(response))
     }.applyDefaultEffects(false, true)
 
@@ -55,6 +62,8 @@ class ProfileRepository @Inject constructor(
      */
     fun getCustomerProfile() = flow {
         val response = profileService.getCustomerProfile(appSharedPref.getUserId())
+        emit(Result.Progress(isLoading = false))
+        delay(100)
         emit(Result.Success(response))
     }.applyDefaultEffects()
 
@@ -73,6 +82,8 @@ class ProfileRepository @Inject constructor(
             appSharedPref.getUserId(),
             fullname, email, mobileNum, birthdate, location, password, profilePicture
         )
+        emit(Result.Progress(isLoading = false))
+        delay(100)
         emit(Result.Success(response))
     }.applyDefaultEffects(enableRetry = false, nullOnComplete = true)
 
@@ -86,6 +97,8 @@ class ProfileRepository @Inject constructor(
                 14.651763,121.049318,
                 selectedPlace.latLng!!.latitude,selectedPlace.latLng!!.longitude,results)
         val distance = results[0]
+        emit(Result.Progress(isLoading = false))
+        delay(100)
         if(distance > maxDistanceLimit){
             emit(Result.HttpError(AreaLaunchingSoonException()))
         }else{
@@ -128,6 +141,8 @@ class ProfileRepository @Inject constructor(
                         latitude,
                         longitude
                     )
+            emit(Result.Progress(isLoading = false))
+            delay(100)
             emit(Result.Success(response))
         }
     }.applyDefaultEffects(false, true)
@@ -151,6 +166,8 @@ class ProfileRepository @Inject constructor(
                 latitude,
                 longitude
         )
+        emit(Result.Progress(isLoading = false))
+        delay(100)
         emit(Result.Success(response))
     }.applyDefaultEffects(false, true)
 

@@ -186,10 +186,15 @@ class CustomerHistoryFragment : TitleOnlyFragment() {
         viewModel.getRiderHistoryResult.observe(viewLifecycleOwner) { result ->
             when (result) {
                 is Result.Progress -> {
-                    //todo
+                    initCenterProgress(result.isLoading)
+                    if(result.isLoading){
+                        rv_history.visibility = View.GONE
+                    }
+                    enableViews(result.isLoading.not())
                 }
                 is Result.Success -> {
                     if (result.data != null) {
+                        rv_history.visibility = View.VISIBLE
                         adapter.riderHistoryList = result.data.data
                         adapter.notifyDataSetChanged()
                     }
@@ -202,5 +207,13 @@ class CustomerHistoryFragment : TitleOnlyFragment() {
                 }
             }
         }
+    }
+
+    private fun enableViews(enable: Boolean){
+        label_get_car.isEnabled = enable
+        label_get_grocery.isEnabled = enable
+        label_get_pabili.isEnabled = enable
+        label_get_delivery.isEnabled = enable
+        label_get_food.isEnabled = enable
     }
 }
