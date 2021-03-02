@@ -28,7 +28,6 @@ class LoginViewModel @ViewModelInject constructor(
     private val appSharedPref: AppSharedPref
 ) : ViewModel() {
 
-
     val facebookUserPayload: LiveData<FacebookUserPayload?> get() = _facebookUserPayload
     private val _facebookUserPayload = MutableLiveData<FacebookUserPayload?>()
 
@@ -111,7 +110,8 @@ class LoginViewModel @ViewModelInject constructor(
                 location,
                 password,
                 socialToken,
-                isEmailVerified
+                isEmailVerified,
+                true
             ).collect {
                 _signUpCustomerResult.postValue(it)
             }
@@ -129,7 +129,8 @@ class LoginViewModel @ViewModelInject constructor(
                 loginRepository.signInCustomer(
                         email,
                         password,
-                        firebaseToken
+                        firebaseToken,
+                        true
                 ).collect {
                     _signInCustomerResult.postValue(it)
                     if(it is Result.Success && it.data != null){
@@ -211,7 +212,8 @@ class LoginViewModel @ViewModelInject constructor(
                 identificationDocument,
                 vehicleId.toRequestBody(),
                 vehicleModel.toRequestBody(),
-                plateNumber.toRequestBody()
+                plateNumber.toRequestBody(),
+                true
             ).collect {
                 _signUpRiderResult.postValue(it)
             }
@@ -225,7 +227,7 @@ class LoginViewModel @ViewModelInject constructor(
     ) {
         retrieveFcmToken { firebaseToken ->
             viewModelScope.launch(IO) {
-                loginRepository.signInRider(email, password,firebaseToken).collect {
+                loginRepository.signInRider(email, password,firebaseToken,true).collect {
                     _signInRiderResult.postValue(it)
                     if(it is Result.Success && it.data != null){
                         val customer = it.data.data
@@ -304,6 +306,39 @@ class LoginViewModel @ViewModelInject constructor(
         viewModelScope.launch(IO){
             loginRepository.signOut(appSharedPref.getUserType()).collect {
                 _logoutResult.postValue(it)
+            }
+        }
+    }
+
+    val solveOtpChallengeResult: LiveData<Result<LoginService.UserSignInResponse>> get() = _solveOtpChallengeResult
+    private val _solveOtpChallengeResult = MutableLiveData<Result<LoginService.UserSignInResponse>>()
+
+    fun solveOtpChallenge(
+        email: String,
+        mobileNum: String,
+        userType: UserType
+    ){
+        viewModelScope.launch(IO){
+            loginRepository.solveOtpChallenge(
+                email,mobileNum,userType
+            ).collect {
+                _solveOtpChallengeResult.postValue(it)
+            }
+        }
+    }
+
+    val resendOtpResult: LiveData<Result<LoginService.ResendOtpResponse>> get() = _resendOtpResult
+    private val _resendOtpResult = MutableLiveData<Result<LoginService.ResendOtpResponse>>()
+
+    fun resendOtp(
+        email: String,
+        userType: UserType
+    ){
+        viewModelScope.launch(IO){
+            loginRepository.resendOtpChallenge(
+                email,userType
+            ).collect {
+                _resendOtpResult.postValue(it)
             }
         }
     }

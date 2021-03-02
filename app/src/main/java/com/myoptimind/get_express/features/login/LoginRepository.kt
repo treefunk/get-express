@@ -44,10 +44,11 @@ class LoginRepository @Inject constructor(
             location: String,
             password: String?,
             socialToken: String?,
-            isEmailVerified: String?
+            isEmailVerified: String?,
+            isOtpEnabled: Boolean = false
     ) = flow {
         val response = loginService.signUpCustomer(
-                fullname, email, mobileNum, birthdate, location, password,socialToken,isEmailVerified
+                fullname, email, mobileNum, birthdate, location, password,socialToken,isEmailVerified, if(isOtpEnabled) "-2" else ""
         )
         emit(Result.Progress(isLoading = false))
         delay(100)
@@ -57,18 +58,19 @@ class LoginRepository @Inject constructor(
     fun signInCustomer(
             email: String,
             password: String,
-            firebaseToken: String
+            firebaseToken: String,
+            isOtpEnabled: Boolean = false
     ) = flow {
         val deviceId = getDeviceId()
 
         val response = loginService.signInCustomer(
-                email, password, deviceId, firebaseToken
+                email, password, deviceId, firebaseToken, if(isOtpEnabled) "-2" else ""
         )
         Timber.v("Customer Sign in Details: \nEmail - $email\nDevice Id - $deviceId\nFirebase Id - $firebaseToken\n")
         emit(Result.Progress(isLoading = false))
         delay(100)
         emit(Result.Success(response))
-    }.applyDefaultEffects(false, true)
+    }.applyDefaultEffects(enableRetry = false, nullOnComplete = true)
 
     fun signInCustomerSocial(
         email: String,
@@ -92,7 +94,7 @@ class LoginRepository @Inject constructor(
         emit(Result.Progress(isLoading = false))
         delay(100)
         emit(Result.Success(response))
-    }.applyDefaultEffects(false,true)
+    }.applyDefaultEffects(enableRetry = false, nullOnComplete = true)
 
 
     fun getVehicles() = flow {
@@ -114,7 +116,8 @@ class LoginRepository @Inject constructor(
             identificationDocument: MultipartBody.Part,
             vehicleId: RequestBody,
             vehicleModel: RequestBody,
-            plateNumber: RequestBody
+            plateNumber: RequestBody,
+            isOtpEnabled: Boolean = false
     ) = flow {
         val response = loginService.signUpRider(
                 fullname,
@@ -128,7 +131,8 @@ class LoginRepository @Inject constructor(
                 identificationDocument,
                 vehicleId,
                 vehicleModel,
-                plateNumber
+                plateNumber,
+                if(isOtpEnabled) "-2" else ""
         )
         emit(Result.Progress(isLoading = false))
         delay(100)
@@ -138,19 +142,20 @@ class LoginRepository @Inject constructor(
     fun signInRider(
             email: String,
             password: String,
-            firebaseToken: String
+            firebaseToken: String,
+            isOtpEnabled: Boolean = false
     ) = flow {
         val deviceId = getDeviceId()
 //        val firebaseId = getFirebaseId()
 
         val response = loginService.signInRider(
-                email, password, deviceId, firebaseToken
+                email, password, deviceId, firebaseToken,if(isOtpEnabled) "-2" else ""
         )
         Timber.v("Rider Sign in Details: \nEmail - $email\nDevice Id - $deviceId\nFirebase Id - $firebaseToken\n")
         emit(Result.Progress(isLoading = false))
         delay(100)
         emit(Result.Success(response))
-    }.applyDefaultEffects(false, nullOnComplete = true)
+    }.applyDefaultEffects(enableRetry = false, nullOnComplete = true)
 
     fun signInRiderSocial(
         email: String,
@@ -166,7 +171,7 @@ class LoginRepository @Inject constructor(
         emit(Result.Progress(isLoading = false))
         delay(100)
         emit(Result.Success(response))
-    }.applyDefaultEffects(false, true)
+    }.applyDefaultEffects(enableRetry = false, nullOnComplete = true)
 
     fun resetPassword(
             userType: UserType,
@@ -179,5 +184,48 @@ class LoginRepository @Inject constructor(
         emit(Result.Progress(isLoading = false))
         delay(100)
         emit(Result.Success(response))
-    }.applyDefaultEffects(false, nullOnComplete = true)
+    }.applyDefaultEffects(enableRetry = false, nullOnComplete = true)
+
+    fun solveOtpChallenge(
+        email: String,
+        mobile: String,
+        userType: UserType
+    ) = flow {
+        val label = when(userType){
+            UserType.CUSTOMER -> "customers"
+            UserType.RIDER -> "riders"
+        }
+        val response = loginService.solveOtpChallenge(email,mobile,label)
+        emit(Result.Progress(isLoading = false))
+        delay(100)
+        emit(Result.Success(response))
+    }.applyDefaultEffects(enableRetry = false, nullOnComplete = true)
+
+/*
+    fun solveOtpChallengeRider(
+        email: String,
+        mobile: String
+    ) = flow {
+        val response = loginService.solveOtpChallengeRider(email,mobile)
+        emit(Result.Progress(isLoading = false))
+        delay(100)
+        emit(Result.Success(response))
+    }.applyDefaultEffects(enableRetry = false, nullOnComplete = true)
+*/
+
+    fun resendOtpChallenge(
+        email: String,
+        userType: UserType
+    ) = flow {
+        val label = when(userType){
+            UserType.CUSTOMER -> "customers"
+            UserType.RIDER -> "riders"
+        }
+        val response = loginService.resendOtpChallenge(
+            email,label
+        )
+        emit(Result.Progress(isLoading = false))
+        delay(100)
+        emit(Result.Success(response))
+    }
 }

@@ -137,7 +137,8 @@
 
         style="@style/GetExpressLabelWeight"
         android:ellipsize="end"
-        android:text="Weight: 1kg"
+        tools:text="Weight: 1kg"
+        android:visibility="invisible"
 
         />
 

@@ -31,6 +31,9 @@
             app:launchSingleTop="true"
             app:popUpToInclusive="true"
             />
+        <action
+            android:id="@+id/action_signInCustomerFragment_to_otpVerificationFragment"
+            app:destination="@id/otpVerificationFragment" />
     </fragment>
     <fragment
         android:id="@+id/signUpCustomerFragment"
@@ -57,6 +60,9 @@
             app:popUpToInclusive="true"
             app:launchSingleTop="true"
             />
+        <action
+            android:id="@+id/action_signUpCustomerFragment_to_otpVerificationFragment"
+            app:destination="@id/otpVerificationFragment" />
     </fragment>
     <fragment
         android:id="@+id/signUpRiderFragment"
@@ -83,6 +89,9 @@
             app:popUpToInclusive="true"
             app:launchSingleTop="true"
             />
+        <action
+            android:id="@+id/action_signUpRiderFragment_to_otpVerificationFragment"
+            app:destination="@id/otpVerificationFragment" />
     </fragment>
     <fragment
         android:id="@+id/forgotPasswordFragment"
@@ -142,6 +151,9 @@
             app:popUpToInclusive="true"
             app:launchSingleTop="true"
             />
+        <action
+            android:id="@+id/action_signInRiderFragment_to_otpVerificationFragment2"
+            app:destination="@id/otpVerificationFragment" />
     </fragment>
     <fragment
         android:id="@+id/welcomeFragment"
@@ -161,8 +173,24 @@
         android:name="com.myoptimind.get_express.features.login.OtpVerificationFragment"
         android:label="OtpVerificationFragment"
         tools:layout="@layout/fragment_otp_verification"
-        />
+        >
+        <argument
+            android:name="user"
+            app:argType="com.myoptimind.get_express.features.login.data.User"
+            />
+
+        <argument
+            android:name="userPassword"
+            app:argType="string"
+            />
+    </fragment>
     <action
         android:id="@+id/action_global_otpVerificationFragment"
         app:destination="@id/otpVerificationFragment" />
+    <action
+        android:id="@+id/action_global_welcomeFragment"
+        app:destination="@id/welcomeFragment"
+        app:popUpTo="@id/welcomeFragment"
+        app:popUpToInclusive="true"
+        app:launchSingleTop="true" />
 </navigation>

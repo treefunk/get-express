@@ -72,6 +72,12 @@ class SignInCustomerFragment : BaseLoginFragment(UserType.CUSTOMER) {
                                     findNavController().navigate(it)
                                 }
                             }
+                            "otp_challenge" -> {
+                                SignInCustomerFragmentDirections.actionSignInCustomerFragmentToOtpVerificationFragment(result.data.data,et_password.text.toString()).also {
+                                    findNavController().navigate(it)
+                                }
+                                Toast.makeText(requireContext(),result.data.meta.message,Toast.LENGTH_LONG).show()
+                            }
                         }
 
                     }
@@ -132,5 +138,7 @@ class SignInCustomerFragment : BaseLoginFragment(UserType.CUSTOMER) {
         btn_sign_in.isEnabled = enable
         tv_forgot_password_link.isEnabled = enable
         tv_sign_up_link.isEnabled = enable
+        et_password.isEnabled = enable
+        et_email_address.isEnabled = enable
     }
 }

@@ -343,6 +343,7 @@
         <item name="android:gravity">center</item>
         <item name="android:maxLength">1</item>
         <item name="android:minLines">1</item>
+        <item name="android:inputType">number</item>
         <item name="android:imeOptions">actionNext</item>
     </style>
 

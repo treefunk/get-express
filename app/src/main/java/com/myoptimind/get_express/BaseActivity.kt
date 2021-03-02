@@ -15,7 +15,6 @@ open class BaseActivity: AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         val appUpdateManager = AppUpdateManagerFactory.create(this)
-
         val appUpdateInfoTask = appUpdateManager.appUpdateInfo
 
         appUpdateInfoTask.addOnSuccessListener {

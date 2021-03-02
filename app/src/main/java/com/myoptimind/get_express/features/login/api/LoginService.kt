@@ -2,6 +2,7 @@ package com.myoptimind.get_express.features.login.api
 
 import com.myoptimind.get_express.features.login.data.Customer
 import com.myoptimind.get_express.features.login.data.Rider
+import com.myoptimind.get_express.features.login.data.User
 import com.myoptimind.get_express.features.shared.api.MetaResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -18,7 +19,7 @@ interface LoginService {
 
 
 
-    @POST("sign-up/customer")
+    @POST("sign-up{otp}/customer")
     @FormUrlEncoded
     suspend fun signUpCustomer(
         @Field("full_name") fullname: String,
@@ -28,7 +29,8 @@ interface LoginService {
         @Field("location") location: String,
         @Field("password") password: String? = null,
         @Field("social_token") socialToken: String? = null,
-        @Field("is_email_verified") isEmailVerified: String? = null
+        @Field("is_email_verified") isEmailVerified: String? = null,
+        @Path("otp") otpEnabled: String,
     ): CustomerSignUpResponse
 
     data class CustomerSignUpResponse (
@@ -36,13 +38,14 @@ interface LoginService {
         val meta: MetaResponse
     )
 
-    @POST("sign-in/customer")
+    @POST("sign-in{otp}/customer")
     @FormUrlEncoded
     suspend fun signInCustomer(
         @Field("email") email: String,
         @Field("password") password: String,
         @Field("device_id") deviceId: String,
-        @Field("firebase_id") firebaseId: String
+        @Field("firebase_id") firebaseId: String,
+        @Path("otp") otpEnabled: String
     ): CustomerSignInResponse
 
     data class CustomerSignInResponse(
@@ -81,7 +84,7 @@ interface LoginService {
      */
 
     @Multipart
-    @POST("sign-up/rider")
+    @POST("sign-up{otp}/rider")
     suspend fun signUpRider(
         @Part("full_name") fullname: RequestBody,
         @Part("email") email: RequestBody,
@@ -94,7 +97,8 @@ interface LoginService {
         @Part identificationDocument: MultipartBody.Part,
         @Part("vehicle_id") vehicleId: RequestBody,
         @Part("vehicle_model") vehicleModel: RequestBody,
-        @Part("plate_number") plateNumber: RequestBody
+        @Part("plate_number") plateNumber: RequestBody,
+        @Path("otp") otpEnabled: String
     ): RiderSignUpResponse
 
     data class RiderSignUpResponse(
@@ -102,13 +106,14 @@ interface LoginService {
         val meta: MetaResponse
     )
 
-    @POST("sign-in/rider")
+    @POST("sign-in{otp}/rider")
     @FormUrlEncoded
     suspend fun signInRider(
             @Field("email") email: String,
             @Field("password") password: String,
             @Field("device_id") deviceId: String,
-            @Field("firebase_id") fireBaseId: String
+            @Field("firebase_id") fireBaseId: String,
+            @Path("otp") otpEnabled: String
     ): RiderSignInResponse
 
     data class RiderSignInResponse(
@@ -137,8 +142,42 @@ interface LoginService {
     ): ForgotPasswordResponse
 
     data class ForgotPasswordResponse(
-            val meta: MetaResponse
+        val meta: MetaResponse
     )
+
+    data class UserSignInResponse(
+        val data: User,
+        val meta: MetaResponse
+
+    )
+
+    @POST("sign-in/{userType}/otp")
+    @FormUrlEncoded
+    suspend fun solveOtpChallenge(
+        @Field("email") email: String,
+        @Field("mobile_otp") mobileNum: String,
+        @Path("userType") userType: String
+    ): UserSignInResponse
+
+/*    @POST("sign-in/riders/otp")
+    @FormUrlEncoded
+    suspend fun solveOtpChallengeRider(
+        @Field("email") email: String,
+        @Field("mobile_otp") mobileNum: String
+    ): RiderSignInResponse*/
+
+    @POST("sign-in/{userType}/otp/resend")
+    @FormUrlEncoded
+    suspend fun resendOtpChallenge(
+        @Field("email") email: String,
+        @Path("userType") userType: String
+    ): ResendOtpResponse
+
+    data class ResendOtpResponse(
+        val meta: MetaResponse
+    )
+
+
 
 
 

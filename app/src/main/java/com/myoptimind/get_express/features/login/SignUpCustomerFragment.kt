@@ -78,6 +78,7 @@ class SignUpCustomerFragment : BaseLoginFragment(UserType.CUSTOMER) {
             fullname: String,
             token: String
     ){
+
         et_fullname.setText(fullname)
         et_email_address.setText(email)
         et_email_address.isEnabled = false
@@ -86,7 +87,6 @@ class SignUpCustomerFragment : BaseLoginFragment(UserType.CUSTOMER) {
 
 
         btn_sign_up.setOnClickListener {
-
             if(et_fullname.izBlank() ||
                     et_email_address.izBlank() ||
                     et_mobile_number.izBlank() ||
@@ -226,29 +226,45 @@ class SignUpCustomerFragment : BaseLoginFragment(UserType.CUSTOMER) {
                     enableViews(result.isLoading.not())
                 }
                 is Result.Success -> {
-                    if(result.data != null){
+                    if (result.data != null) {
+                        val meta = result.data.meta
+                        if (meta.code == "otp_challenge") {
+                            SignUpCustomerFragmentDirections.actionSignUpCustomerFragmentToOtpVerificationFragment(result.data.data,et_password.text.toString()).also {
+                                findNavController().navigate(it)
+                            }
+                        } else {
+                            if (!et_password.isEnabled) {
+                                viewModel.signInCustomerSocial(
+                                    result.data.data.email,
+                                    result.data.data.socialToken
+                                )
+                            } else {
+//                            viewModel.signInCustomer(result.data.data.email,et_password.text.toString())
+                            }
+
+                            arrayOf(
+                                et_fullname,
+                                et_email_address,
+                                et_password,
+                                et_mobile_number,
+                                et_birth_date
+                            ).clearTextViews()
+                            viewModel.clearLoginPayloads()
+                            Toast.makeText(
+                                requireContext(),
+                                "Account Successfully created.",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
                         initCenterProgress(false)
                         enableViews(true)
 
-                        if(et_password.isEnabled){
-                            viewModel.signInCustomer(result.data.data.email,et_password.text.toString())
-                        }else{
-                            viewModel.signInCustomerSocial(result.data.data.email,result.data.data.socialToken)
-                        }
 
-                        arrayOf(
-                            et_fullname,
-                            et_email_address,
-                            et_password,
-                            et_mobile_number,
-                            et_birth_date
-                        ).clearTextViews()
-                        viewModel.clearLoginPayloads()
-                        Toast.makeText(requireContext(),"Account Successfully created.", Toast.LENGTH_LONG).show()
                     }
                 }
                 is Result.Error -> {
-                    Toast.makeText(requireContext(),result.metaResponse.message, Toast.LENGTH_SHORT).show()
+                    val metaResponse = result.metaResponse
+                    Toast.makeText(requireContext(),metaResponse.message, Toast.LENGTH_SHORT).show()
                     initCenterProgress(false)
                     enableViews(true)
                 }

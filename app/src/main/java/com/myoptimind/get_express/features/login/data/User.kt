@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName
 import com.myoptimind.get_express.features.shared.api.BaseRemoteEntity
 import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 open class User(
     var id: String = "",
     @SerializedName("full_name")
@@ -28,7 +29,7 @@ open class User(
     @SerializedName("banned_at")
     var bannedAt: String = "",
 
-): BaseRemoteEntity()
+): Parcelable, BaseRemoteEntity()
 
 @Parcelize
 data class FacebookUserPayload(

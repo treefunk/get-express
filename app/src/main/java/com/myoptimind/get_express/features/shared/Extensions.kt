@@ -87,7 +87,9 @@ fun <T : Any> Flow<Result<T>>.applyDefaultEffects(
                 enableRetry
             }
             else -> {
-                    emit(Result.Error(MetaResponse("Server is busy. Please Try again later","server_error",500)))
+                    if(cause.code() == 500){
+                        emit(Result.Error(MetaResponse("Server is busy. Please Try again later","server_error",500)))
+                    }
                     if(enableRetry){
                         for (i in 10 downTo 1) {
                             Timber.e("ERROR 500: retrying request in $i")

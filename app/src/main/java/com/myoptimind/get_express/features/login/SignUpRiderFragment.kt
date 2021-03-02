@@ -309,6 +309,12 @@ class SignUpRiderFragment : BaseLoginFragment(UserType.RIDER), EasyPermissions.P
                     }
                     is Result.Success -> {
                         if(result.data != null){
+                            val meta = result.data.meta
+                            if (meta.code == "otp_challenge") {
+                                SignUpRiderFragmentDirections.actionSignUpRiderFragmentToOtpVerificationFragment(result.data.data,et_password.text.toString()).also {
+                                    findNavController().navigate(it)
+                                }
+                            }
                             initCenterProgress(false)
                             enableViews(true)
                             arrayOf(

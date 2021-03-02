@@ -164,6 +164,41 @@ class CustomerDashboardFragment : LogoOnlyFragment() {
                         Timber.d("Active booking detected..")
                         val cart = result.data.data
                         if (cart.createdAt == null) {
+                            Timber.v("cart active created at is null")
+                            editProfileViewModel.getCustomerProfile.observe(viewLifecycleOwner) { result ->
+                                when (result) {
+                                    is Result.Progress -> {
+                                        initCenterProgress(result.isLoading)
+                                        enableViews(result.isLoading.not())
+                                    }
+                                    is Result.Success -> {
+                                        if (result.data != null) {
+                                            iv_get_food.setOnClickListener {
+                                                showAddressSelection(
+                                                    result.data.data.addresses,
+                                                    REQUEST_SELECT_ADDRESS, CartType.FOOD
+                                                )
+                                            }
+                                            iv_get_grocery.setOnClickListener {
+                                                showAddressSelection(result.data.data.addresses,
+                                                    REQUEST_SELECT_ADDRESS,CartType.GROCERY)
+                                            }
+                                            iv_get_pabili.setOnClickListener {
+                                                showVehicleTypeChooser(CartType.PABILI)
+                                            }
+                                            iv_get_delivery.setOnClickListener {
+                                                showVehicleTypeChooser(CartType.DELIVERY)
+                                            }
+                                        }
+                                    }
+                                    is Result.Error -> {
+                                        Timber.e(result.metaResponse.message)
+                                    }
+                                    is Result.HttpError -> {
+                                        Timber.e(result.error.message)
+                                    }
+                                }
+                            }
                             return@observe
                         }
                         val cartType = cart.cartTypeId.idToCartType()
@@ -176,48 +211,17 @@ class CustomerDashboardFragment : LogoOnlyFragment() {
                                 ).also {
                                     findNavController().navigate(it)
                                 }
+
                     }else{
-
-                        editProfileViewModel.getCustomerProfile.observe(viewLifecycleOwner) { result ->
-                            when (result) {
-                                is Result.Progress -> {
-                                    initCenterProgress(result.isLoading)
-                    enableViews(result.isLoading.not())
-                                }
-                                is Result.Success -> {
-                                    if (result.data != null) {
-                                        iv_get_food.setOnClickListener {
-                                            showAddressSelection(
-                                                result.data.data.addresses,
-                                                REQUEST_SELECT_ADDRESS, CartType.FOOD
-                                            )
-                                        }
-                                        iv_get_grocery.setOnClickListener {
-                                            showAddressSelection(result.data.data.addresses,
-                                                REQUEST_SELECT_ADDRESS,CartType.GROCERY)
-                                        }
-                                        iv_get_pabili.setOnClickListener {
-                                            showVehicleTypeChooser(CartType.PABILI)
-                                        }
-                                        iv_get_delivery.setOnClickListener {
-                                            showVehicleTypeChooser(CartType.DELIVERY)
-                                        }
-                                    }
-                                }
-                                is Result.Error -> {
-                                    Timber.e(result.metaResponse.message)
-                                }
-                                is Result.HttpError -> {
-                                    Timber.e(result.error.message)
-                                }
-                            }
-                        }
-
 
                         appSharedPref.getPendingBooking()?.let {
                             cartViewModel.getPendingBooking(it)
                         }
                     }
+
+
+
+
                 }
                 is Result.Error -> {
                     Timber.e(result.metaResponse.message)

@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.43"
+        app:layout_constraintGuide_percent="0.47"
         />
     <ImageView
         android:id="@+id/img_featured"
@@ -52,57 +52,55 @@
         />
 
     <!--    android:layout_marginBottom="24dp"-->
+    <!--    app:constraint_referenced_ids="iv_get_car,label_get_car,iv_get_delivery,label_get_delivery,iv_get_grocery,label_get_grocery,iv_get_food,label_get_food,iv_get_pabili,label_get_pabili,iv_more,label_more"-->
+    <!--    app:constraint_referenced_ids="iv_get_car,label_get_car,iv_get_delivery,label_get_delivery,iv_get_grocery,label_get_grocery,iv_get_food,label_get_food,iv_get_pabili,label_get_pabili,iv_more,label_more"-->
+
+    <!--<ImageButton
+        android:id="@+id/iv_get_car"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintVertical_weight="2"
+        android:src="@drawable/ic_get_car"
+        style="@style/GetExpressImageButtonCustomerDashboard"
+        />
+
+    <TextView
+        android:id="@+id/label_get_car"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Get Car"
+        app:layout_constraintVertical_weight="1"
+        android:gravity="center_horizontal"
+        style="@style/GetExpressLabel.MediumBlackDashboardService"
+        android:textColor="@color/blue_200"
+        android:paddingTop="2dp"
+        android:paddingBottom="10dp"
+        />-->
+
     <androidx.constraintlayout.helper.widget.Flow
         android:layout_width="0dp"
         android:layout_height="0dp"
 
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="80dp"
 
-        app:layout_constraintTop_toBottomOf="@id/label_what_do_you_want_to_do"
-        app:layout_constraintLeft_toLeftOf="@id/img_featured"
-        app:layout_constraintRight_toRightOf="@id/img_featured"
-        app:layout_constraintBottom_toBottomOf="@id/img_featured"
-
-        android:orientation="vertical"
-        app:flow_maxElementsWrap="2"
-        app:flow_wrapMode="chain"
-        app:layout_constraintVertical_chainStyle="packed"
-        app:flow_horizontalGap="2dp"
         android:layout_marginLeft="12dp"
         android:layout_marginRight="12dp"
+        android:layout_marginBottom="4dp"
+        android:orientation="vertical"
 
-        app:layout_constraintVertical_bias="0"
-        app:constraint_referenced_ids="iv_get_pabili,label_get_pabili,iv_get_delivery,label_get_delivery,iv_get_food,label_get_food,iv_get_grocery,label_get_grocery"
+        app:constraint_referenced_ids="iv_get_grocery,label_get_grocery,iv_get_delivery,label_get_delivery,iv_get_pabili,label_get_pabili,iv_get_food,label_get_food"
+        app:flow_horizontalGap="2dp"
+        app:flow_maxElementsWrap="4"
+        app:flow_wrapMode="chain"
+        app:layout_constraintBottom_toBottomOf="@id/img_featured"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="@id/img_featured"
+        app:layout_constraintRight_toRightOf="@id/img_featured"
+
+        app:layout_constraintTop_toBottomOf="@id/label_what_do_you_want_to_do"
+        app:layout_constraintVertical_bias="0.0"
 
 
-        />
-    <!--    app:constraint_referenced_ids="iv_get_car,label_get_car,iv_get_delivery,label_get_delivery,iv_get_grocery,label_get_grocery,iv_get_food,label_get_food,iv_get_pabili,label_get_pabili,iv_more,label_more"-->
-    <!--    app:constraint_referenced_ids="iv_get_car,label_get_car,iv_get_delivery,label_get_delivery,iv_get_grocery,label_get_grocery,iv_get_food,label_get_food,iv_get_pabili,label_get_pabili,iv_more,label_more"-->
-
-    <!--    <ImageButton
-            android:id="@+id/iv_get_car"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintVertical_weight="2"
-            android:src="@drawable/ic_get_car"
-            style="@style/GetExpressImageButtonCustomerDashboard"
-            android:visibility="gone"
-            />-->
-
-    <!--    <TextView
-            android:id="@+id/label_get_car"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Get Car"
-            app:layout_constraintVertical_weight="1"
-            android:gravity="center_horizontal"
-            style="@style/GetExpressLabel.MediumBlackDashboardService"
-            android:textColor="@color/blue_200"
-            android:paddingTop="2dp"
-            android:paddingBottom="10dp"
-            android:visibility="gone"
-            />-->
+        app:layout_constraintVertical_chainStyle="packed" />
 
     <ImageButton
         android:id="@+id/iv_get_delivery"
@@ -124,6 +122,8 @@
         style="@style/GetExpressLabel.MediumBlackDashboardService"
         android:textColor="@color/blue_200"
         android:paddingTop="2dp"
+        android:paddingBottom="10dp"
+
 
         />
 
@@ -134,7 +134,6 @@
         app:layout_constraintVertical_weight="2"
         android:src="@drawable/ic_get_grocery"
         style="@style/GetExpressImageButtonCustomerDashboard"
-        android:visibility="gone"
         />
 
     <TextView
@@ -148,16 +147,16 @@
         android:textColor="@color/blue_200"
         android:paddingTop="2dp"
         android:paddingBottom="10dp"
-        android:visibility="gone"
         />
 
     <ImageButton
         android:id="@+id/iv_get_food"
+        style="@style/GetExpressImageButtonCustomerDashboard"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintVertical_weight="2"
         android:src="@drawable/ic_get_food"
-        style="@style/GetExpressImageButtonCustomerDashboard"
+        app:layout_constraintVertical_weight="2"
+
 
         />
 
@@ -171,6 +170,8 @@
         style="@style/GetExpressLabel.MediumBlackDashboardService"
         android:textColor="@color/blue_200"
         android:paddingTop="2dp"
+        android:paddingBottom="10dp"
+
         />
 
     <!--    -->
@@ -182,7 +183,6 @@
         app:layout_constraintVertical_weight="2"
         android:src="@drawable/ic_get_pabili"
         style="@style/GetExpressImageButtonCustomerDashboard"
-
 
         />
 
@@ -196,30 +196,31 @@
         style="@style/GetExpressLabel.MediumBlackDashboardService"
         android:textColor="@color/blue_200"
         android:paddingTop="2dp"
+        android:paddingBottom="10dp"
         />
 
-    <!--    <ImageButton
-            android:id="@+id/iv_more"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintVertical_weight="2"
-            android:src="@drawable/ic_get_more"
-            style="@style/GetExpressImageButtonCustomerDashboard"
-            android:visibility="gone"
-            />
+   <!-- <ImageButton
+        android:id="@+id/iv_more"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintVertical_weight="2"
+        android:src="@drawable/ic_get_more"
+        style="@style/GetExpressImageButtonCustomerDashboard"
+        />
 
-        <TextView
-            android:id="@+id/label_more"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="MORE"
-            app:layout_constraintVertical_weight="1"
-            android:gravity="center_horizontal"
-            style="@style/GetExpressLabel.MediumBlackDashboardService"
-            android:textColor="@color/blue_200"
-            android:paddingTop="2dp"
-            android:visibility="gone"
-            />-->
+    <TextView
+        android:id="@+id/label_more"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="MORE"
+        app:layout_constraintVertical_weight="1"
+        android:gravity="center_horizontal"
+        style="@style/GetExpressLabel.MediumBlackDashboardService"
+        android:textColor="@color/blue_200"
+        android:paddingTop="2dp"
+        android:paddingBottom="10dp"
+
+        />-->
 
     <TextView
         android:id="@+id/label_whats_new"
@@ -250,4 +251,6 @@
         tools:listitem="@layout/item_whats_new"
         android:layout_marginBottom="10dp"
         />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
