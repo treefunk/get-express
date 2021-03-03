@@ -171,20 +171,18 @@ class SearchPlaceDialog: BaseDialogFragment() {
                 //.setLocationRestriction(bounds)
                 .setOrigin(latLng)
                 .setCountries("PH")
+/*                .setTypeFilter(TypeFilter.ADDRESS)
                 .setTypeFilter(TypeFilter.ESTABLISHMENT)
+                .setTypeFilter(TypeFilter.REGIONS)*/
                 .setSessionToken(token)
                 .setQuery(query)
                 .build()
 
         placesClient.findAutocompletePredictions(request)
             .addOnSuccessListener { response: FindAutocompletePredictionsResponse ->
-                for (prediction in response.autocompletePredictions) {
-                    Timber.i(prediction.placeId)
-                    Timber.i(prediction.toString())
-                    Timber.i(prediction.getPrimaryText(null).toString())
-
-                }
-                adapter.predictions = response.autocompletePredictions
+                val predictions = ArrayList(response.autocompletePredictions)
+                predictions.sortBy { it.distanceMeters }
+                adapter.predictions = predictions
                 adapter.notifyDataSetChanged()
             }.addOnFailureListener { exception: Exception? ->
                 if (exception is ApiException) {

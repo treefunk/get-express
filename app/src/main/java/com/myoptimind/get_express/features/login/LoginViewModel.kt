@@ -29,7 +29,7 @@ class LoginViewModel @ViewModelInject constructor(
 ) : ViewModel() {
 
     companion object {
-        private const val ENABLE_OTP_VERIFICATION = true
+        private const val ENABLE_OTP_VERIFICATION = false
     }
 
     val facebookUserPayload: LiveData<FacebookUserPayload?> get() = _facebookUserPayload
