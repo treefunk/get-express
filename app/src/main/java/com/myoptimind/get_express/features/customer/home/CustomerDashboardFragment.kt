@@ -173,7 +173,7 @@ class CustomerDashboardFragment : LogoOnlyFragment() {
                                     }
                                     is Result.Success -> {
                                         if (result.data != null) {
-                                            iv_get_food.setOnClickListener {
+                                                iv_get_food.setOnClickListener {
                                                 showAddressSelection(
                                                     result.data.data.addresses,
                                                     REQUEST_SELECT_ADDRESS, CartType.FOOD

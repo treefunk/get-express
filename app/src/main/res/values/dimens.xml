@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="img_illustration_height">290dp</dimen>
+    <dimen name="standard_text_label_size">12sp</dimen>
 </resources>

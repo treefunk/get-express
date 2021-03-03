@@ -68,7 +68,6 @@ class SelectAddressBottomDialog: BottomSheetDialogFragment() {
         }
 
         btn_enter_new_address.setOnClickListener {
-//            showPlacesAutocomplete(DELIVERY_LOCATION_REQUEST)
             val dialogEnterAddress = EnterAddressDialog.newInstance()
             dialogEnterAddress.setTargetFragment(this@SelectAddressBottomDialog, DELIVERY_LOCATION_REQUEST)
             dialogEnterAddress.show(parentFragmentManager, "Enter address")

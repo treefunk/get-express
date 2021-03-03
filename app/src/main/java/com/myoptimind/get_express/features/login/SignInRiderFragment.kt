@@ -83,12 +83,12 @@ class SignInRiderFragment: BaseLoginFragment(UserType.RIDER) {
                     }
                 }
                 is Result.Error -> {
-                        Toast.makeText(requireContext(),result.metaResponse.message, Toast.LENGTH_SHORT).show()
+                    Snackbar.make(requireView(),result.metaResponse.message,Snackbar.LENGTH_SHORT).show()
                     initCenterProgress(false)
                     enableViews(true)
                 }
                 is Result.HttpError -> {
-                    Toast.makeText(requireContext(),result.error.message.toString(), Toast.LENGTH_SHORT).show()
+                    Snackbar.make(requireView(),result.error.message.toString(),Snackbar.LENGTH_SHORT).show()
                     initCenterProgress(false)
                     enableViews(true)
                 }

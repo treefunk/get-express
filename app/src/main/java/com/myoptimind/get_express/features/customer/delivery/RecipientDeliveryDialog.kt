@@ -32,6 +32,7 @@ import com.myoptimind.get_express.features.edit_profile.ProfileRepository
 import com.myoptimind.get_express.features.edit_profile.ProfileViewModel
 import com.myoptimind.get_express.features.rider.selected_customer_request.RiderTrackingService
 import com.myoptimind.get_express.features.shared.BaseDialogFragment
+import com.myoptimind.get_express.features.shared.SearchPlaceDialog
 import com.myoptimind.get_express.features.shared.api.Result
 import com.myoptimind.get_express.features.shared.initMultilineEditText
 import com.myoptimind.get_express.features.shared.izNotBlank
@@ -88,7 +89,8 @@ class RecipientDeliveryDialog : BaseDialogFragment() {
 
 
         et_address.setOnClickListener {
-            showPlacesAutocomplete(ADDRESS_REQUEST)
+//            showPlacesAutocomplete(ADDRESS_REQUEST)
+            showSearchFragment(ADDRESS_REQUEST)
         }
 
         btn_submit_for_approval.setOnClickListener {
@@ -199,7 +201,7 @@ class RecipientDeliveryDialog : BaseDialogFragment() {
             when (resultCode) {
                 Activity.RESULT_OK -> {
                     data?.let {
-                        val place = Autocomplete.getPlaceFromIntent(data)
+                        val place = data.extras?.getParcelable<Place>(SearchPlaceDialog.EXTRA_PLACE)!!
                         Timber.d("Place: ${place.name}, ${place.id}")
                         enterAddressViewModel.checkLocationIfValid(
                             Place.builder()
@@ -209,15 +211,6 @@ class RecipientDeliveryDialog : BaseDialogFragment() {
                                 .build()
                         )
                     }
-                }
-                AutocompleteActivity.RESULT_ERROR -> {
-                    data?.let {
-                        val status = Autocomplete.getStatusFromIntent(data)
-                        Timber.d(status.statusMessage)
-                    }
-                }
-                Activity.RESULT_CANCELED -> {
-                    // The user canceled the operation.
                 }
             }
             return

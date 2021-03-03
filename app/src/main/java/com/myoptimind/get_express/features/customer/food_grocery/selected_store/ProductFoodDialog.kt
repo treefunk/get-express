@@ -84,8 +84,11 @@ class ProductFoodDialog: BaseDialogFragment() {
             btn_plus.visibility = View.GONE
             btn_minus.visibility = View.GONE
             et_quantity.visibility = View.GONE
-            label_special_instructions.visibility = View.INVISIBLE
-            et_special_instructions.visibility = View.INVISIBLE
+            label_special_instructions.visibility = View.GONE
+            et_special_instructions.visibility = View.GONE
+            btn_add_to_cart.visibility = View.GONE
+            box_notes_to_rider.visibility = View.GONE
+            tv_bottom_price.visibility = View.GONE
         }else{
             if(trayAddOn != null){
                 btn_add_to_cart.text = "Update Cart"

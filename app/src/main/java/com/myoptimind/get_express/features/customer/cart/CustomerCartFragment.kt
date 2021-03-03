@@ -99,51 +99,6 @@ class CustomerCartFragment: TitleOnlyFragment() {
 
     }
 
-    private fun showPlacesAutocomplete(){
-        // Set the fields to specify which types of place data to
-        // return after the user has made a selection.
-        val fields = listOf(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS)
-
-        var locationBias: LocationBias? = if(RiderTrackingService.latLong.value != null){
-            val latLng = RiderTrackingService.latLong.value!!
-
-            val meters = 500.0
-
-            val coef = meters * 0.0000089
-
-            val latMax = latLng.latitude + coef
-            val lngMax = latLng.longitude + coef / Math.cos(latLng.latitude * 0.18)
-
-            val latMin = latLng.latitude - coef
-            val lngMin = latLng.longitude - coef / Math.cos(latLng.latitude * 0.18)
-
-
-            /*  val northSide = SphericalUtil.computeOffset(latLng,5000.0,0.0)
-              val southSide = SphericalUtil.computeOffset(latLng,5000.0,180.0)
-  */
-
-            val northSide = LatLng(latMax,lngMax)
-            val southSide = LatLng(latMin,lngMin)
-            val bounds = LatLngBounds.builder()
-                .include(northSide)
-                .include(southSide)
-                .build()
-            Timber.d("location bias detected.")
-
-            Timber.d("northside: https://www.google.com/maps/place/${northSide.latitude},${northSide.longitude}")
-            Timber.d("southside: https://www.google.com/maps/place/${southSide.latitude},${southSide.longitude}")
-            Timber.d("path northside to southside: https://www.google.com/maps/dir/?api=1&origin=${northSide.latitude},${northSide.longitude}&destination=${southSide.latitude},${southSide.longitude}")
-            RectangularBounds.newInstance(bounds)
-        }else{
-            null
-        }
-        // Start the autocomplete intent.
-        val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
-            .setCountry("PH")
-//        intent.build(requireContext())
-        startActivityForResult(intent.setLocationBias(locationBias).build(requireContext()), AUTOCOMPLETE_REQUEST_CODE)
-    }
-
     private fun initClickListeners() {
         tv_add_items.setOnClickListener {
             if(findNavController().currentDestination?.id == R.id.customerCartFragment){
@@ -221,6 +176,17 @@ class CustomerCartFragment: TitleOnlyFragment() {
                         val cartType = cart.cartTypeId.idToCartType()
                         val cartStatus = cart.status.toCartStatus()
 
+
+                        if(cartStatus == CartStatus.PENDING){
+                            Timber.d("finalize_cart " + result.data.meta.message)
+                            appSharedPref.storePendingBooking(cart.id)
+                            if(findNavController().currentDestination?.id == R.id.customerCartFragment){
+                                CustomerCartFragmentDirections.actionCustomerCartFragmentToCustomerRiderSearchFragment(cart.id).also {
+                                    findNavController().navigate(it)
+                                }
+                                return@observe
+                            }
+                        }
                         setUpObservables(cart)
 
                         when(cartType){
@@ -231,7 +197,7 @@ class CustomerCartFragment: TitleOnlyFragment() {
                             }
                             else -> {
                                 tv_edit_location.setOnClickListener {
-                                    showPlacesAutocomplete()
+                                    // deleted
                                 }
                             }
                         }
@@ -484,16 +450,7 @@ class CustomerCartFragment: TitleOnlyFragment() {
                         }
 //                        val basket = cart.initBasketForFoodGrocery()
                         Timber.d("cart is ${cart.id}")
-                        if(cartStatus == CartStatus.PENDING){
-                            Timber.d("finalize_cart " + result.data.meta.message)
-                            appSharedPref.storePendingBooking(cart.id)
-                            if(findNavController().currentDestination?.id == R.id.customerCartFragment){
-                                CustomerCartFragmentDirections.actionCustomerCartFragmentToCustomerRiderSearchFragment(cart.id).also {
-                                    findNavController().navigate(it)
-                                }
-                                return@observe
-                            }
-                        }
+
                     }
                 }
                 is Result.Error -> {
@@ -568,28 +525,6 @@ class CustomerCartFragment: TitleOnlyFragment() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
-            when (resultCode) {
-                Activity.RESULT_OK -> {
-                    data?.let {
-                        val place = Autocomplete.getPlaceFromIntent(data)
-                        Timber.d("Place: ${place.name}, ${place.id}")
-                        cartViewModel.updateFromLocation(place)
-                    }
-                }
-                AutocompleteActivity.RESULT_ERROR -> {
-                    // TODO: Handle the error.
-                    data?.let {
-                        val status = Autocomplete.getStatusFromIntent(data)
-                        Timber.d(status.statusMessage)
-                    }
-                }
-                Activity.RESULT_CANCELED -> {
-                    // The user canceled the operation.
-                }
-            }
-            return
-        }
         super.onActivityResult(requestCode, resultCode, data)
     }
 

@@ -49,7 +49,7 @@ class RiderHistoryAdapter constructor(
 
             itemView.tv_customer_name.text = riderHistory.location.label
             var historyDetails = StringBuilder()
-            historyDetails.append(riderHistory.createdAt)
+            historyDetails.append(riderHistory.updatedAt)
             if(riderHistory.totalItems != null && riderHistory.totalItems.toInt() > 0 ){
                 historyDetails.append(" | ${riderHistory.totalItems} Items ")
             }
@@ -57,7 +57,7 @@ class RiderHistoryAdapter constructor(
             itemView.tv_customer_details.text = historyDetails.toString()
 
             Glide.with(itemView.context)
-                    .load(riderHistory.icon)
+                    .load(riderHistory.customer?.customer?.profilePicture)
                     .into(itemView.iv_customer_image)
 
         }

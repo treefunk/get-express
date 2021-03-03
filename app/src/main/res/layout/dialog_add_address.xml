@@ -125,7 +125,6 @@
 
         android:focusable="false"
         android:focusableInTouchMode="false"
-
         />
 
     <com.google.android.material.progressindicator.CircularProgressIndicator

@@ -151,7 +151,7 @@ class CustomerRiderSearchFragment : TitleOnlyFragment() {
             Timber.d("hashcode - ${this.hashCode()} refreshing in $i..")
             delay(1000)
         }
-        cartViewModel.getCartInformation(cartId)
+        cartViewModel.getCartInformation(cartId,true)
     }
 
     private fun timerTask() = lifecycleScope.launchWhenCreated {
@@ -523,9 +523,11 @@ class CustomerRiderSearchFragment : TitleOnlyFragment() {
 
                 is Result.Error -> {
                     Timber.e(result.metaResponse.message)
+                    Toast.makeText(requireContext(),result.metaResponse.message,Toast.LENGTH_SHORT).show()
                 }
                 is Result.HttpError -> {
-                    Timber.d(result.error.message)
+                    Timber.e(result.error.message)
+                    Toast.makeText(requireContext(),result.error.message,Toast.LENGTH_SHORT).show()
                 }
                 }
 

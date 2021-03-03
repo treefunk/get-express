@@ -3,10 +3,13 @@ package com.myoptimind.get_express.features.customer.home
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
@@ -26,6 +29,7 @@ import com.myoptimind.get_express.features.edit_profile.ProfileRepository
 import com.myoptimind.get_express.features.edit_profile.ProfileViewModel
 import com.myoptimind.get_express.features.rider.selected_customer_request.RiderTrackingService
 import com.myoptimind.get_express.features.shared.BaseDialogFragment
+import com.myoptimind.get_express.features.shared.SearchPlaceDialog
 import com.myoptimind.get_express.features.shared.api.Result
 import com.myoptimind.get_express.features.shared.izBlank
 import com.myoptimind.get_express.features.shared.izNotBlank
@@ -40,6 +44,7 @@ class EnterAddressDialog: BaseDialogFragment() {
 
     private val viewModel by viewModels<EnterAddressViewModel>()
     private val profileViewModel by activityViewModels<ProfileViewModel>()
+
 
     companion object {
 
@@ -187,9 +192,15 @@ class EnterAddressDialog: BaseDialogFragment() {
             }
         }
 
-        et_enter_address.setOnClickListener {
+/*        et_enter_address.setOnClickListener {
             showPlacesAutocomplete(ADDRESS_REQUEST)
+        }*/
+
+        et_enter_address.setOnClickListener {
+            showSearchFragment(ADDRESS_REQUEST)
         }
+
+
     }
 
 
@@ -243,21 +254,12 @@ class EnterAddressDialog: BaseDialogFragment() {
             when (resultCode) {
                 Activity.RESULT_OK -> {
                     data?.let {
-                        val place = Autocomplete.getPlaceFromIntent(data)
+                        val place = data.extras?.getParcelable<Place>(SearchPlaceDialog.EXTRA_PLACE)!!
                         Timber.d("Place: ${place.name}, ${place.id}")
                         viewModel.checkLocationIfValid(
                                 place
                         )
                     }
-                }
-                AutocompleteActivity.RESULT_ERROR -> {
-                    data?.let {
-                        val status = Autocomplete.getStatusFromIntent(data)
-                        Timber.d(status.statusMessage)
-                    }
-                }
-                Activity.RESULT_CANCELED -> {
-                    // The user canceled the operation.
                 }
             }
             return

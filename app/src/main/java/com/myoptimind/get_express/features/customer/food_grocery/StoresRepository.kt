@@ -137,7 +137,8 @@ class StoresRepository @Inject constructor(
     }.applyDefaultEffects(false,false)
 
     fun getCartInformation(
-            cartId: String
+            cartId: String,
+            enableRetry: Boolean = false
     ) = flow {
         val response = storesService.getCartInformation(
                 cartId
@@ -145,7 +146,7 @@ class StoresRepository @Inject constructor(
         emit(Result.Progress(isLoading = false))
         delay(100)
         emit(Result.Success(response))
-    }.applyDefaultEffects(false,true)
+    }.applyDefaultEffects(enableRetry,true)
 
     fun getCustomerActiveBooking(
             customerId: String,

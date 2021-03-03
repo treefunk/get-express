@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="45dp"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginTop="6dp"
     android:layout_marginBottom="6dp"
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp"
     app:cardCornerRadius="10dp"
-    app:cardElevation="10dp"
-    >
+    app:cardElevation="10dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_customer_request"
@@ -56,7 +55,9 @@
             android:fontFamily="@font/lato_bold"
             android:gravity="bottom"
             android:paddingTop="2dp"
-            android:text="Jhondee Anib"
+            tools:text="Jhondee Anib"
+            android:ellipsize="end"
+            android:lines="1"
             android:textColor="@android:color/black"
             app:layout_constraintBottom_toTopOf="@id/tv_customer_details"
             app:layout_constraintLeft_toRightOf="@id/iv_icon"
@@ -73,7 +74,7 @@
             android:layout_marginRight="4dp"
             android:fontFamily="@font/lato_italic"
             android:paddingBottom="2dp"
-            android:text="Jhondee Anib"
+            tools:text="Jhondee Anib"
             android:textColor="@android:color/black"
             android:paddingTop="2dp"
             android:textSize="10sp"
@@ -111,7 +112,7 @@
             android:layout_height="0dp"
             android:fontFamily="@font/lato_italic"
             android:paddingBottom="2dp"
-            android:text="53200.00"
+            tools:text="53200.00"
             android:paddingTop="2dp"
             android:textColor="@android:color/black"
             android:textSize="10sp"

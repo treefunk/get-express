@@ -375,74 +375,9 @@ class PabiliFormFragment: TitleOnlyFragment() {
 
         }
 
-/*        tv_sender_address.setOnClickListener {
-            showPlacesAutocomplete(SENDER_ADDRESS_REQUEST)
-        }
-        tv_sender_name.setOnClickListener {
-            showPlacesAutocomplete(SENDER_ADDRESS_REQUEST)
-        }
-        iv_sender_icon.setOnClickListener {
-            showPlacesAutocomplete(SENDER_ADDRESS_REQUEST)
-        }
-
-        tv_receiver_address.setOnClickListener {
-            showPlacesAutocomplete(RECEIVER_ADDRESS_REQUEST)
-        }
-
-        tv_receiver_name.setOnClickListener {
-            showPlacesAutocomplete(RECEIVER_ADDRESS_REQUEST)
-        }
-
-        iv_receiver_icon.setOnClickListener {
-            showPlacesAutocomplete(RECEIVER_ADDRESS_REQUEST)
-        }*/
     }
 
 
-    private fun showPlacesAutocomplete(requestCode: Int){
-        // Set the fields to specify which types of place data to
-        // return after the user has made a selection.
-        val fields = listOf(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS)
-
-        var locationBias: LocationBias? = if(RiderTrackingService.latLong.value != null){
-            val latLng = RiderTrackingService.latLong.value!!
-
-            val meters = 500.0
-
-            val coef = meters * 0.0000089
-
-            val latMax = latLng.latitude + coef
-            val lngMax = latLng.longitude + coef / Math.cos(latLng.latitude * 0.18)
-
-            val latMin = latLng.latitude - coef
-            val lngMin = latLng.longitude - coef / Math.cos(latLng.latitude * 0.18)
-
-
-            /*  val northSide = SphericalUtil.computeOffset(latLng,5000.0,0.0)
-              val southSide = SphericalUtil.computeOffset(latLng,5000.0,180.0)
-  */
-
-            val northSide = LatLng(latMax,lngMax)
-            val southSide = LatLng(latMin,lngMin)
-            val bounds = LatLngBounds.builder()
-                .include(northSide)
-                .include(southSide)
-                .build()
-            Timber.d("location bias detected.")
-
-            Timber.d("northside: https://www.google.com/maps/place/${northSide.latitude},${northSide.longitude}")
-            Timber.d("southside: https://www.google.com/maps/place/${southSide.latitude},${southSide.longitude}")
-            Timber.d("path northside to southside: https://www.google.com/maps/dir/?api=1&origin=${northSide.latitude},${northSide.longitude}&destination=${southSide.latitude},${southSide.longitude}")
-            RectangularBounds.newInstance(bounds)
-        }else{
-            null
-        }
-        // Start the autocomplete intent.
-        val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
-            .setCountry("PH")
-//        intent.build(requireContext())
-        startActivityForResult(intent.setLocationBias(locationBias).build(requireContext()), requestCode)
-    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == RECEIVER_ADDRESS_REQUEST || requestCode == SENDER_ADDRESS_REQUEST) {

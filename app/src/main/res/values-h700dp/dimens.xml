@@ -1,3 +1,4 @@
 <resources>
     <dimen name="img_illustration_height">380dp</dimen>
+    <dimen name="standard_text_label_size">15sp</dimen>
 </resources>

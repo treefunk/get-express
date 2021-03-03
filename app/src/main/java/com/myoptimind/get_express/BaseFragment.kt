@@ -5,6 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.AutocompleteSessionToken
+import com.google.android.libraries.places.api.model.RectangularBounds
+import com.google.android.libraries.places.api.model.TypeFilter
+import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
+import com.google.android.libraries.places.api.net.FindAutocompletePredictionsResponse
 import com.myoptimind.get_express.features.customer.delivery.PERSON_TYPE
 import com.myoptimind.get_express.features.customer.delivery.RecipientDeliveryDialog
 import com.myoptimind.get_express.features.customer.home.SelectAddressBottomDialog
@@ -100,5 +109,7 @@ abstract class BaseFragment: Fragment() {
     ): View? {
         return super.onCreateView(inflater, container, savedInstanceState)
     }
+
+
 
 }

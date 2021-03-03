@@ -250,12 +250,13 @@ class CartViewModel @ViewModelInject constructor(
     private val _fetchCartInfoResult = MutableLiveData<Result<GetCartInfoResponse>>()
 
     fun getCartInformation(
-            cartId: String
+            cartId: String,
+            enableRetry: Boolean = false
     ){
         Timber.d("fetching cart information")
         viewModelScope.launch(Dispatchers.IO) {
             storesRepository.getCartInformation(
-                    cartId
+                    cartId,enableRetry
             ).collect {
                 _fetchCartInfoResult.postValue(it)
             }

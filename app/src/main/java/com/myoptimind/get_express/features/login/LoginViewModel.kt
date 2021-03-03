@@ -28,6 +28,10 @@ class LoginViewModel @ViewModelInject constructor(
     private val appSharedPref: AppSharedPref
 ) : ViewModel() {
 
+    companion object {
+        private const val ENABLE_OTP_VERIFICATION = true
+    }
+
     val facebookUserPayload: LiveData<FacebookUserPayload?> get() = _facebookUserPayload
     private val _facebookUserPayload = MutableLiveData<FacebookUserPayload?>()
 
@@ -111,7 +115,7 @@ class LoginViewModel @ViewModelInject constructor(
                 password,
                 socialToken,
                 isEmailVerified,
-                true
+                ENABLE_OTP_VERIFICATION
             ).collect {
                 _signUpCustomerResult.postValue(it)
             }
@@ -130,7 +134,7 @@ class LoginViewModel @ViewModelInject constructor(
                         email,
                         password,
                         firebaseToken,
-                        true
+                        ENABLE_OTP_VERIFICATION
                 ).collect {
                     _signInCustomerResult.postValue(it)
                     if(it is Result.Success && it.data != null){
@@ -213,7 +217,7 @@ class LoginViewModel @ViewModelInject constructor(
                 vehicleId.toRequestBody(),
                 vehicleModel.toRequestBody(),
                 plateNumber.toRequestBody(),
-                true
+                ENABLE_OTP_VERIFICATION
             ).collect {
                 _signUpRiderResult.postValue(it)
             }
@@ -227,7 +231,7 @@ class LoginViewModel @ViewModelInject constructor(
     ) {
         retrieveFcmToken { firebaseToken ->
             viewModelScope.launch(IO) {
-                loginRepository.signInRider(email, password,firebaseToken,true).collect {
+                loginRepository.signInRider(email, password,firebaseToken, ENABLE_OTP_VERIFICATION).collect {
                     _signInRiderResult.postValue(it)
                     if(it is Result.Success && it.data != null){
                         val customer = it.data.data
